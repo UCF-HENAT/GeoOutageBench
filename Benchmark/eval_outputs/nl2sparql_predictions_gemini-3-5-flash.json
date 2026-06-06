@@ -1,0 +1,503 @@
+{
+  "benchmark": "/mnt/c/users/edfra/code/work/GeoResilienceKG/GeoResilience/Benchmark/geooutagebench_questions.json",
+  "mode": "blank",
+  "predictions": [
+    {
+      "qid": 1000000,
+      "question": "Which counties have the highest number of customer outages reported at one time?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?countyLabel (MAX(?numOutages) AS ?maxOutages)\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:numberOfOutages ?numOutages ;\n       goo:representsCounty ?county .\n  ?county rdfs:label ?countyLabel .\n}\nGROUP BY ?county ?countyLabel\nORDER BY DESC(?maxOutages)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000001,
+      "question": "Which ten customer outage records were the highest?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?rec ?numOutages\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:numberOfOutages ?numOutages .\n}\nORDER BY DESC(?numOutages)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000002,
+      "question": "Which customer outage records were recorded in the calendar year after 2021?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?rec ?dateTime\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:recordDateTime ?dateTime .\n  FILTER(?dateTime >= \"2022-01-01T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000003,
+      "question": "Which nighttime-light images cover the Orlando-area county in 2025?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?image ?dateTime\nWHERE {\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?dateTime .\n  ?county rdfs:label ?countyLabel .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"orange\") || CONTAINS(LCASE(?countyLabel), \"orlando\"))\n  FILTER(?dateTime >= \"2025-01-01T00:00:00Z\"^^xsd:dateTime && ?dateTime < \"2026-01-01T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000004,
+      "question": "Which jurisdiction is represented by the customer record with FIPS code 12075 and on the 15th of August 2017 at 8:15 PM?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime \"2017-08-15T20:15:00Z\"^^xsd:dateTime .\n  ?county goo:fipsCode \"12075\" .\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000005,
+      "question": "Which county is represented by the nighttime-light image recorded for FIPS code 12031 on the 21st of September 2020?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county\nWHERE {\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?dateTime .\n  ?county goo:fipsCode \"12031\" .\n  FILTER(?dateTime >= \"2020-09-21T00:00:00Z\"^^xsd:dateTime && ?dateTime < \"2020-09-22T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000006,
+      "question": "Which jurisdiction is represented by the first alphabetical order county in Florida on the 10th of the 3rd month in the last year of the 2010s?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  ?county a goo:County ;\n          goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n}\nORDER BY ?countyLabel\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000007,
+      "question": "When was this outage record recorded?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?dateTime\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:recordDateTime ?dateTime .\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000008,
+      "question": "How many outages were recorded in the customer outage record for the Florida county with the seat in Bronson, on August 15, 2017 at 20:15?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?numOutages\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime \"2017-08-15T20:15:00Z\"^^xsd:dateTime ;\n       goo:numberOfOutages ?numOutages .\n  ?county goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"levy\") || CONTAINS(LCASE(?countyLabel), \"bronson\"))\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000009,
+      "question": "Which nighttime-light scene corresponds to the customer outage record for the Florida county with the seat in Bronson, on August 15, 2017 at 20:15?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?image\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime \"2017-08-15T20:15:00Z\"^^xsd:dateTime .\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?imgTime .\n  ?county goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"levy\") || CONTAINS(LCASE(?countyLabel), \"bronson\"))\n  FILTER(SUBSTR(STR(?imgTime), 1, 10) = \"2017-08-15\")\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000010,
+      "question": "Which outage map corresponds to the customer outage record for the Florida county with the largest city being Williston, on August 15, 2017 at 20:15?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?map\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime \"2017-08-15T20:15:00Z\"^^xsd:dateTime .\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county ;\n       goo:generatedFromNTLImage ?image .\n  ?image goo:acquisitionDateTime ?imgTime .\n  ?county goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"levy\") || CONTAINS(LCASE(?countyLabel), \"williston\"))\n  FILTER(SUBSTR(STR(?imgTime), 1, 10) = \"2017-08-15\")\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000011,
+      "question": "Which severity prediction map was derived from the nighttime-light scene for Jacksonville's county in 2020, the 21st night of September?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?map\nWHERE {\n  ?map a goo:OutageMap ;\n       goo:generatedFromNTLImage ?image .\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?dateTime .\n  ?county rdfs:label ?countyLabel .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"duval\") || CONTAINS(LCASE(?countyLabel), \"jacksonville\"))\n  FILTER(?dateTime >= \"2020-09-21T00:00:00Z\"^^xsd:dateTime && ?dateTime < \"2020-09-22T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000012,
+      "question": "Which satellite captured any random NTL image?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?satellite\nWHERE {\n  ?image a goo:NTLImage ;\n         goo:fromSatellite ?satellite .\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000013,
+      "question": "Which sensor captured any random NTL image?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?sensor\nWHERE {\n  ?image a goo:NTLImage ; \n         goo:fromSensor ?sensor .\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000014,
+      "question": "During the Hurricane Ian disruption period, which outage records for the southwest Florida county centered on Fort Myers were above 100?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?rec ?numOutages ?dateTime\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?dateTime ;\n       goo:numberOfOutages ?numOutages .\n  ?county rdfs:label ?countyLabel .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"lee\") || CONTAINS(LCASE(?countyLabel), \"fort myers\"))\n  FILTER(?numOutages > 100)\n  FILTER(?dateTime >= \"2022-09-25T00:00:00Z\"^^xsd:dateTime && ?dateTime <= \"2022-10-05T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000015,
+      "question": "During the Hurricane Ian landfall date, which nighttime-light scenes line up with outage snapshots for the southwest Florida county centered on Fort Myers?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Spatiotemporal co-occurrence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?image ?rec\nWHERE {\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?imgTime .\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?recTime .\n  ?county rdfs:label ?countyLabel .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"lee\") || CONTAINS(LCASE(?countyLabel), \"fort myers\"))\n  FILTER(?imgTime >= \"2022-09-28T00:00:00Z\"^^xsd:dateTime && ?imgTime < \"2022-09-29T00:00:00Z\"^^xsd:dateTime)\n  FILTER(?recTime >= \"2022-09-28T00:00:00Z\"^^xsd:dateTime && ?recTime < \"2022-09-29T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000016,
+      "question": "Which severity maps correspond to the southwest Florida county centered on Fort Myers around Hurricane Ian?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?map\nWHERE {\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county ;\n       goo:generatedFromNTLImage ?image .\n  ?image goo:acquisitionDateTime ?dateTime .\n  ?county rdfs:label ?countyLabel .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"lee\") || CONTAINS(LCASE(?countyLabel), \"fort myers\"))\n  FILTER(?dateTime >= \"2022-09-25T00:00:00Z\"^^xsd:dateTime && ?dateTime <= \"2022-10-05T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000017,
+      "question": "For each county, what is the maximum number of customer outages recorded in the year Hurricane Irma occurred in?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county (MAX(?numOutages) AS ?maxOutages)\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?numOutages ;\n       goo:recordDateTime ?dateTime .\n  FILTER(?dateTime >= \"2017-01-01T00:00:00Z\"^^xsd:dateTime && ?dateTime < \"2018-01-01T00:00:00Z\"^^xsd:dateTime)\n}\nGROUP BY ?county\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000018,
+      "question": "For each second-level administrative division in the U.S., what is their average social vulnerability index?",
+      "template_id": "T011",
+      "template_family": "svi_aggregation_by_jurisdiction",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?county (AVG(?sviScore) AS ?avgSvi)\nWHERE {\n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?county ;\n       goo:sviOverallScore ?sviScore .\n}\nGROUP BY ?county\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000019,
+      "question": "On what date and time did each jurisdiction reach its maximum recorded number of customer outages?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?county ?maxOutages ?dateTime\nWHERE {\n  {\n    SELECT ?county (MAX(?numOutages) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:CustomerOutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?numOutages .\n    }\n    GROUP BY ?county\n  }\n  ?rec2 a goo:CustomerOutageRecord ;\n        goo:representsCounty ?county ;\n        goo:numberOfOutages ?maxOutages ;\n        goo:recordDateTime ?dateTime .\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000020,
+      "question": "Which remote sensing machine and instrument captured any random nighttime-light image in the GeoOutage dataset?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?satellite ?sensor\nWHERE {\n  ?image a goo:NTLImage ;\n         goo:fromSatellite ?satellite ;\n         goo:fromSensor ?sensor .\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000021,
+      "question": "Which U.S. county is depicted in the power outage severity map corresponding to a specific customer outage record?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?county\nWHERE {\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county .\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county .\n}\nLIMIT 1",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000022,
+      "question": "What is the maximum number of power outages recorded for the county in the third most populous state named after Andrew Jackson in the Eagle-I dataset?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT (MAX(?numOutages) AS ?maxOutages)\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?numOutages .\n  ?county goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"jackson\"))\n}",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000023,
+      "question": "Is there an EAGLE-I snapshot for the Tampa, Florida county that also has a matching NTL scene?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Spatiotemporal co-occurrence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nASK {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?recTime .\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?imgTime .\n  ?county goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"hillsborough\") || CONTAINS(LCASE(?countyLabel), \"tampa\"))\n  FILTER(SUBSTR(STR(?recTime), 1, 10) = SUBSTR(STR(?imgTime), 1, 10))\n}",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000024,
+      "question": "For the central-Florida county where the largest city is named Clermont, what derived severity maps are associated with the VIIRS-captured scene for the month of March in 2024?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?map\nWHERE {\n  ?map a goo:OutageMap ;\n       goo:generatedFromNTLImage ?image .\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:fromSensor ?sensor ;\n         goo:acquisitionDateTime ?dateTime .\n  ?sensor rdfs:label ?sensorLabel .\n  ?county goo:locatedInState ?state ;\n          rdfs:label ?countyLabel .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"lake\") || CONTAINS(LCASE(?countyLabel), \"clermont\"))\n  FILTER(CONTAINS(LCASE(?sensorLabel), \"viirs\"))\n  FILTER(?dateTime >= \"2024-03-01T00:00:00Z\"^^xsd:dateTime && ?dateTime < \"2024-04-01T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000025,
+      "question": "How many tropical cyclones were active on the date 6 October 2024 in the Atlantic basin, and what were their names and maximum sustained wind speeds?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?hurricane ?name (MAX(?windSpeed) AS ?maxWind)\nWHERE {\n  ?hurricane a goo:HurricaneEventRecord ;\n             goo:basin \"ATL\" ;\n             goo:hasTrackRecord ?track .\n  ?track goo:recordDateTime ?dateTime ;\n         goo:maxSustainedWindSpeed ?windSpeed .\n  OPTIONAL { ?hurricane rdfs:label ?name }\n  FILTER(?dateTime >= \"2024-10-06T00:00:00Z\"^^xsd:dateTime && ?dateTime < \"2024-10-07T00:00:00Z\"^^xsd:dateTime)\n}\nGROUP BY ?hurricane ?name\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000026,
+      "question": "On Ian's Florida landfall day, what was the peak outage count in the southwest Florida county centered on Fort Myers, and were any hurricanes active within the general area of the county that day, and if so what were their names?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT (MAX(?numOutages) AS ?peakOutages) ?hurricaneName\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?numOutages ;\n       goo:recordDateTime ?recTime .\n  ?county rdfs:label ?countyLabel .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"lee\") || CONTAINS(LCASE(?countyLabel), \"fort myers\"))\n  FILTER(?recTime >= \"2022-09-28T00:00:00Z\"^^xsd:dateTime && ?recTime < \"2022-09-29T00:00:00Z\"^^xsd:dateTime)\n  \n  OPTIONAL {\n    ?hurricane a goo:HurricaneEventRecord ;\n               goo:hasTrackRecord ?track .\n    ?track goo:recordDateTime ?trackTime .\n    ?hurricane rdfs:label ?hurricaneName .\n    FILTER(?trackTime >= \"2022-09-28T00:00:00Z\"^^xsd:dateTime && ?trackTime < \"2022-09-29T00:00:00Z\"^^xsd:dateTime)\n  }\n}\nGROUP BY ?hurricaneName\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000027,
+      "question": "On the day of the Moore tornado, how many tornado records occurred in or within the general area of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT (COUNT(?tornado) AS ?count) ?fScale ?injuries\nWHERE {\n  ?tornado a goo:TornadoEventRecord ;\n           goo:occurredInCounty ?county ;\n           goo:eventStartTime ?startTime ;\n           goo:torFScale ?fScale ;\n           goo:injuriesDirect ?injuries .\n  ?county rdfs:label ?countyLabel ;\n          goo:locatedInState ?state .\n  ?state rdfs:label \"Oklahoma\" .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"cleveland\"))\n  FILTER(?startTime >= \"2013-05-20T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2013-05-21T00:00:00Z\"^^xsd:dateTime)\n}\nGROUP BY ?fScale ?injuries\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000028,
+      "question": "What is the difference between how many storm events were recorded in each state between the year the COVID pandemic started and one decade earlier?",
+      "template_id": "T006",
+      "template_family": "comparative_event_count",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?state ?stateLabel (?count2020 - ?count2010 AS ?difference)\nWHERE {\n  {\n    SELECT ?state (COUNT(?event) AS ?count2020)\n    WHERE {\n      ?event a goo:StormEventRecord ;\n             goo:occurredInState ?state ;\n             goo:eventStartTime ?time .\n      FILTER(?time >= \"2020-01-01T00:00:00Z\"^^xsd:dateTime && ?time < \"2021-01-01T00:00:00Z\"^^xsd:dateTime)\n    }\n    GROUP BY ?state\n  }\n  {\n    SELECT ?state (COUNT(?event2) AS ?count2010)\n    WHERE {\n      ?event2 a goo:StormEventRecord ;\n              goo:occurredInState ?state ;\n              goo:eventStartTime ?time2 .\n      FILTER(?time2 >= \"2010-01-01T00:00:00Z\"^^xsd:dateTime && ?time2 < \"2011-01-01T00:00:00Z\"^^xsd:dateTime)\n    }\n    GROUP BY ?state\n  }\n  ?state rdfs:label ?stateLabel .\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000029,
+      "question": "How many and which hurricanes made landfall in Louisiana in the month of August across all years, and when did they make landfall?",
+      "template_id": "T006",
+      "template_family": "comparative_event_count",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?event ?time\nWHERE {\n  ?event a goo:StormEventRecord ;\n         goo:stormEventType ?type ;\n         goo:occurredInState ?state ;\n         goo:eventStartTime ?time .\n  ?state rdfs:label \"Louisiana\" .\n  FILTER(CONTAINS(LCASE(?type), \"hurricane\"))\n  FILTER(MONTH(?time) = 8)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000030,
+      "question": "What is the ratio of tornadoes to hurricanes to thunderstorms to wildfires in Florida and California?",
+      "template_id": "T006",
+      "template_family": "comparative_event_count",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?stateLabel ?type (COUNT(?event) AS ?count)\nWHERE {\n  ?event a goo:StormEventRecord ;\n         goo:stormEventType ?type ;\n         goo:occurredInState ?state .\n  ?state rdfs:label ?stateLabel .\n  FILTER(?stateLabel IN (\"Florida\", \"California\"))\n  FILTER(CONTAINS(LCASE(?type), \"tornado\") || CONTAINS(LCASE(?type), \"hurricane\") || CONTAINS(LCASE(?type), \"thunderstorm\") || CONTAINS(LCASE(?type), \"wildfire\"))\n}\nGROUP BY ?stateLabel ?type\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000031,
+      "question": "Which storm events in Florida started before same-county EAGLE-I records that later exceeded 50,000 outages on the same day?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Event sequence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?event ?rec\nWHERE {\n  ?event a goo:StormEventRecord ;\n         goo:occurredInCounty ?county ;\n         goo:eventStartTime ?stormStart .\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?recTime ;\n       goo:numberOfOutages ?outages .\n  ?county goo:locatedInState ?state .\n  ?state rdfs:label \"Florida\" .\n  FILTER(?outages > 50000)\n  FILTER(?stormStart < ?recTime)\n  FILTER(SUBSTR(STR(?stormStart), 1, 10) = SUBSTR(STR(?recTime), 1, 10))\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000032,
+      "question": "Which NTL images and severity maps provide multimodal evidence for Florida county outage records above 100,000 during the Irma response window?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?image ?map ?rec\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?outages ;\n       goo:recordDateTime ?recTime .\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?imgTime .\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county ;\n       goo:generatedFromNTLImage ?image .\n  ?county goo:locatedInState ?state .\n  ?state rdfs:label \"Florida\" .\n  FILTER(?outages > 100000)\n  FILTER(?recTime >= \"2017-09-01T00:00:00Z\"^^xsd:dateTime && ?recTime < \"2017-10-01T00:00:00Z\"^^xsd:dateTime)\n  FILTER(SUBSTR(STR(?recTime), 1, 10) = SUBSTR(STR(?imgTime), 1, 10))\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000033,
+      "question": "If Fort Myers's County's outage impact extended to neighboring counties during Hurricane Ian, which neighboring counties had high social vulnerability and high recorded outages?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Scenario / what-if",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?neighbor ?outages ?sviScore\nWHERE {\n  ?county rdfs:label ?countyLabel ;\n          goo:neighboringCounties ?neighbor .\n  FILTER(CONTAINS(LCASE(?countyLabel), \"lee\") || CONTAINS(LCASE(?countyLabel), \"fort myers\"))\n  \n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?neighbor ;\n       goo:numberOfOutages ?outages ;\n       goo:recordDateTime ?recTime .\n  FILTER(?recTime >= \"2022-09-25T00:00:00Z\"^^xsd:dateTime && ?recTime <= \"2022-10-05T00:00:00Z\"^^xsd:dateTime)\n  \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?neighbor ;\n       goo:sviOverallScore ?sviScore .\n  FILTER(?sviScore > 0.5)\n}\nORDER BY DESC(?outages) DESC(?sviScore)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000034,
+      "question": "Which Atlantic and Pacific hurricanes lasted more than three days and reached maximum sustained winds of an extremely powerful cyclone?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?hurricane (MAX(?wind) AS ?maxWind)\nWHERE {\n  ?hurricane a goo:HurricaneEventRecord ;\n             goo:hasTrackRecord ?track .\n  ?track goo:recordDateTime ?time ;\n         goo:maxSustainedWindSpeed ?wind .\n}\nGROUP BY ?hurricane\nHAVING (MAX(?wind) > 100 && (MAX(?time) - MIN(?time) > \"P3D\"^^xsd:duration))\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000035,
+      "question": "Which counties in the state bordering Alabama and Georgia had an SVI overall score of at least 0.8 in the year before 2023 and a number of storm events recorded that same year?",
+      "template_id": "T007",
+      "template_family": "storm_event_svi_county_threshold",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county (COUNT(?event) AS ?eventCount)\nWHERE {\n  ?county goo:locatedInState ?state .\n  ?state rdfs:label \"Florida\" .\n  \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?county ;\n       goo:sviYear 2022 ;\n       goo:sviOverallScore ?sviScore .\n  FILTER(?sviScore >= 0.8)\n  \n  ?event a goo:StormEventRecord ; \n         goo:occurredInCounty ?county ;\n         goo:eventStartTime ?startTime .\n  FILTER(?startTime >= \"2022-01-01T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2023-01-01T00:00:00Z\"^^xsd:dateTime)\n}\nGROUP BY ?county\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000036,
+      "question": "For the administrative divisions in the U.S. with the highest Social Vulnerability Indexes, what was their SVI at the start of the new millennium, then one decade later, then one decade after that, and what was their population increase in those two decades, and their poverty levels?",
+      "template_id": "T008",
+      "template_family": "longitudinal_svi_population_change",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nSELECT ?county ?svi2000 ?svi2010 ?svi2020 (?pop2020 - ?pop2000 AS ?popIncrease) ?poverty2020\nWHERE {\n  ?s2000 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2000 ; goo:sviOverallScore ?svi2000 ; goo:totalPopulation ?pop2000 .\n  ?s2010 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2010 ; goo:sviOverallScore ?svi2010 .\n  ?s2020 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2020 ; goo:sviOverallScore ?svi2020 ; goo:totalPopulation ?pop2020 ; goo:povertyRate ?poverty2020 .\n}\nORDER BY DESC(?svi2020)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000037,
+      "question": "Which states have the highest number of hurricane landfalls across all years, and what is each state’s average county-level SVI overall score?",
+      "template_id": "T009",
+      "template_family": "hurricane_landfall_ranking_with_state_svi",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?state ?stateLabel ?hurricaneCount ?avgSvi\nWHERE {\n  {\n    SELECT ?state (COUNT(?event) AS ?hurricaneCount)\n    WHERE {\n      ?event a goo:StormEventRecord ;\n             goo:stormEventType ?type ;\n             goo:occurredInState ?state .\n      FILTER(CONTAINS(LCASE(?type), \"hurricane\"))\n    }\n    GROUP BY ?state\n  }\n  {\n    SELECT ?state (AVG(?sviScore) AS ?avgSvi)\n    WHERE {\n      ?county goo:locatedInState ?state .\n      ?svi a goo:SVIRecord ;\n           goo:representsCounty ?county ;\n           goo:sviOverallScore ?sviScore .\n    }\n    GROUP BY ?state\n  }\n  ?state rdfs:label ?stateLabel .\n}\nORDER BY DESC(?hurricaneCount)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000038,
+      "question": "On the day of the Moore tornado, how many tornado records occurred within 50 km of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX geosparql: <http://www.opengis.net/ont/geosparql#>\nPREFIX geof: <http://www.opengis.net/def/function/geosparql/>\nPREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?tornado ?fScale ?injuries\nWHERE {\n  ?cleveland a goo:County ; rdfs:label ?cLabel ; goo:locatedInState ?state ; geosparql:hasGeometry ?cGeom .\n  ?state rdfs:label \"Oklahoma\" .\n  FILTER(CONTAINS(LCASE(?cLabel), \"cleveland\"))\n  ?cGeom geosparql:asWKT ?cWkt .\n  \n  ?tornado a goo:TornadoEventRecord ;\n           goo:eventStartTime ?startTime ;\n           goo:torFScale ?fScale ;\n           goo:injuriesDirect ?injuries ;\n           geosparql:hasGeometry ?tGeom .\n  ?tGeom geosparql:asWKT ?tWkt .\n  \n  FILTER(?startTime >= \"2013-05-20T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2013-05-21T00:00:00Z\"^^xsd:dateTime)\n  FILTER(geof:distance(?cWkt, ?tWkt, units:degree) < 0.5)\n}\nLIMIT 10",
+      "sparql_interpretations": [
+        {
+          "label": "Spatial distance calculation",
+          "ambiguity_dimensions": [
+            "spatial"
+          ],
+          "rationale": "Uses GeoSPARQL geof:distance function to filter tornadoes within 50 km (approximately 0.5 degrees).",
+          "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX geosparql: <http://www.opengis.net/ont/geosparql#>\nPREFIX geof: <http://www.opengis.net/def/function/geosparql/>\nPREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?tornado ?fScale ?injuries\nWHERE {\n  ?cleveland a goo:County ; rdfs:label ?cLabel ; goo:locatedInState ?state ; geosparql:hasGeometry ?cGeom .\n  ?state rdfs:label \"Oklahoma\" .\n  FILTER(CONTAINS(LCASE(?cLabel), \"cleveland\"))\n  ?cGeom geosparql:asWKT ?cWkt .\n  \n  ?tornado a goo:TornadoEventRecord ;\n           goo:eventStartTime ?startTime ;\n           goo:torFScale ?fScale ;\n           goo:injuriesDirect ?injuries ;\n           geosparql:hasGeometry ?tGeom .\n  ?tGeom geosparql:asWKT ?tWkt .\n  \n  FILTER(?startTime >= \"2013-05-20T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2013-05-21T00:00:00Z\"^^xsd:dateTime)\n  FILTER(geof:distance(?cWkt, ?tWkt, units:degree) < 0.5)\n}\nLIMIT 10"
+        },
+        {
+          "label": "Topological neighbor approximation",
+          "ambiguity_dimensions": [
+            "spatial"
+          ],
+          "rationale": "Approximates proximity by selecting tornadoes that occurred in neighboring counties.",
+          "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?tornado ?fScale ?injuries\nWHERE {\n  ?cleveland a goo:County ; rdfs:label ?cLabel ; goo:locatedInState ?state ; goo:neighboringCounties ?neighbor .\n  ?state rdfs:label \"Oklahoma\" .\n  FILTER(CONTAINS(LCASE(?cLabel), \"cleveland\"))\n  \n  ?tornado a goo:TornadoEventRecord ;\n           goo:occurredInCounty ?neighbor ;\n           goo:eventStartTime ?startTime ;\n           goo:torFScale ?fScale ;\n           goo:injuriesDirect ?injuries .\n  FILTER(?startTime >= \"2013-05-20T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2013-05-21T00:00:00Z\"^^xsd:dateTime)\n}\nLIMIT 10"
+        }
+      ]
+    },
+    {
+      "qid": 1000039,
+      "question": "Which NTL images and outage-severity maps provide multimodal evidence for Florida county outage records above 250,000 during Hurricane Ian's immediate landfall impact window?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?image ?map ?rec\nWHERE {\n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?outages ;\n       goo:recordDateTime ?recTime .\n  ?image a goo:NTLImage ;\n         goo:representsCounty ?county ;\n         goo:acquisitionDateTime ?imgTime .\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county ;\n       goo:generatedFromNTLImage ?image .\n  ?county goo:locatedInState ?state .\n  ?state rdfs:label \"Florida\" .\n  FILTER(?outages > 250000)\n  FILTER(?recTime >= \"2022-09-28T00:00:00Z\"^^xsd:dateTime && ?recTime <= \"2022-09-30T00:00:00Z\"^^xsd:dateTime)\n  FILTER(SUBSTR(STR(?recTime), 1, 10) = SUBSTR(STR(?imgTime), 1, 10))\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000040,
+      "question": "If the county where Hurricane Helene made landfall's outage impact propagated to neighboring counties, which neighboring counties' latest SVI overall scores were substantial and had outage records above 10,000 during the immediate landfall window?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Scenario / what-if",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?neighbor ?outages ?sviScore\nWHERE {\n  ?landfallCounty rdfs:label ?lLabel ; goo:locatedInState ?state ; goo:neighboringCounties ?neighbor .\n  ?state rdfs:label \"Florida\" .\n  FILTER(CONTAINS(LCASE(?lLabel), \"taylor\"))\n  \n  ?rec a goo:CustomerOutageRecord ;\n       goo:representsCounty ?neighbor ;\n       goo:numberOfOutages ?outages ;\n       goo:recordDateTime ?recTime .\n  FILTER(?outages > 10000)\n  FILTER(?recTime >= \"2024-09-26T00:00:00Z\"^^xsd:dateTime && ?recTime <= \"2024-09-28T00:00:00Z\"^^xsd:dateTime)\n  \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?neighbor ;\n       goo:sviOverallScore ?sviScore .\n  FILTER(?sviScore > 0.5)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000041,
+      "question": "Which counties in states neighboring Florida had 2022 SVI housing-and-transportation scores of at least 0.85 and at least five flood-related storm events that same year?",
+      "template_id": "T007",
+      "template_family": "storm_event_svi_county_threshold",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county ?sviScore ?eventCount\nWHERE {\n  ?fl a goo:State ; rdfs:label \"Florida\" .\n  ?fl goo:neighboringStates ?neighborState .\n  ?county goo:locatedInState ?neighborState .\n  \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?county ;\n       goo:sviYear 2022 ;\n       goo:sviHousingTransportationTheme ?sviScore .\n  FILTER(?sviScore >= 0.85)\n  \n  {\n    SELECT ?county (COUNT(?event) AS ?eventCount)\n    WHERE {\n      ?event a goo:StormEventRecord ;\n             goo:occurredInCounty ?county ;\n             goo:stormEventType ?type ;\n             goo:eventStartTime ?startTime .\n      FILTER(CONTAINS(LCASE(?type), \"flood\"))\n      FILTER(?startTime >= \"2022-01-01T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2023-01-01T00:00:00Z\"^^xsd:dateTime)\n    }\n    GROUP BY ?county\n  }\n  FILTER(?eventCount >= 5)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000042,
+      "question": "For the southeastern most state's administrative divisions with the highest 2022 SVI housing-and-transportation scores, what were their SVI overall scores in 2000, 2010, and 2022, their population change from 2000 to 2022, and their 2022 poverty rates?",
+      "template_id": "T008",
+      "template_family": "longitudinal_svi_population_change",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?sviHT2022 ?svi2000 ?svi2010 ?svi2022 (?pop2022 - ?pop2000 AS ?popChange) ?poverty2022\nWHERE {\n  ?county goo:locatedInState ?state .\n  ?state rdfs:label \"Florida\" .\n  \n  ?s2022 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2022 ; goo:sviHousingTransportationTheme ?sviHT2022 ; goo:sviOverallScore ?svi2022 ; goo:totalPopulation ?pop2022 ; goo:povertyRate ?poverty2022 .\n  ?s2000 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2000 ; goo:sviOverallScore ?svi2000 ; goo:totalPopulation ?pop2000 .\n  ?s2010 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2010 ; goo:sviOverallScore ?svi2010 .\n}\nORDER BY DESC(?sviHT2022)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000043,
+      "question": "Which Gulf Coast states have the highest number of hurricane landfalls in this century, and what is each state's average county-level SVI overall score?",
+      "template_id": "T009",
+      "template_family": "hurricane_landfall_ranking_with_state_svi",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?state ?stateLabel ?hurricaneCount ?avgSvi\nWHERE {\n  {\n    SELECT ?state (COUNT(?event) AS ?hurricaneCount)\n    WHERE {\n      ?event a goo:StormEventRecord ;\n             goo:stormEventType ?type ;\n             goo:occurredInState ?state ;\n             goo:eventStartTime ?startTime .\n      FILTER(CONTAINS(LCASE(?type), \"hurricane\"))\n      FILTER(?startTime >= \"2000-01-01T00:00:00Z\"^^xsd:dateTime)\n    }\n    GROUP BY ?state\n  }\n  {\n    SELECT ?state (AVG(?sviScore) AS ?avgSvi)\n    WHERE {\n      ?county goo:locatedInState ?state .\n      ?svi a goo:SVIRecord ;\n           goo:representsCounty ?county ;\n           goo:sviOverallScore ?sviScore .\n    }\n    GROUP BY ?state\n  }\n  ?state rdfs:label ?stateLabel .\n  FILTER(?stateLabel IN (\"Texas\", \"Louisiana\", \"Mississippi\", \"Alabama\", \"Florida\"))\n}\nORDER BY DESC(?hurricaneCount)\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000044,
+      "question": "On the day of the Joplin tornado, how many tornado records occurred in or within the general area of the Joplin county, and what were their EF ratings and death counts?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT (COUNT(?tornado) AS ?count) ?fScale (SUM(?deaths) AS ?totalDeaths)\nWHERE {\n  ?county rdfs:label ?cLabel ; goo:locatedInState ?state .\n  ?state rdfs:label \"Missouri\" .\n  FILTER(CONTAINS(LCASE(?cLabel), \"jasper\") || CONTAINS(LCASE(?cLabel), \"joplin\"))\n  \n  ?tornado a goo:TornadoEventRecord ;\n           goo:occurredInCounty ?county ;\n           goo:eventStartTime ?startTime ;\n           goo:torFScale ?fScale ;\n           goo:deathsDirect ?deaths .\n  FILTER(?startTime >= \"2011-05-22T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2011-05-23T00:00:00Z\"^^xsd:dateTime)\n}\nGROUP BY ?fScale\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000045,
+      "question": "Which counties with high overall SVI scores had a Flood event occur after a Thunderstorm Wind event started within a few days in the same county, and what were the paired event times and SVI scores?",
+      "template_id": "T010",
+      "template_family": "event_sequence_svi_threshold",
+      "primary_category": "Event sequence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county ?windStart ?floodStart ?sviScore\nWHERE {\n  ?event1 a goo:StormEventRecord ;\n          goo:stormEventType ?type1 ;\n          goo:occurredInCounty ?county ;\n          goo:eventStartTime ?windStart .\n  ?event2 a goo:StormEventRecord ;\n          goo:stormEventType ?type2 ;\n          goo:occurredInCounty ?county ;\n          goo:eventStartTime ?floodStart .\n          \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?county ;\n       goo:sviOverallScore ?sviScore .\n       \n  FILTER(CONTAINS(LCASE(?type1), \"thunderstorm wind\"))\n  FILTER(CONTAINS(LCASE(?type2), \"flood\") && !CONTAINS(LCASE(?type2), \"flash flood\"))\n  FILTER(?sviScore > 0.7)\n  FILTER(?floodStart > ?windStart && (?floodStart - ?windStart) <= \"P3D\"^^xsd:duration)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000046,
+      "question": "Which counties with high housing and transportation SVI theme scores had a Flash Flood event occur after a Hail event started within about half a day in the same county, and what were the paired event times and SVI theme scores?",
+      "template_id": "T010",
+      "template_family": "event_sequence_svi_threshold",
+      "primary_category": "Event sequence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county ?hailStart ?floodStart ?sviScore\nWHERE {\n  ?event1 a goo:StormEventRecord ;\n          goo:stormEventType ?type1 ;\n          goo:occurredInCounty ?county ;\n          goo:eventStartTime ?hailStart .\n  ?event2 a goo:StormEventRecord ;\n          goo:stormEventType ?type2 ;\n          goo:occurredInCounty ?county ;\n          goo:eventStartTime ?floodStart .\n          \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?county ;\n       goo:sviHousingTransportationTheme ?sviScore .\n       \n  FILTER(CONTAINS(LCASE(?type1), \"hail\"))\n  FILTER(CONTAINS(LCASE(?type2), \"flash flood\"))\n  FILTER(?sviScore > 0.7)\n  FILTER(?floodStart > ?hailStart && (?floodStart - ?hailStart) <= \"PT12H\"^^xsd:duration)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000047,
+      "question": "Which counties in the hurricane-prone state had high socioeconomic vulnerability in a recent year and a dozen or so wind-related storm events recorded that same year?",
+      "template_id": "T007",
+      "template_family": "storm_event_svi_county_threshold",
+      "primary_category": "Spatiotemporal co-occurrence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?county ?sviScore ?eventCount\nWHERE {\n  ?county goo:locatedInState ?state .\n  ?state rdfs:label \"Florida\" .\n  \n  ?svi a goo:SVIRecord ;\n       goo:representsCounty ?county ;\n       goo:sviYear 2022 ;\n       goo:sviSocioeconomicTheme ?sviScore .\n  FILTER(?sviScore > 0.7)\n  \n  {\n    SELECT ?county (COUNT(?event) AS ?eventCount)\n    WHERE {\n      ?event a goo:StormEventRecord ;\n             goo:occurredInCounty ?county ;\n             goo:stormEventType ?type ;\n             goo:eventStartTime ?startTime .\n      FILTER(CONTAINS(LCASE(?type), \"wind\"))\n      FILTER(?startTime >= \"2022-01-01T00:00:00Z\"^^xsd:dateTime && ?startTime < \"2023-01-01T00:00:00Z\"^^xsd:dateTime)\n    }\n    GROUP BY ?county\n  }\n  FILTER(?eventCount >= 12)\n}\nLIMIT 10",
+      "sparql_interpretations": []
+    }
+  ]
+}

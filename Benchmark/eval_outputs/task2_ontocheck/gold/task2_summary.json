@@ -1,0 +1,14 @@
+{
+  "task": "Task 2: Ontology Utility",
+  "source": "gold",
+  "directory": null,
+  "benchmark": "/mnt/c/Users/edfra/Code/Work/GeoResilienceKG/GeoResilience/Benchmark/geooutagebench_questions.json",
+  "predictions": null,
+  "ttl_file": "../GeoResilienceOnto_GeoOutageBench.ttl",
+  "result_count": 72,
+  "missing_prediction_count": 0,
+  "macro": {
+    "relevance": 1.0,
+    "accuracy": 0.0673
+  }
+}

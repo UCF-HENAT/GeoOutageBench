@@ -1,0 +1,136 @@
+Core allowed classes:
+goo:County
+goo:State
+goo:CustomerOutageRecord
+goo:StormEventRecord
+goo:StormEpisodeRecord
+goo:TornadoEventRecord
+goo:HurricaneEventRecord
+goo:HurricaneTrackRecord
+goo:SVIRecord
+goo:WONDERRecord
+goo:NTLImage
+goo:OutageMap
+goo:SatelliteImage
+goo:GOESImage
+goo:AquaImage
+goo:TerraImage
+goo:Satellite
+goo:Sensor
+goo:SpectralBand
+goo:SatelliteDatasetProduct
+goo:SatelliteGranule
+goo:SatelliteOrbit
+goo:SpatialReferenceSystem
+goo:TabularData
+goo:CountyScopedEntity
+goo:AdministrativeAreaScopedEntity
+goo:HurricaneObservationEntity
+goo:SpectralBandScopedEntity
+
+Core object properties:
+goo:representsCounty
+goo:locatedInState
+goo:neighboringStates
+goo:neighboringCounties
+goo:occurredInCounty
+goo:occurredInState
+goo:partOfEpisode
+goo:hasTrackRecord
+goo:hasOutageMap
+goo:generatedFromNTLImage
+goo:fromSatellite
+goo:fromSensor
+goo:containsSensor
+goo:hasSpectralBand
+goo:hasDatasetProduct
+goo:hasSourceGranule
+goo:hasOrbit
+goo:hasSpatialReferenceSystem
+goo:derivedFromSatelliteDataset
+geosparql:hasGeometry
+geosparql:asWKT
+
+Core datatype properties:
+goo:recordDateTime
+goo:eventStartTime
+goo:eventEndTime
+goo:numberOfOutages
+goo:fipsCode
+goo:statePostalCode
+
+goo:lat
+goo:lon
+
+goo:stormEventType
+goo:stormEventId
+goo:episodeId
+goo:deathsDirect
+goo:injuriesDirect
+goo:damageProperty
+goo:damageCrops
+goo:eventNarrative
+
+goo:hurricaneId
+goo:basin
+goo:status
+goo:maxSustainedWindSpeed
+goo:minPressure
+
+goo:torFScale
+goo:torLength
+goo:torWidth
+
+goo:sviYear
+goo:sviOverallScore
+goo:sviSocioeconomicTheme
+goo:sviHouseholdCompositionDisabilityTheme
+goo:sviMinorityStatusLanguageTheme
+goo:sviHousingTransportationTheme
+goo:povertyRate
+goo:unemploymentRate
+goo:minorityPercentage
+goo:totalPopulation
+
+goo:allCauseMortalityRate
+goo:cardiovascularDiseaseMortalityRate
+goo:cancerMortalityRate
+goo:diabetesPrevalence
+goo:obesityPrevalence
+
+goo:acquisitionDateTime
+goo:productionDateTime
+goo:productShortName
+goo:collectionVersion
+goo:granuleId
+goo:tileId
+goo:processingLevel
+goo:spatialResolution
+goo:temporalResolution
+goo:dayNightFlag
+goo:cloudCoverPercentage
+goo:qualityFlag
+goo:orbitNumber
+goo:instrumentMode
+goo:sourceDownloadUrl
+
+Domain/range hints:
+goo:CustomerOutageRecord goo:representsCounty goo:County .
+goo:County goo:locatedInState goo:State .
+goo:StormEventRecord goo:occurredInCounty goo:County .
+goo:StormEventRecord goo:occurredInState goo:State .
+goo:HurricaneEventRecord goo:hasTrackRecord goo:HurricaneTrackRecord .
+goo:StormEventRecord goo:partOfEpisode goo:StormEpisodeRecord .
+goo:NTLImage goo:hasOutageMap goo:OutageMap .
+goo:OutageMap goo:generatedFromNTLImage goo:NTLImage .
+
+goo:CustomerOutageRecord goo:numberOfOutages xsd:integer .
+goo:TabularData goo:recordDateTime xsd:dateTime .
+goo:TabularData goo:eventStartTime xsd:dateTime .
+goo:TabularData goo:eventEndTime xsd:dateTime .
+goo:HurricaneObservationEntity goo:maxSustainedWindSpeed xsd:integer .
+goo:HurricaneObservationEntity goo:minPressure xsd:integer .
+goo:StormEventRecord goo:stormEventType xsd:string .
+goo:StormEventRecord goo:deathsDirect xsd:integer .
+goo:StormEventRecord goo:injuriesDirect xsd:integer .
+goo:SVIRecord goo:sviOverallScore xsd:decimal .

@@ -1,0 +1,14 @@
+{
+  "task": "Task 2: Ontology Utility",
+  "source": "predictions",
+  "directory": null,
+  "benchmark": "geooutagebench_questions.json",
+  "predictions": "eval_outputs/nl2sparql_predictions_gpt5-5.json",
+  "ttl_file": "../GeoResilienceOnto_GeoOutageBench.ttl",
+  "result_count": 60,
+  "missing_prediction_count": 0,
+  "macro": {
+    "relevance": 1.0,
+    "accuracy": 0.0801
+  }
+}

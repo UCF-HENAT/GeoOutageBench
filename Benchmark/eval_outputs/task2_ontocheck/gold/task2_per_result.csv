@@ -1,0 +1,1951 @@
+accuracy,gold_interpretation_id,gold_interpretation_index,gold_interpretation_label,is_original_source_query,primary_category,qid,query_complexity,query_file,query_path,question_index,relevance,result_index,source,sparql_query,spatiotemporal_axis,status,template_family,template_id
+0.0294,Q1000000_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000000,1-hop,qid_1000000_gold_01.json,,1,1.0,1,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?maxOutages
+WHERE {
+  {
+    SELECT ?county (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?rec a goo:CustomerOutageRecord ;
+           goo:representsCounty ?county ;
+           goo:numberOfOutages ?num .
+    }
+    GROUP BY ?county
+  }
+}
+ORDER BY DESC(?maxOutages)
+LIMIT 10",spatial,scored,outage_ranking_by_jurisdiction,T001
+0.0392,Q1000001_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000001,1-hop,qid_1000001_gold_01.json,,2,1.0,2,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?county ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+}
+ORDER BY DESC(?num)
+LIMIT 10",spatial,scored,outage_ranking_by_jurisdiction,T001
+0.0294,Q1000002_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000002,1-hop,qid_1000002_gold_01.json,,3,1.0,3,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?recordDate ?numOutages
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?recordDate ;
+       goo:numberOfOutages ?numOutages .
+  FILTER (?recordDate >= ""2022-01-01T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2023-01-01T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?recordDate
+LIMIT 10",temporal,scored,temporal_interval_filter,T002
+0.0294,Q1000002_I1,1,"Temporal interpretation: all records after 2021, not only calendar year 2022",False,Temporal interval,1000002,1-hop,qid_1000002_gold_02.json,,3,1.0,4,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?recordDate ?numOutages
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?recordDate ;
+       goo:numberOfOutages ?numOutages .
+  FILTER (?recordDate >= ""2022-01-01T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?recordDate
+LIMIT 10",temporal,scored,temporal_interval_filter,T002
+0.0392,Q1000003_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000003,1-hop,qid_1000003_gold_01.json,,4,1.0,5,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?date ?locator
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:acquisitionDateTime ?date ;
+       goo:representsCounty gokg:OrangeCountyFL ;
+       goo:sourceDownloadUrl ?locator .
+  FILTER (?date >= ""2025-01-01T00:00:00Z""^^xsd:dateTime && ?date < ""2026-01-01T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,temporal_interval_filter,T002
+0.0392,Q1000003_I1,1,Spatial interpretation: Orlando area as metro-adjacent counties,False,Multimodal evidence,1000003,1-hop,qid_1000003_gold_02.json,,4,1.0,6,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?date ?locator
+WHERE {
+  VALUES ?county { gokg:OrangeCountyFL gokg:SeminoleCountyFL gokg:OsceolaCountyFL gokg:LakeCountyFL }
+  ?ntl a goo:NTLImage ;
+       goo:acquisitionDateTime ?date ;
+       goo:representsCounty ?county ;
+       goo:sourceDownloadUrl ?locator .
+  FILTER (?date >= ""2025-01-01T00:00:00Z""^^xsd:dateTime && ?date < ""2026-01-01T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,temporal_interval_filter,T002
+0.0196,Q1000004_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000004,1-hop,qid_1000004_gold_01.json,,5,1.0,7,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county .
+}",spatial,scored,single_entity_property_lookup,T003
+0.0196,Q1000005_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000005,1-hop,qid_1000005_gold_01.json,,6,1.0,8,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county .
+}",spatial,scored,single_entity_property_lookup,T003
+0.0196,Q1000006_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000006,1-hop,qid_1000006_gold_01.json,,7,1.0,9,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?map { gokg:outagemap.12001.2019-03-10 }
+  ?map a goo:OutageMap ;
+       goo:representsCounty ?county .
+}",spatial,scored,single_entity_property_lookup,T003
+0.0196,Q1000007_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000007,1-hop,qid_1000007_gold_01.json,,8,1.0,10,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?date
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?date .
+}",temporal,scored,single_entity_property_lookup,T003
+0.0196,Q1000008_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000008,1-hop,qid_1000008_gold_01.json,,9,1.0,11,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?num
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:numberOfOutages ?num .
+}",temporal,scored,single_entity_property_lookup,T003
+0.049,Q1000009_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000009,2-hop,qid_1000009_gold_01.json,,10,1.0,12,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0686,Q1000010_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000010,2-hop,qid_1000010_gold_01.json,,11,1.0,13,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0196,Q1000011_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000011,1-hop,qid_1000011_gold_01.json,,12,1.0,14,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?map a goo:OutageMap ;
+       goo:generatedFromNTLImage ?ntl .
+}",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0196,Q1000012_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000012,1-hop,qid_1000012_gold_01.json,,13,1.0,15,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?satellite
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?ntl a goo:NTLImage ;
+       goo:fromSatellite ?satellite .
+}",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0196,Q1000013_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000013,1-hop,qid_1000013_gold_01.json,,14,1.0,16,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?sensor
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?ntl a goo:NTLImage ;
+       goo:fromSensor ?sensor .
+}",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0392,Q1000014_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000014,1-hop,qid_1000014_gold_01.json,,15,1.0,17,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  FILTER (?num > 100)
+  FILTER(
+    ?date >= ""2022-08-28T00:00:00Z""^^xsd:dateTime &&
+    ?date <  ""2022-10-28T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0392,Q1000014_I1,1,Temporal interpretation: landfall-centered Ian impact window,False,Temporal interval,1000014,1-hop,qid_1000014_gold_02.json,,15,1.0,18,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  FILTER (?num > 100)
+  FILTER(
+    ?date >= ""2022-09-23T00:00:00Z""^^xsd:dateTime &&
+    ?date <  ""2022-10-08T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0588,Q1000015_I0,0,Primary interpretation: Lee County outage snapshots and NTL scenes on Hurricane Ian landfall date,True,Spatiotemporal co-occurrence,1000015,2-hop,qid_1000015_gold_01.json,,16,1.0,19,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?date), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER(
+    ?date >= ""2022-09-28T00:00:00Z""^^xsd:dateTime &&
+    ?date <  ""2022-09-29T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0588,Q1000015_I1,1,Temporal interpretation: Florida local landfall date represented as a UTC offset window,False,Spatiotemporal co-occurrence,1000015,2-hop,qid_1000015_gold_02.json,,16,1.0,20,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER(
+    ?date >= ""2022-09-28T04:00:00Z""^^xsd:dateTime &&
+    ?date <  ""2022-09-29T04:00:00Z""^^xsd:dateTime
+  )
+  FILTER(
+    ?imageDate >= ""2022-09-28T04:00:00Z""^^xsd:dateTime &&
+    ?imageDate <  ""2022-09-29T04:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0588,Q1000015_I2,2,Spatiotemporal interpretation: landfall-centered two-day snapshot window,False,Spatiotemporal co-occurrence,1000015,2-hop,qid_1000015_gold_03.json,,16,1.0,21,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER(
+    ?date >= ""2022-09-28T00:00:00Z""^^xsd:dateTime &&
+    ?date <  ""2022-09-30T00:00:00Z""^^xsd:dateTime
+  )
+  FILTER(
+    ?imageDate >= ""2022-09-28T00:00:00Z""^^xsd:dateTime &&
+    ?imageDate <  ""2022-09-30T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.049,Q1000016_I0,0,Primary interpretation: Lee County severity maps in an Ian-centered impact window,True,Multimodal evidence,1000016,2-hop,qid_1000016_gold_01.json,,17,1.0,22,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map ?ntl ?imageDate
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER(
+    ?imageDate >= ""2022-09-23T00:00:00Z""^^xsd:dateTime &&
+    ?imageDate <  ""2022-10-08T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?imageDate
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.049,Q1000016_I1,1,Temporal interpretation: broader Hurricane Ian disruption period,False,Multimodal evidence,1000016,2-hop,qid_1000016_gold_02.json,,17,1.0,23,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map ?ntl ?imageDate
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER(
+    ?imageDate >= ""2022-08-28T00:00:00Z""^^xsd:dateTime &&
+    ?imageDate <  ""2022-10-28T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?imageDate
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.049,Q1000016_I2,2,Temporal interpretation: Hurricane Ian landfall date only,False,Multimodal evidence,1000016,2-hop,qid_1000016_gold_03.json,,17,1.0,24,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map ?ntl ?imageDate
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER(
+    ?imageDate >= ""2022-09-28T00:00:00Z""^^xsd:dateTime &&
+    ?imageDate <  ""2022-09-29T00:00:00Z""^^xsd:dateTime
+  )
+}
+ORDER BY ?imageDate
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0392,Q1000017_I0,0,Primary interpretation: maximum county outages during calendar year 2017,True,Temporal interval,1000017,1-hop,qid_1000017_gold_01.json,,18,1.0,25,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county (MAX(?num) AS ?maxOutages)
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  FILTER(
+    ?date >= ""2017-01-01T00:00:00Z""^^xsd:dateTime &&
+    ?date <  ""2018-01-01T00:00:00Z""^^xsd:dateTime
+  )
+}
+GROUP BY ?county
+ORDER BY DESC(?maxOutages)
+LIMIT 10",spatiotemporal,scored,outage_ranking_by_jurisdiction,T001
+0.0392,Q1000018_I0,0,Primary interpretation: average SVI overall score for each U.S. county,True,Spatial containment,1000018,1-hop,qid_1000018_gold_01.json,,19,1.0,26,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?adminDivision (AVG(?sviScore) AS ?averageSviOverallScore)
+WHERE {
+  ?adminDivision a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?adminDivision ;
+             goo:sviOverallScore ?sviScore .
+}
+GROUP BY ?adminDivision
+ORDER BY ?adminDivision
+LIMIT 10",spatial,scored,svi_aggregation_by_jurisdiction,T011
+0.0392,Q1000019_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000019,1-hop,qid_1000019_gold_01.json,,20,1.0,27,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?maxOutages ?dateOfMax
+WHERE {
+  {
+    SELECT ?county (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?rec a goo:CustomerOutageRecord ;
+           goo:representsCounty ?county ;
+           goo:numberOfOutages ?num .
+    }
+    GROUP BY ?county
+  }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?maxOutages ;
+       goo:recordDateTime ?dateOfMax .
+}
+ORDER BY DESC(?maxOutages)
+LIMIT 10",spatiotemporal,scored,outage_ranking_by_jurisdiction,T001
+0.0294,Q1000020_I0,0,Primary interpretation: platform and sensor for one arbitrary NTL image,True,Multimodal evidence,1000020,1-hop,qid_1000020_gold_01.json,,21,1.0,28,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?satellite ?sensor
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSatellite ?satellite ;
+       goo:fromSensor ?sensor .
+}
+LIMIT 1",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0686,Q1000021_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000021,multi-hop,qid_1000021_gold_01.json,,22,1.0,29,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?record { gokg:customeroutagerecord.12086.2018-06-11T19-00-00Z }
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0294,Q1000022_I0,0,"Primary interpretation: maximum Eagle-I power outages for Jackson County, Florida",True,Spatial containment,1000022,1-hop,qid_1000022_gold_01.json,,23,1.0,30,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT (MAX(?num) AS ?maxOutages)
+WHERE {
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty gokg:JacksonCountyFL ;
+          goo:numberOfOutages ?num .
+}",spatial,scored,single_entity_property_lookup,T003
+0.049,Q1000023_I0,0,Primary interpretation: same-day EAGLE-I outage snapshot and NTL scene for Hillsborough County,True,Spatiotemporal co-occurrence,1000023,multi-hop,qid_1000023_gold_01.json,,24,1.0,31,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+ASK
+WHERE {
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty gokg:HillsboroughCountyFL ;
+          goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:HillsboroughCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0588,Q1000024_I0,0,Optimized KG interpretation with March 2024 image-date filter,False,Multimodal evidence,1000024,2-hop,qid_1000024_gold_01.json,,25,1.0,32,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?map
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSensor gokg:sensor.VIIRS ;
+       goo:representsCounty gokg:LakeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER (?imageDate >= ""2024-03-01T00:00:00Z""^^xsd:dateTime && ?imageDate < ""2024-04-01T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?map
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.049,Q1000025_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000025,1-hop,qid_1000025_gold_01.json,,26,1.0,33,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?activeCycloneCount ?cyclone ?name ?maxSustainedWindSpeed
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?cyclone) AS ?activeCycloneCount)
+    WHERE {
+      ?cyclone a goo:HurricaneEventRecord  ;
+               goo:basin ""ATL""^^xsd:string ;
+               goo:eventStartTime ?start ;
+               goo:eventEndTime ?end .
+      FILTER (
+        ?start < ""2024-10-07T00:00:00+00:00""^^xsd:dateTime &&
+        ?end >= ""2024-10-06T00:00:00+00:00""^^xsd:dateTime
+      )
+    }
+  }
+  ?cyclone a goo:HurricaneEventRecord ;
+           schema:name ?name ;
+           goo:maxSustainedWindSpeed ?maxSustainedWindSpeed ;
+           goo:basin ""ATL""^^xsd:string ;
+           goo:eventStartTime ?start ;
+           goo:eventEndTime ?end .
+  FILTER (
+    ?start < ""2024-10-07T00:00:00+00:00""^^xsd:dateTime &&
+    ?end >= ""2024-10-06T00:00:00+00:00""^^xsd:dateTime
+  )
+}
+ORDER BY ?name",temporal,scored,temporal_interval_filter,T002
+0.1078,Q1000026_I0,0,Original exact KG interpretation from source JSON,True,Spatial proximity,1000026,multi-hop,qid_1000026_gold_01.json,,27,1.0,34,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?maxOutages ?hasNearbyHurricane (GROUP_CONCAT(DISTINCT STR(?nearbyHurricaneName); separator="", "") AS ?hurricaneNames)
+WHERE {
+  {
+    SELECT (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty gokg:LeeCountyFL ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?num .
+      FILTER (SUBSTR(STR(?recordDate), 1, 10) = ""2022-09-28"")
+    }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?nearbyCyclone) > 0 AS ?hasNearbyHurricane)
+    WHERE {
+      gokg:LeeCountyFL goo:lat ?countyLat ;
+                       goo:lon ?countyLon .
+      ?nearbyCyclone a goo:HurricaneEventRecord ;
+                     schema:name ?nearbyHurricaneName ;
+                     goo:eventStartTime ?start ;
+                     goo:eventEndTime ?end ;
+                     goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      FILTER (?start < ""2022-09-29T00:00:00+00:00""^^xsd:dateTime && ?end >= ""2022-09-28T00:00:00+00:00""^^xsd:dateTime)
+      FILTER (SUBSTR(STR(?trackDate), 1, 10) = ""2022-09-28"")
+      FILTER (
+        ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+        ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+      )
+    }
+  }
+  OPTIONAL {
+    gokg:LeeCountyFL goo:lat ?countyLat ;
+                     goo:lon ?countyLon .
+    ?nearbyCyclone a goo:HurricaneEventRecord ;
+                   schema:name ?nearbyHurricaneName ;
+                   goo:eventStartTime ?start ;
+                   goo:eventEndTime ?end ;
+                   goo:hasTrackRecord ?track .
+    ?track a goo:HurricaneTrackRecord ;
+           goo:recordDateTime ?trackDate ;
+           goo:lat ?trackLat ;
+           goo:lon ?trackLon .
+    FILTER (?start < ""2022-09-29T00:00:00+00:00""^^xsd:dateTime && ?end >= ""2022-09-28T00:00:00+00:00""^^xsd:dateTime)
+    FILTER (SUBSTR(STR(?trackDate), 1, 10) = ""2022-09-28"")
+    FILTER (
+      ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+      ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+    )
+  }
+}
+GROUP BY ?maxOutages ?hasNearbyHurricane",spatiotemporal,scored,event_window_outage_threshold,T005
+0.1078,Q1000026_I1,1,Spatial interpretation: tighter general-area window around Lee County,False,Spatial proximity,1000026,multi-hop,qid_1000026_gold_02.json,,27,1.0,35,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?maxOutages ?hasNearbyHurricane (GROUP_CONCAT(DISTINCT STR(?nearbyHurricaneName); separator="", "") AS ?hurricaneNames)
+WHERE {
+  {
+    SELECT (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty gokg:LeeCountyFL ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?num .
+      FILTER (SUBSTR(STR(?recordDate), 1, 10) = ""2022-09-28"")
+    }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?nearbyCyclone) > 0 AS ?hasNearbyHurricane)
+    WHERE {
+      gokg:LeeCountyFL goo:lat ?countyLat ;
+                       goo:lon ?countyLon .
+      ?nearbyCyclone a goo:HurricaneEventRecord ;
+                     schema:name ?nearbyHurricaneName ;
+                     goo:eventStartTime ?start ;
+                     goo:eventEndTime ?end ;
+                     goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      FILTER (?start < ""2022-09-29T00:00:00+00:00""^^xsd:dateTime && ?end >= ""2022-09-28T00:00:00+00:00""^^xsd:dateTime)
+      FILTER (SUBSTR(STR(?trackDate), 1, 10) = ""2022-09-28"")
+      FILTER (
+        ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 2 &&
+        ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 2
+      )
+    }
+  }
+  OPTIONAL {
+    gokg:LeeCountyFL goo:lat ?countyLat ;
+                     goo:lon ?countyLon .
+    ?nearbyCyclone a goo:HurricaneEventRecord ;
+                   schema:name ?nearbyHurricaneName ;
+                   goo:eventStartTime ?start ;
+                   goo:eventEndTime ?end ;
+                   goo:hasTrackRecord ?track .
+    ?track a goo:HurricaneTrackRecord ;
+           goo:recordDateTime ?trackDate ;
+           goo:lat ?trackLat ;
+           goo:lon ?trackLon .
+    FILTER (?start < ""2022-09-29T00:00:00+00:00""^^xsd:dateTime && ?end >= ""2022-09-28T00:00:00+00:00""^^xsd:dateTime)
+    FILTER (SUBSTR(STR(?trackDate), 1, 10) = ""2022-09-28"")
+    FILTER (
+      ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 2 &&
+      ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+    )
+  }
+}
+GROUP BY ?maxOutages ?hasNearbyHurricane",spatiotemporal,scored,event_window_outage_threshold,T005
+0.1078,Q1000026_I2,2,Temporal interpretation: landfall day plus adjacent days,False,Spatial proximity,1000026,multi-hop,qid_1000026_gold_03.json,,27,1.0,36,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?maxOutages ?hasNearbyHurricane (GROUP_CONCAT(DISTINCT STR(?nearbyHurricaneName); separator="", "") AS ?hurricaneNames)
+WHERE {
+  {
+    SELECT (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty gokg:LeeCountyFL ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?num .
+      FILTER (SUBSTR(STR(?recordDate), 1, 10) = ""2022-09-28"")
+    }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?nearbyCyclone) > 0 AS ?hasNearbyHurricane)
+    WHERE {
+      gokg:LeeCountyFL goo:lat ?countyLat ;
+                       goo:lon ?countyLon .
+      ?nearbyCyclone a goo:HurricaneEventRecord ;
+                     schema:name ?nearbyHurricaneName ;
+                     goo:eventStartTime ?start ;
+                     goo:eventEndTime ?end ;
+                     goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      FILTER (?start < ""2022-09-30T00:00:00+00:00""^^xsd:dateTime && ?end >= ""2022-09-27T00:00:00+00:00""^^xsd:dateTime)
+      FILTER (?trackDate >= ""2022-09-27T00:00:00+00:00""^^xsd:dateTime && ?trackDate < ""2022-09-30T00:00:00+00:00""^^xsd:dateTime)
+      FILTER (
+        ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+        ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+      )
+    }
+  }
+  OPTIONAL {
+    gokg:LeeCountyFL goo:lat ?countyLat ;
+                     goo:lon ?countyLon .
+    ?nearbyCyclone a goo:HurricaneEventRecord ;
+                   schema:name ?nearbyHurricaneName ;
+                   goo:eventStartTime ?start ;
+                   goo:eventEndTime ?end ;
+                   goo:hasTrackRecord ?track .
+    ?track a goo:HurricaneTrackRecord ;
+           goo:recordDateTime ?trackDate ;
+           goo:lat ?trackLat ;
+           goo:lon ?trackLon .
+    FILTER (?start < ""2022-09-30T00:00:00+00:00""^^xsd:dateTime && ?end >= ""2022-09-27T00:00:00+00:00""^^xsd:dateTime)
+    FILTER (?trackDate >= ""2022-09-27T00:00:00+00:00""^^xsd:dateTime && ?trackDate < ""2022-09-30T00:00:00+00:00""^^xsd:dateTime)
+    FILTER (
+      ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+      ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+    )
+  }
+}
+GROUP BY ?maxOutages ?hasNearbyHurricane",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,Q1000027_I0,0,Original exact KG interpretation from source JSON,True,Spatial proximity,1000027,multi-hop,qid_1000027_gold_01.json,,28,1.0,37,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < ""2013-05-21T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-20T00:00:00""^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < ""2013-05-21T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-20T00:00:00""^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,Q1000027_I1,1,Spatial interpretation: broader county-area tornado search radius,False,Spatial proximity,1000027,multi-hop,qid_1000027_gold_02.json,,28,1.0,38,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < ""2013-05-21T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-20T00:00:00""^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < ""2013-05-21T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-20T00:00:00""^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+}
+ORDER BY ?event",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,Q1000027_I2,2,Temporal interpretation: Moore tornado event period plus adjacent day,False,Spatial proximity,1000027,multi-hop,qid_1000027_gold_03.json,,28,1.0,39,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < ""2013-05-22T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-19T00:00:00""^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < ""2013-05-22T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-19T00:00:00""^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0392,Q1000028_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000028,2-hop,qid_1000028_gold_01.json,,29,1.0,40,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?count2020 ?count2010 (?count2020 - ?count2010 AS ?difference)
+WHERE {
+  ?state a goo:State .
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?event2020) AS ?count2020Raw)
+    WHERE {
+      ?event2020 a goo:StormEventRecord ;
+                 goo:occurredInState ?state ;
+                 goo:eventStartTime ?start2020 .
+      FILTER (YEAR(?start2020) = 2020)
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?event2010) AS ?count2010Raw)
+    WHERE {
+      ?event2010 a goo:StormEventRecord ;
+                 goo:occurredInState ?state ;
+                 goo:eventStartTime ?start2010 .
+      FILTER (YEAR(?start2010) = 2010)
+    }
+    GROUP BY ?state
+  }
+  BIND(COALESCE(?count2020Raw, 0) AS ?count2020)
+  BIND(COALESCE(?count2010Raw, 0) AS ?count2010)
+  FILTER (?count2020 > 0 || ?count2010 > 0)
+}
+ORDER BY DESC(ABS(?difference)) ?state",spatiotemporal,scored,comparative_event_count,T006
+0.0686,Q1000029_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000029,multi-hop,qid_1000029_gold_01.json,,30,1.0,41,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?hurricaneCount ?cyclone ?name ?landfallDate
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?cyclone) AS ?hurricaneCount)
+    WHERE {
+      gokg:LouisianaState geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:status ""HU""^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?trackLon), "" "", STR(?trackLat), "")""), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (MONTH(?trackDate) = 8)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+  }
+  {
+    SELECT ?cyclone ?name (MIN(?trackDate) AS ?landfallDate)
+    WHERE {
+      gokg:LouisianaState geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               schema:name ?name ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:status ""HU""^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?trackLon), "" "", STR(?trackLat), "")""), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (MONTH(?trackDate) = 8)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?cyclone ?name
+  }
+}
+ORDER BY ?landfallDate ?name",spatiotemporal,scored,comparative_event_count,T006
+0.0882,Q1000030_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000030,multi-hop,qid_1000030_gold_01.json,,31,1.0,42,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?tornadoCount ?hurricaneCount ?thunderstormCount ?wildfireCount (CONCAT(STR(?tornadoCount), "":"", STR(?hurricaneCount), "":"", STR(?thunderstormCount), "":"", STR(?wildfireCount)) AS ?eventRatio)
+WHERE {
+  VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?tornado) AS ?tornadoCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?tornado a goo:TornadoEventRecord ;
+               goo:occurredInState ?state .
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?hurricane) AS ?hurricaneCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?state geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?hurricane a goo:HurricaneEventRecord ;
+                 goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?trackLon), "" "", STR(?trackLat), "")""), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?thunderstorm) AS ?thunderstormCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?thunderstorm a goo:StormEventRecord ;
+                    goo:occurredInState ?state ;
+                    goo:stormEventType ?thunderstormType .
+      FILTER (CONTAINS(LCASE(STR(?thunderstormType)), ""thunderstorm""))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?wildfire) AS ?wildfireCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?wildfire a goo:StormEventRecord ;
+                goo:occurredInState ?state ;
+                goo:stormEventType ?wildfireType .
+      FILTER (LCASE(STR(?wildfireType)) = ""wildfire"")
+    }
+    GROUP BY ?state
+  }
+  BIND(COALESCE(?tornadoCountRaw, 0) AS ?tornadoCount)
+  BIND(COALESCE(?hurricaneCountRaw, 0) AS ?hurricaneCount)
+  BIND(COALESCE(?thunderstormCountRaw, 0) AS ?thunderstormCount)
+  BIND(COALESCE(?wildfireCountRaw, 0) AS ?wildfireCount)
+}
+ORDER BY ?state",spatial,scored,comparative_event_count,T006
+0.0882,Q1000031_I0,0,Original exact KG interpretation from source JSON,True,Event sequence,1000031,multi-hop,qid_1000031_gold_01.json,,32,1.0,43,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event ?county ?eventType ?eventStart ?record ?recordDate ?numOutages
+WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState gokg:FloridaState ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?eventType ;
+         goo:eventStartTime ?eventStart .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?numOutages > 50000)
+  FILTER (?eventStart <= ?recordDate)
+  FILTER (SUBSTR(STR(?eventStart), 1, 10) = SUBSTR(STR(?recordDate), 1, 10))
+}
+ORDER BY ?county ?eventStart DESC(?numOutages)
+LIMIT 10",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0882,Q1000031_I1,1,"Temporal interpretation: prior same-county event, not necessarily same day",False,Event sequence,1000031,multi-hop,qid_1000031_gold_02.json,,32,1.0,44,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event ?county ?eventType ?eventStart ?record ?recordDate ?numOutages
+WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState gokg:FloridaState ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?eventType ;
+         goo:eventStartTime ?eventStart .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?numOutages > 50000)
+  FILTER (?eventStart <= ?recordDate)
+  # Same-day constraint removed: event may start before a later outage record in the same county.
+  FILTER (?eventStart <= ?recordDate)
+}
+ORDER BY ?county ?eventStart DESC(?numOutages)
+LIMIT 10",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0882,Q1000031_I2,2,Semantic interpretation: stricter major-outage threshold,False,Event sequence,1000031,multi-hop,qid_1000031_gold_03.json,,32,1.0,45,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event ?county ?eventType ?eventStart ?record ?recordDate ?numOutages
+WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState gokg:FloridaState ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?eventType ;
+         goo:eventStartTime ?eventStart .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?numOutages > 100000)
+  FILTER (?eventStart <= ?recordDate)
+  FILTER (SUBSTR(STR(?eventStart), 1, 10) = SUBSTR(STR(?recordDate), 1, 10))
+}
+ORDER BY ?county ?eventStart DESC(?numOutages)
+LIMIT 10",spatiotemporal,scored,event_window_outage_threshold,T005
+0.1078,Q1000032_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000032,multi-hop,qid_1000032_gold_01.json,,33,1.0,46,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 100000)
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER (?recordDate >= ""2017-09-06T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2017-09-16T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.1078,Q1000032_I1,1,Temporal interpretation: Irma landfall-centered response window,False,Multimodal evidence,1000032,multi-hop,qid_1000032_gold_02.json,,33,1.0,47,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 100000)
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER (?recordDate >= ""2017-09-10T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2017-09-14T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.1078,Q1000032_I2,2,"Spatiotemporal interpretation: same county and same response window, not exact image/record day",False,Multimodal evidence,1000032,multi-hop,qid_1000032_gold_03.json,,33,1.0,48,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 100000)
+  FILTER (?imageDate >= ""2017-09-06T00:00:00Z""^^xsd:dateTime && ?imageDate < ""2017-09-16T00:00:00Z""^^xsd:dateTime)
+  FILTER (?recordDate >= ""2017-09-06T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2017-09-16T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10",spatiotemporal,scored,multimodal_correspondence,T004
+0.0784,Q1000033_I0,0,Original exact KG interpretation from source JSON,True,Scenario / what-if,1000033,multi-hop,qid_1000033_gold_01.json,,34,1.0,49,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?neighborCounty ?sviRecord ?sviScore ?maxOutages
+WHERE {
+  gokg:LeeCountyFL goo:neighboringCounties ?neighborCounty .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?neighborCounty ;
+             goo:sviYear 2022 ;
+             goo:sviOverallScore ?sviScore .
+  {
+    SELECT ?neighborCounty (MAX(?numOutages) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty ?neighborCounty ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?numOutages .
+      FILTER (?recordDate >= ""2022-09-23T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2022-10-08T00:00:00Z""^^xsd:dateTime)
+    }
+    GROUP BY ?neighborCounty
+  }
+  FILTER (?sviScore >= 0.5 && ?maxOutages > 100000)
+}
+ORDER BY DESC(?sviScore) DESC(?maxOutages)",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0784,Q1000033_I1,1,Semantic interpretation: relaxed high-vulnerability/high-outage thresholds,False,Scenario / what-if,1000033,multi-hop,qid_1000033_gold_02.json,,34,1.0,50,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?neighborCounty ?sviRecord ?sviScore ?maxOutages
+WHERE {
+  gokg:LeeCountyFL goo:neighboringCounties ?neighborCounty .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?neighborCounty ;
+             goo:sviYear 2022 ;
+             goo:sviOverallScore ?sviScore .
+  {
+    SELECT ?neighborCounty (MAX(?numOutages) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty ?neighborCounty ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?numOutages .
+      FILTER (?recordDate >= ""2022-09-23T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2022-10-08T00:00:00Z""^^xsd:dateTime)
+    }
+    GROUP BY ?neighborCounty
+  }
+  FILTER (?sviScore >= 0.75 && ?maxOutages > 50000)
+}
+ORDER BY DESC(?sviScore) DESC(?maxOutages)",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0784,Q1000033_I2,2,Temporal interpretation: immediate Ian landfall impact window,False,Scenario / what-if,1000033,multi-hop,qid_1000033_gold_03.json,,34,1.0,51,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?neighborCounty ?sviRecord ?sviScore ?maxOutages
+WHERE {
+  gokg:LeeCountyFL goo:neighboringCounties ?neighborCounty .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?neighborCounty ;
+             goo:sviYear 2022 ;
+             goo:sviOverallScore ?sviScore .
+  {
+    SELECT ?neighborCounty (MAX(?numOutages) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty ?neighborCounty ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?numOutages .
+      FILTER (?recordDate >= ""2022-09-28T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2022-10-03T00:00:00Z""^^xsd:dateTime)
+    }
+    GROUP BY ?neighborCounty
+  }
+  FILTER (?sviScore >= 0.8 && ?maxOutages > 100000)
+}
+ORDER BY DESC(?sviScore) DESC(?maxOutages)",spatiotemporal,scored,event_window_outage_threshold,T005
+0.049,Q1000034_I0,0,Original exact KG interpretation from source JSON,True,Temporal interval,1000034,1-hop,qid_1000034_gold_01.json,,35,1.0,52,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?cyclone ?name ?start ?end ?maxSustainedWindSpeed
+WHERE {
+  VALUES ?basin { ""ATL""^^xsd:string ""EPAC""^^xsd:string ""CPAC""^^xsd:string }
+  BIND(160 AS ?extremelyPowerfulWindThreshold)
+  ?cyclone a goo:HurricaneEventRecord ;
+           schema:name ?name ;
+           goo:basin ?basin ;
+           goo:eventStartTime ?start ;
+           goo:eventEndTime ?end ;
+           goo:maxSustainedWindSpeed ?maxSustainedWindSpeed .
+  FILTER (?maxSustainedWindSpeed >= ?extremelyPowerfulWindThreshold)
+  FILTER ((?end - ?start) > ""P3D""^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?maxSustainedWindSpeed) ?start
+LIMIT 10",spatiotemporal,scored,temporal_interval_filter,T002
+0.049,Q1000034_I1,1,Semantic interpretation: extremely powerful as Category-5-style threshold in alternate wind units,False,Temporal interval,1000034,1-hop,qid_1000034_gold_02.json,,35,1.0,53,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?cyclone ?name ?start ?end ?maxSustainedWindSpeed
+WHERE {
+  VALUES ?basin { ""ATL""^^xsd:string ""EPAC""^^xsd:string ""CPAC""^^xsd:string }
+  BIND(137 AS ?extremelyPowerfulWindThreshold)
+  ?cyclone a goo:HurricaneEventRecord ;
+           schema:name ?name ;
+           goo:basin ?basin ;
+           goo:eventStartTime ?start ;
+           goo:eventEndTime ?end ;
+           goo:maxSustainedWindSpeed ?maxSustainedWindSpeed .
+  FILTER (?maxSustainedWindSpeed >= ?extremelyPowerfulWindThreshold)
+  FILTER ((?end - ?start) > ""P3D""^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?maxSustainedWindSpeed) ?start
+LIMIT 10",spatiotemporal,scored,temporal_interval_filter,T002
+0.1176,Q1000035_I0,0,KG interpretation with storm-event count threshold,True,Spatial containment,1000035,multi-hop,qid_1000035_gold_01.json,,36,1.0,54,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?sviScore ?stormEventCount
+WHERE {
+  ?state a goo:State ;
+         goo:neighboringStates gokg:AlabamaState ;
+         goo:neighboringStates gokg:GeorgiaState .
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  BIND((2023 - 1) AS ?targetYear)
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?targetYear ;
+             goo:sviOverallScore ?sviScore .
+  FILTER (?sviScore >= 0.8)
+  {
+    SELECT ?county ?state (COUNT(DISTINCT ?event) AS ?stormEventCount)
+    WHERE {
+      BIND((2023 - 1) AS ?eventYear)
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState ?state ;
+             goo:occurredInCounty ?county ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = ?eventYear)
+    }
+    GROUP BY ?county ?state
+  }
+  FILTER (?stormEventCount >= 8)
+}
+ORDER BY DESC(?sviScore) DESC(?stormEventCount)",spatiotemporal,scored,storm_event_svi_county_threshold,T007
+0.0686,Q1000036_I0,0,Primary KG interpretation: counties ranked by 2020 SVI with poverty rates,True,Temporal interval,1000036,multi-hop,qid_1000036_gold_01.json,,37,1.0,55,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?adminDivision ?sviRecord2000 ?svi2000 ?povertyRate2000 ?sviRecord2010 ?svi2010 ?povertyRate2010 ?sviRecord2020 ?svi2020 ?povertyRate2020 ?populationIncrease2000To2020
+WHERE {
+  ?adminDivision a goo:County .
+  ?sviRecord2000 a goo:SVIRecord ;
+                 goo:representsCounty ?adminDivision ;
+                 goo:sviYear 2000 ;
+                 goo:sviOverallScore ?svi2000 ;
+                 goo:povertyRate ?povertyRate2000 ;
+                 goo:totalPopulation ?population2000 .
+  ?sviRecord2010 a goo:SVIRecord ;
+                 goo:representsCounty ?adminDivision ;
+                 goo:sviYear 2010 ;
+                 goo:sviOverallScore ?svi2010 ;
+                 goo:povertyRate ?povertyRate2010 .
+  ?sviRecord2020 a goo:SVIRecord ;
+                 goo:representsCounty ?adminDivision ;
+                 goo:sviYear 2020 ;
+                 goo:sviOverallScore ?svi2020 ;
+                 goo:povertyRate ?povertyRate2020 ;
+                 goo:totalPopulation ?population2020 .
+  BIND((xsd:integer(?population2020) - xsd:integer(?population2000)) AS ?populationIncrease2000To2020)
+}
+ORDER BY DESC(?svi2020) ?adminDivision
+LIMIT 10",spatiotemporal,scored,longitudinal_svi_population_change,T008
+0.1176,Q1000037_I0,0,Primary KG interpretation: state hurricane landfall ranking with average county-level SVI,True,Spatial containment,1000037,multi-hop,qid_1000037_gold_01.json,,38,1.0,56,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?hurricaneLandfallCount ?averageCountySviOverallScore
+WHERE {
+  {
+    SELECT ?state (COUNT(DISTINCT ?cyclone) AS ?hurricaneLandfallCount)
+    WHERE {
+      ?state a goo:State ;
+             geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:status ""HU""^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?trackLon), "" "", STR(?trackLat), "")""), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (AVG(?sviScore) AS ?averageCountySviOverallScore)
+    WHERE {
+      ?county a goo:County ;
+              goo:locatedInState ?state .
+      ?sviRecord a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviOverallScore ?sviScore .
+    }
+    GROUP BY ?state
+  }
+}
+ORDER BY DESC(?hurricaneLandfallCount) DESC(?averageCountySviOverallScore)
+LIMIT 10
+",spatiotemporal,scored,hurricane_landfall_ranking_with_state_svi,T009
+0.0686,Q1000038_I0,0,Original exact KG interpretation from source JSON,True,Spatial proximity,1000038,multi-hop,qid_1000038_gold_01.json,,39,1.0,57,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < ""2013-05-21T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-20T00:00:00""^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < ""2013-05-21T00:00:00""^^xsd:dateTime && ?end >= ""2013-05-20T00:00:00""^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+}
+ORDER BY ?event
+",spatiotemporal,scored,event_window_outage_threshold,T005
+0.1078,Q1000039_I0,0,Original exact KG interpretation from source JSON,True,Multimodal evidence,1000039,multi-hop,qid_1000039_gold_01.json,,40,1.0,58,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 250000)
+  FILTER (?imageDate >= ""2022-09-28T00:00:00Z""^^xsd:dateTime && ?imageDate < ""2022-10-03T00:00:00Z""^^xsd:dateTime)
+  FILTER (?recordDate >= ""2022-09-28T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2022-10-03T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10
+",spatiotemporal,scored,multimodal_correspondence,T004
+0.098,Q1000040_I0,0,Rephrased KG interpretation for Hurricane Helene landfall county neighbors,False,Scenario / what-if,1000040,multi-hop,qid_1000040_gold_01.json,,41,1.0,59,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county (STR(?countyLabel) AS ?countyName)
+WHERE {
+  gokg:TaylorCountyFL goo:neighboringCounties ?county .
+  ?county a goo:County ;
+          rdfs:label ?countyLabel ;
+          goo:locatedInState gokg:FloridaState .
+  FILTER (LANGMATCHES(LANG(?countyLabel), ""en""))
+  {
+    SELECT ?county (MAX(?sviYear) AS ?latestSviYear)
+    WHERE {
+      ?candidateSvi a goo:SVIRecord ;
+                    goo:representsCounty ?county ;
+                    goo:sviYear ?sviYear .
+    }
+    GROUP BY ?county
+  }
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?latestSviYear ;
+             goo:sviOverallScore ?sviScore .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?sviScore >= 0.5)
+  FILTER (?numOutages > 10000)
+  FILTER (?recordDate >= ""2024-09-26T00:00:00Z""^^xsd:dateTime && ?recordDate < ""2024-10-01T00:00:00Z""^^xsd:dateTime)
+}
+ORDER BY ?countyName
+",spatiotemporal,scored,event_window_outage_threshold,T005
+0.1275,Q1000041_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000041,multi-hop,qid_1000041_gold_01.json,,42,1.0,60,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?state ?sviRecord ?housingTransportationScore ?floodEventCount
+WHERE {
+  ?state a goo:State ;
+         goo:neighboringStates gokg:FloridaState .
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2022 ;
+             goo:sviHousingTransportationTheme ?housingTransportationScore .
+  FILTER (?housingTransportationScore >= 0.85)
+  {
+    SELECT ?county ?state (COUNT(DISTINCT ?event) AS ?floodEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState ?state ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2022)
+      FILTER (REGEX(STR(?eventType), ""flood"", ""i""))
+    }
+    GROUP BY ?county ?state
+  }
+  FILTER (?floodEventCount >= 5)
+}
+ORDER BY DESC(?housingTransportationScore) DESC(?floodEventCount) ?county
+LIMIT 10
+",spatiotemporal,scored,storm_event_svi_county_threshold,T007
+0.0882,Q1000042_I0,0,Original exact KG interpretation from source JSON,True,Spatial containment,1000042,multi-hop,qid_1000042_gold_01.json,,43,1.0,61,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord2000 ?svi2000 ?sviRecord2010 ?svi2010 ?sviRecord2022 ?svi2022 ?housingTransportationScore2022 ?populationChange2000To2022 ?povertyRate2022
+WHERE {
+  {
+    SELECT ?county ?sviRecord2022 ?svi2022 ?housingTransportationScore2022 ?population2022 ?povertyRate2022
+    WHERE {
+      ?county a goo:County ;
+              goo:locatedInState gokg:FloridaState .
+      ?sviRecord2022 a goo:SVIRecord ;
+                     goo:representsCounty ?county ;
+                     goo:sviYear 2022 ;
+                     goo:sviOverallScore ?svi2022 ;
+                     goo:sviHousingTransportationTheme ?housingTransportationScore2022 ;
+                     goo:totalPopulation ?population2022 ;
+                     goo:povertyRate ?povertyRate2022 .
+    }
+    ORDER BY DESC(?housingTransportationScore2022)
+    LIMIT 10
+  }
+  ?sviRecord2000 a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviYear 2000 ;
+                 goo:sviOverallScore ?svi2000 ;
+                 goo:totalPopulation ?population2000 .
+  ?sviRecord2010 a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviYear 2010 ;
+                 goo:sviOverallScore ?svi2010 .
+  BIND((xsd:integer(?population2022) - xsd:integer(?population2000)) AS ?populationChange2000To2022)
+}
+ORDER BY DESC(?housingTransportationScore2022) ?county
+",spatiotemporal,scored,longitudinal_svi_population_change,T008
+0.1373,Q1000043_I0,0,Primary interpretation: Gulf Coast states with 2022 county-level SVI,True,Spatial containment,1000043,multi-hop,qid_1000043_gold_01.json,,44,1.0,62,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?hurricaneLandfallCount ?averageCountySviOverallScore
+WHERE {
+  VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+  {
+    SELECT ?state (COUNT(DISTINCT ?cyclone) AS ?hurricaneLandfallCount)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?state a goo:State ;
+             geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:eventStartTime ?stormStart ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:status ""HU""^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?trackLon), "" "", STR(?trackLat), "")""), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (?stormStart >= ""2001-01-01T00:00:00Z""^^xsd:dateTime)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (AVG(?sviScore) AS ?averageCountySviOverallScore)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?county a goo:County ;
+              goo:locatedInState ?state .
+      ?sviRecord a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviYear 2022 ;
+                 goo:sviOverallScore ?sviScore .
+    }
+    GROUP BY ?state
+  }
+}
+ORDER BY DESC(?hurricaneLandfallCount) DESC(?averageCountySviOverallScore)
+LIMIT 10
+",spatiotemporal,scored,hurricane_landfall_ranking_with_state_svi,T009
+0.1275,Q1000043_I1,1,Semantic interpretation: average across all available county-level SVI records,False,Spatial containment,1000043,multi-hop,qid_1000043_gold_02.json,,44,1.0,63,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?hurricaneLandfallCount ?averageCountySviOverallScore
+WHERE {
+  VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+  {
+    SELECT ?state (COUNT(DISTINCT ?cyclone) AS ?hurricaneLandfallCount)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?state a goo:State ;
+             geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:eventStartTime ?stormStart ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:status ""HU""^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?trackLon), "" "", STR(?trackLat), "")""), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (?stormStart >= ""2001-01-01T00:00:00Z""^^xsd:dateTime)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (AVG(?sviScore) AS ?averageCountySviOverallScore)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?county a goo:County ;
+              goo:locatedInState ?state .
+      ?sviRecord a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviOverallScore ?sviScore .
+    }
+    GROUP BY ?state
+  }
+}
+ORDER BY DESC(?hurricaneLandfallCount) DESC(?averageCountySviOverallScore)
+LIMIT 10
+",spatiotemporal,scored,hurricane_landfall_ranking_with_state_svi,T009
+0.0686,Q1000044_I0,0,Primary interpretation: Jasper County general-area tornado records on the Joplin tornado day,True,Spatial proximity,1000044,multi-hop,qid_1000044_gold_01.json,,45,1.0,64,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?deathsDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:JasperCountyMO geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:deathsDirect ?deathsDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < ""2011-05-23T00:00:00""^^xsd:dateTime && ?end >= ""2011-05-22T00:00:00""^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  gokg:JasperCountyMO geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:deathsDirect ?deathsDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < ""2011-05-23T00:00:00""^^xsd:dateTime && ?end >= ""2011-05-22T00:00:00""^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event
+",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,Q1000044_I1,1,Spatial-semantic interpretation: broader Joplin area using Jasper and Newton counties,False,Spatial proximity,1000044,multi-hop,qid_1000044_gold_02.json,,45,1.0,65,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?eventCount ?event ?efScale ?deathsDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      VALUES ?county { gokg:JasperCountyMO gokg:NewtonCountyMO }
+      ?county geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:deathsDirect ?deathsDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < ""2011-05-23T00:00:00""^^xsd:dateTime && ?end >= ""2011-05-22T00:00:00""^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  VALUES ?county { gokg:JasperCountyMO gokg:NewtonCountyMO }
+  ?county geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:deathsDirect ?deathsDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT(""POINT("", STR(?eventLon), "" "", STR(?eventLat), "")""), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < ""2011-05-23T00:00:00""^^xsd:dateTime && ?end >= ""2011-05-22T00:00:00""^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event
+",spatiotemporal,scored,event_window_outage_threshold,T005
+0.098,Q1000045_I0,0,Primary interpretation: 2022 SVI >= 0.8 with Flood after Thunderstorm Wind start within 3 days,True,Event sequence,1000045,multi-hop,qid_1000045_gold_01.json,,46,1.0,66,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?sviScore ?thunderstormWindEvent ?thunderstormWindType ?thunderstormWindStart ?thunderstormWindEnd ?floodEvent ?floodType ?floodStart ?floodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviOverallScore ?sviScore .
+  FILTER (?sviYear = 2022)
+  FILTER (?sviScore >= 0.8)
+
+  ?thunderstormWindEvent a goo:StormEventRecord ;
+                         goo:occurredInCounty ?county ;
+                         goo:stormEventType ?thunderstormWindType ;
+                         goo:eventStartTime ?thunderstormWindStart ;
+                         goo:eventEndTime ?thunderstormWindEnd .
+  FILTER (REGEX(STR(?thunderstormWindType), ""Thunderstorm Wind"", ""i""))
+
+  ?floodEvent a goo:StormEventRecord ;
+              goo:occurredInCounty ?county ;
+              goo:stormEventType ?floodType ;
+              goo:eventStartTime ?floodStart ;
+              goo:eventEndTime ?floodEnd .
+  FILTER (REGEX(STR(?floodType), ""Flood"", ""i""))
+
+  FILTER (?thunderstormWindStart <= ?floodStart)
+  FILTER ((?floodStart - ?thunderstormWindStart) <= ""P3D""^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?sviScore) ?county ?thunderstormWindStart ?floodStart
+LIMIT 10
+",spatiotemporal,scored,event_sequence_svi_threshold,T010
+0.098,Q1000045_I1,1,Temporal-semantic interpretation: 2010 SVI >= 0.75 with Flood after Thunderstorm Wind start within 5 days,False,Event sequence,1000045,multi-hop,qid_1000045_gold_02.json,,46,1.0,67,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?sviScore ?thunderstormWindEvent ?thunderstormWindType ?thunderstormWindStart ?thunderstormWindEnd ?floodEvent ?floodType ?floodStart ?floodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviOverallScore ?sviScore .
+  FILTER (?sviYear = 2010)
+  FILTER (?sviScore >= 0.75)
+
+  ?thunderstormWindEvent a goo:StormEventRecord ;
+                         goo:occurredInCounty ?county ;
+                         goo:stormEventType ?thunderstormWindType ;
+                         goo:eventStartTime ?thunderstormWindStart ;
+                         goo:eventEndTime ?thunderstormWindEnd .
+  FILTER (REGEX(STR(?thunderstormWindType), ""Thunderstorm Wind"", ""i""))
+
+  ?floodEvent a goo:StormEventRecord ;
+              goo:occurredInCounty ?county ;
+              goo:stormEventType ?floodType ;
+              goo:eventStartTime ?floodStart ;
+              goo:eventEndTime ?floodEnd .
+  FILTER (REGEX(STR(?floodType), ""Flood"", ""i""))
+
+  FILTER (?thunderstormWindStart <= ?floodStart)
+  FILTER ((?floodStart - ?thunderstormWindStart) <= ""P5D""^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?sviScore) ?county ?thunderstormWindStart ?floodStart
+LIMIT 10
+",spatiotemporal,scored,event_sequence_svi_threshold,T010
+0.098,Q1000046_I0,0,Primary interpretation: 2020 housing and transportation SVI theme >= 0.85 with Flash Flood after Hail start within 12 hours,True,Event sequence,1000046,multi-hop,qid_1000046_gold_01.json,,47,1.0,68,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?housingTransportationScore ?hailEvent ?hailType ?hailStart ?hailEnd ?flashFloodEvent ?flashFloodType ?flashFloodStart ?flashFloodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviHousingTransportationTheme ?housingTransportationScore .
+  FILTER (?sviYear = 2020)
+  FILTER (?housingTransportationScore >= 0.85)
+
+  ?hailEvent a goo:StormEventRecord ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?hailType ;
+             goo:eventStartTime ?hailStart ;
+             goo:eventEndTime ?hailEnd .
+  FILTER (REGEX(STR(?hailType), ""Hail"", ""i""))
+
+  ?flashFloodEvent a goo:StormEventRecord ;
+                   goo:occurredInCounty ?county ;
+                   goo:stormEventType ?flashFloodType ;
+                   goo:eventStartTime ?flashFloodStart ;
+                   goo:eventEndTime ?flashFloodEnd .
+  FILTER (REGEX(STR(?flashFloodType), ""Flash Flood"", ""i""))
+
+  FILTER (?hailStart <= ?flashFloodStart)
+  FILTER ((?flashFloodStart - ?hailStart) <= ""PT12H""^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?housingTransportationScore) ?county ?hailStart ?flashFloodStart
+LIMIT 10
+",spatiotemporal,scored,event_sequence_svi_threshold,T010
+0.098,Q1000046_I1,1,Temporal-semantic interpretation: 2022 housing and transportation SVI theme >= 0.8 with Flash Flood after Hail start within 1 day,False,Event sequence,1000046,multi-hop,qid_1000046_gold_02.json,,47,1.0,69,gold,"PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?housingTransportationScore ?hailEvent ?hailType ?hailStart ?hailEnd ?flashFloodEvent ?flashFloodType ?flashFloodStart ?flashFloodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviHousingTransportationTheme ?housingTransportationScore .
+  FILTER (?sviYear = 2022)
+  FILTER (?housingTransportationScore >= 0.8)
+
+  ?hailEvent a goo:StormEventRecord ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?hailType ;
+             goo:eventStartTime ?hailStart ;
+             goo:eventEndTime ?hailEnd .
+  FILTER (REGEX(STR(?hailType), ""Hail"", ""i""))
+
+  ?flashFloodEvent a goo:StormEventRecord ;
+                   goo:occurredInCounty ?county ;
+                   goo:stormEventType ?flashFloodType ;
+                   goo:eventStartTime ?flashFloodStart ;
+                   goo:eventEndTime ?flashFloodEnd .
+  FILTER (REGEX(STR(?flashFloodType), ""Flash Flood"", ""i""))
+
+  FILTER (?hailStart <= ?flashFloodStart)
+  FILTER ((?flashFloodStart - ?hailStart) <= ""P1D""^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?housingTransportationScore) ?county ?hailStart ?flashFloodStart
+LIMIT 10
+",spatiotemporal,scored,event_sequence_svi_threshold,T010
+0.1078,Q1000047_I0,0,Original exact KG interpretation from source JSON,True,Spatiotemporal co-occurrence,1000047,multi-hop,qid_1000047_gold_01.json,,48,1.0,70,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?socioeconomicScore ?thunderstormWindEventCount
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2022 ;
+             goo:sviSocioeconomicTheme ?socioeconomicScore .
+  FILTER (?socioeconomicScore >= 0.75)
+  {
+    SELECT ?county (COUNT(DISTINCT ?event) AS ?thunderstormWindEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState gokg:FloridaState ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2022)
+      FILTER (REGEX(STR(?eventType), ""Thunderstorm Wind"", ""i""))
+    }
+    GROUP BY ?county
+  }
+  FILTER (?thunderstormWindEventCount >= 12)
+}
+ORDER BY DESC(?socioeconomicScore) DESC(?thunderstormWindEventCount) ?county
+LIMIT 10
+",spatiotemporal,scored,storm_event_svi_county_threshold,T007
+0.1078,Q1000047_I1,1,"Alternate spatiotemporal-semantic interpretation: Texas, 2020, socioeconomic SVI >= 0.8, any Wind event type",False,Spatiotemporal co-occurrence,1000047,multi-hop,qid_1000047_gold_02.json,,48,1.0,71,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?socioeconomicScore ?windEventCount
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:TexasState .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2020 ;
+             goo:sviSocioeconomicTheme ?socioeconomicScore .
+  FILTER (?socioeconomicScore >= 0.8)
+  {
+    SELECT ?county (COUNT(DISTINCT ?event) AS ?windEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState gokg:TexasState ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2020)
+      FILTER (REGEX(STR(?eventType), ""Wind"", ""i""))
+    }
+    GROUP BY ?county
+  }
+  FILTER (?windEventCount >= 12)
+}
+ORDER BY DESC(?socioeconomicScore) DESC(?windEventCount) ?county
+LIMIT 10
+",spatiotemporal,scored,storm_event_svi_county_threshold,T007
+0.1078,Q1000047_I2,2,"Alternate spatiotemporal-semantic interpretation: Louisiana, 2018, socioeconomic SVI >= 0.85, any Wind event type count between 10 and 14",False,Spatiotemporal co-occurrence,1000047,multi-hop,qid_1000047_gold_03.json,,48,1.0,72,gold,"PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?socioeconomicScore ?coastalWindEventCount
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:LouisianaState .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2018 ;
+             goo:sviSocioeconomicTheme ?socioeconomicScore .
+  FILTER (?socioeconomicScore >= 0.85)
+  {
+    SELECT ?county (COUNT(DISTINCT ?event) AS ?coastalWindEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState gokg:LouisianaState ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2018)
+      FILTER (REGEX(STR(?eventType), ""Wind"", ""i""))
+    }
+    GROUP BY ?county
+  }
+  FILTER (?coastalWindEventCount >= 10 && ?coastalWindEventCount <= 14)
+}
+ORDER BY DESC(?socioeconomicScore) DESC(?coastalWindEventCount) ?county
+LIMIT 10
+",spatiotemporal,scored,storm_event_svi_county_threshold,T007

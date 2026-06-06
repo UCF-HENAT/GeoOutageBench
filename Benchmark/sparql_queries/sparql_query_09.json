@@ -1,0 +1,3 @@
+{
+  "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX gokg:   <http://example.org/resource#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?map { gokg:outagemap.12001.2019-03-10 }\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county .\n}"
+}

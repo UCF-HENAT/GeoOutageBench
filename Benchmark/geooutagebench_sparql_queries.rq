@@ -1,0 +1,2931 @@
+# GeoOutageBench SPARQL queries
+# Generated from GeoResilience/Benchmark/geooutagebench_questions.json
+# Questions: 48
+# SPARQL interpretations: 72
+# sparql_interpretations[0] preserves the original source query; later entries are template-based ambiguity variants.
+
+# Query 1
+# QID: 1000000
+# Interpretation ID: Q1000000_I0
+# Interpretation Type: original source query
+# Template ID: T001
+# Template Family: outage_ranking_by_jurisdiction
+# Question: Which counties have the highest number of customer outages reported at one time?
+# Question Template: Which {JURISDICTION_TYPE} have the highest number of {OUTAGE_METRIC}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?maxOutages
+WHERE {
+  {
+    SELECT ?county (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?rec a goo:CustomerOutageRecord ;
+           goo:representsCounty ?county ;
+           goo:numberOfOutages ?num .
+    }
+    GROUP BY ?county
+  }
+}
+ORDER BY DESC(?maxOutages)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 2
+# QID: 1000001
+# Interpretation ID: Q1000001_I0
+# Interpretation Type: original source query
+# Template ID: T001
+# Template Family: outage_ranking_by_jurisdiction
+# Question: Which ten customer outage records were the highest?
+# Question Template: Which {TOP_K} {OUTAGE_RECORD_TYPE} were the highest by {OUTAGE_METRIC}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?county ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+}
+ORDER BY DESC(?num)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 3
+# QID: 1000002
+# Interpretation ID: Q1000002_I0
+# Interpretation Type: original source query
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: Which customer outage records were recorded in the calendar year after 2021?
+# Question Template: Which {OUTAGE_RECORD_TYPE} were recorded in the {TEMPORAL_WINDOW}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: temporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?recordDate ?numOutages
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?recordDate ;
+       goo:numberOfOutages ?numOutages .
+  FILTER (?recordDate >= "2022-01-01T00:00:00Z"^^xsd:dateTime && ?recordDate < "2023-01-01T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?recordDate
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 4
+# QID: 1000002
+# Interpretation ID: Q1000002_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: Which customer outage records were recorded in the calendar year after 2021?
+# Question Template: Which {OUTAGE_RECORD_TYPE} were recorded in the {TEMPORAL_WINDOW}?
+# Label: Temporal interpretation: all records after 2021, not only calendar year 2022
+# Ambiguity Dimensions: temporal
+# Rationale: The phrase "after 2021" can be read as open-ended rather than strictly the next calendar year.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?recordDate ?numOutages
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?recordDate ;
+       goo:numberOfOutages ?numOutages .
+  FILTER (?recordDate >= "2022-01-01T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?recordDate
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 5
+# QID: 1000003
+# Interpretation ID: Q1000003_I0
+# Interpretation Type: original source query
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: Which nighttime-light images cover the Orlando-area county in 2025?
+# Question Template: Which {IMAGE_TYPE} images cover the {PLACE_DESCRIPTOR} in {TEMPORAL_WINDOW}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?date ?locator
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:acquisitionDateTime ?date ;
+       goo:representsCounty gokg:OrangeCountyFL ;
+       goo:sourceDownloadUrl ?locator .
+  FILTER (?date >= "2025-01-01T00:00:00Z"^^xsd:dateTime && ?date < "2026-01-01T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?date
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 6
+# QID: 1000003
+# Interpretation ID: Q1000003_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: Which nighttime-light images cover the Orlando-area county in 2025?
+# Question Template: Which {IMAGE_TYPE} images cover the {PLACE_DESCRIPTOR} in {TEMPORAL_WINDOW}?
+# Label: Spatial interpretation: Orlando area as metro-adjacent counties
+# Ambiguity Dimensions: spatial
+# Rationale: The phrase "Orlando-area county" can mean Orange County alone or a small set of Orlando metro counties.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?date ?locator
+WHERE {
+  VALUES ?county { gokg:OrangeCountyFL gokg:SeminoleCountyFL gokg:OsceolaCountyFL gokg:LakeCountyFL }
+  ?ntl a goo:NTLImage ;
+       goo:acquisitionDateTime ?date ;
+       goo:representsCounty ?county ;
+       goo:sourceDownloadUrl ?locator .
+  FILTER (?date >= "2025-01-01T00:00:00Z"^^xsd:dateTime && ?date < "2026-01-01T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?date
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 7
+# QID: 1000004
+# Interpretation ID: Q1000004_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which jurisdiction is represented by the customer record with FIPS code 12075 and on the 15th of August 2017 at 8:15 PM?
+# Question Template: Which {JURISDICTION_TYPE} does {OUTAGE_RECORD} represent?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 8
+# QID: 1000005
+# Interpretation ID: Q1000005_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which county is represented by the nighttime-light image recorded for FIPS code 12031 on the 21st of September 2020?
+# Question Template: Which {JURISDICTION_TYPE} does {IMAGE_INSTANCE} represent?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 9
+# QID: 1000006
+# Interpretation ID: Q1000006_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which jurisdiction is represented by the first alphabetical order county in Florida on the 10th of the 3rd month in the last year of the 2010s?
+# Question Template: Which {JURISDICTION_TYPE} does {MAP_INSTANCE} represent?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?map { gokg:outagemap.12001.2019-03-10 }
+  ?map a goo:OutageMap ;
+       goo:representsCounty ?county .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 10
+# QID: 1000007
+# Interpretation ID: Q1000007_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: When was this outage record recorded?
+# Question Template: When was {OUTAGE_RECORD} recorded?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: temporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?date
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?date .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 11
+# QID: 1000008
+# Interpretation ID: Q1000008_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: How many outages were recorded in the customer outage record for the Florida county with the seat in Bronson, on August 15, 2017 at 20:15?
+# Question Template: How many {OUTAGE_METRIC} were recorded in {OUTAGE_RECORD}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?num
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:numberOfOutages ?num .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 12
+# QID: 1000009
+# Interpretation ID: Q1000009_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which nighttime-light scene corresponds to the customer outage record for the Florida county with the seat in Bronson, on August 15, 2017 at 20:15?
+# Question Template: Which {IMAGE_TYPE} scene corresponds to {OUTAGE_RECORD} under {SPATIOTEMPORAL_ALIGNMENT}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 13
+# QID: 1000010
+# Interpretation ID: Q1000010_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which outage map corresponds to the customer outage record for the Florida county with the largest city being Williston, on August 15, 2017 at 20:15?
+# Question Template: Which {MAP_TYPE} corresponds to {OUTAGE_RECORD} under {SPATIOTEMPORAL_ALIGNMENT}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map
+WHERE {
+  VALUES ?rec { gokg:customeroutagerecord.12075.2017-08-15T20-15-00Z }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 14
+# QID: 1000011
+# Interpretation ID: Q1000011_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which severity prediction map was derived from the nighttime-light scene for Jacksonville's county in 2020, the 21st night of September?
+# Question Template: Which {MAP_TYPE} was derived from {IMAGE_INSTANCE}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?map a goo:OutageMap ;
+       goo:generatedFromNTLImage ?ntl .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 15
+# QID: 1000012
+# Interpretation ID: Q1000012_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which satellite captured any random NTL image?
+# Question Template: Which {PLATFORM_TYPE} captured {IMAGE_INSTANCE}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?satellite
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?ntl a goo:NTLImage ;
+       goo:fromSatellite ?satellite .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 16
+# QID: 1000013
+# Interpretation ID: Q1000013_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which sensor captured any random NTL image?
+# Question Template: Which {SENSOR_TYPE} captured {IMAGE_INSTANCE}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?sensor
+WHERE {
+  VALUES ?ntl { gokg:ntlimage.12031.2020-09-21 }
+  ?ntl a goo:NTLImage ;
+       goo:fromSensor ?sensor .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 17
+# QID: 1000014
+# Interpretation ID: Q1000014_I0
+# Interpretation Type: original source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: During the Hurricane Ian disruption period, which outage records for the southwest Florida county centered on Fort Myers were above 100?
+# Question Template: During {EVENT_WINDOW}, which {OUTAGE_RECORD_TYPE} for {PLACE_DESCRIPTOR} were above {OUTAGE_THRESHOLD}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  FILTER (?num > 100)
+  FILTER(
+    ?date >= "2022-08-28T00:00:00Z"^^xsd:dateTime &&
+    ?date <  "2022-10-28T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 18
+# QID: 1000014
+# Interpretation ID: Q1000014_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: During the Hurricane Ian disruption period, which outage records for the southwest Florida county centered on Fort Myers were above 100?
+# Question Template: During {EVENT_WINDOW}, which {OUTAGE_RECORD_TYPE} for {PLACE_DESCRIPTOR} were above {OUTAGE_THRESHOLD}?
+# Label: Temporal interpretation: landfall-centered Ian impact window
+# Ambiguity Dimensions: temporal
+# Rationale: The phrase "during/around Hurricane Ian" can be represented by a narrower landfall-centered impact window rather than the broader disruption period.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  FILTER (?num > 100)
+  FILTER(
+    ?date >= "2022-09-23T00:00:00Z"^^xsd:dateTime &&
+    ?date <  "2022-10-08T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 19
+# QID: 1000015
+# Interpretation ID: Q1000015_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: During the Hurricane Ian landfall date, which nighttime-light scenes line up with outage snapshots for the southwest Florida county centered on Fort Myers?
+# Question Template: During {EVENT_WINDOW}, which {IMAGE_TYPE} scenes line up with outage snapshots for {PLACE_DESCRIPTOR}?
+# Label: Primary interpretation: Lee County outage snapshots and NTL scenes on Hurricane Ian landfall date
+# Ambiguity Dimensions: spatiotemporal, temporal, semantic
+# Rationale: Aligns the edited question to Lee County outage records and NTL scenes on the September 28, 2022 Hurricane Ian landfall date.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?date), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER(
+    ?date >= "2022-09-28T00:00:00Z"^^xsd:dateTime &&
+    ?date <  "2022-09-29T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 20
+# QID: 1000015
+# Interpretation ID: Q1000015_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: During the Hurricane Ian landfall date, which nighttime-light scenes line up with outage snapshots for the southwest Florida county centered on Fort Myers?
+# Question Template: During {EVENT_WINDOW}, which {IMAGE_TYPE} scenes line up with outage snapshots for {PLACE_DESCRIPTOR}?
+# Label: Temporal interpretation: Florida local landfall date represented as a UTC offset window
+# Ambiguity Dimensions: temporal, spatiotemporal
+# Rationale: Treats the named landfall date as the local Florida calendar day rather than a UTC calendar day.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER(
+    ?date >= "2022-09-28T04:00:00Z"^^xsd:dateTime &&
+    ?date <  "2022-09-29T04:00:00Z"^^xsd:dateTime
+  )
+  FILTER(
+    ?imageDate >= "2022-09-28T04:00:00Z"^^xsd:dateTime &&
+    ?imageDate <  "2022-09-29T04:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 21
+# QID: 1000015
+# Interpretation ID: Q1000015_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: During the Hurricane Ian landfall date, which nighttime-light scenes line up with outage snapshots for the southwest Florida county centered on Fort Myers?
+# Question Template: During {EVENT_WINDOW}, which {IMAGE_TYPE} scenes line up with outage snapshots for {PLACE_DESCRIPTOR}?
+# Label: Spatiotemporal interpretation: landfall-centered two-day snapshot window
+# Ambiguity Dimensions: spatiotemporal, temporal
+# Rationale: Allows the landfall-date wording to include immediate post-landfall snapshots while preserving the same Lee County scope.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec ?date ?num
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?date), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER(
+    ?date >= "2022-09-28T00:00:00Z"^^xsd:dateTime &&
+    ?date <  "2022-09-29T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?date
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 22
+# QID: 1000016
+# Interpretation ID: Q1000016_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which severity maps correspond to the southwest Florida county centered on Fort Myers around Hurricane Ian?
+# Question Template: Which {MAP_TYPE} correspond to {PLACE_DESCRIPTOR} around {CYCLONE_EVENT}?
+# Label: Primary interpretation: Lee County severity maps in an Ian-centered impact window
+# Ambiguity Dimensions: spatiotemporal, temporal, semantic
+# Rationale: Matches the edited question by returning outage-severity maps for the Fort Myers-area county during an Ian-centered window, without requiring an outage-record join.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map ?ntl ?imageDate
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER(
+    ?imageDate >= "2022-09-23T00:00:00Z"^^xsd:dateTime &&
+    ?imageDate <  "2022-10-08T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?imageDate
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 23
+# QID: 1000016
+# Interpretation ID: Q1000016_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which severity maps correspond to the southwest Florida county centered on Fort Myers around Hurricane Ian?
+# Question Template: Which {MAP_TYPE} correspond to {PLACE_DESCRIPTOR} around {CYCLONE_EVENT}?
+# Label: Temporal interpretation: broader Hurricane Ian disruption period
+# Ambiguity Dimensions: temporal, spatiotemporal
+# Rationale: Interprets "around Hurricane Ian" as a broad pre/post disruption period while keeping the same Fort Myers-area county.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map ?ntl ?imageDate
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER(
+    ?imageDate >= "2022-08-28T00:00:00Z"^^xsd:dateTime &&
+    ?imageDate <  "2022-10-28T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?imageDate
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 24
+# QID: 1000016
+# Interpretation ID: Q1000016_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which severity maps correspond to the southwest Florida county centered on Fort Myers around Hurricane Ian?
+# Question Template: Which {MAP_TYPE} correspond to {PLACE_DESCRIPTOR} around {CYCLONE_EVENT}?
+# Label: Temporal interpretation: Hurricane Ian landfall date only
+# Ambiguity Dimensions: temporal, spatiotemporal
+# Rationale: Narrows the ambiguous "around Hurricane Ian" wording to the actual Florida landfall date.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map ?ntl ?imageDate
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:LeeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER(
+    ?imageDate >= "2022-09-28T00:00:00Z"^^xsd:dateTime &&
+    ?imageDate <  "2022-09-29T00:00:00Z"^^xsd:dateTime
+  )
+}
+ORDER BY ?imageDate
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 25
+# QID: 1000017
+# Interpretation ID: Q1000017_I0
+# Interpretation Type: original source query
+# Template ID: T001
+# Template Family: outage_ranking_by_jurisdiction
+# Question: For each county, what is the maximum number of customer outages recorded in the year Hurricane Irma occurred in?
+# Question Template: For each {JURISDICTION_TYPE}, what is the maximum number of {OUTAGE_METRIC} recorded in {EVENT_YEAR_DESCRIPTOR}?
+# Label: Primary interpretation: maximum county outages during calendar year 2017
+# Ambiguity Dimensions: spatiotemporal, temporal
+# Rationale: Adds the 2017 temporal filter required by the edited Hurricane Irma wording while preserving the per-county maximum outage aggregation.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county (MAX(?num) AS ?maxOutages)
+WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?date ;
+       goo:numberOfOutages ?num .
+  FILTER(
+    ?date >= "2017-01-01T00:00:00Z"^^xsd:dateTime &&
+    ?date <  "2018-01-01T00:00:00Z"^^xsd:dateTime
+  )
+}
+GROUP BY ?county
+ORDER BY DESC(?maxOutages)
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 26
+# QID: 1000018
+# Interpretation ID: Q1000018_I0
+# Interpretation Type: original source query
+# Template ID: T011
+# Template Family: svi_aggregation_by_jurisdiction
+# Question: For each second-level administrative division in the U.S., what is their average social vulnerability index?
+# Question Template: For each {ADMIN_DIVISION_SCOPE}, what is their average {SVI_METRIC}?
+# Label: Primary interpretation: average SVI overall score for each U.S. county
+# Ambiguity Dimensions: spatial, semantic
+# Rationale: Replaces the previous multimodal outage-map interpretation with the edited SVI aggregation question over county-level SVI records.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?adminDivision (AVG(?sviScore) AS ?averageSviOverallScore)
+WHERE {
+  ?adminDivision a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?adminDivision ;
+             goo:sviOverallScore ?sviScore .
+}
+GROUP BY ?adminDivision
+ORDER BY ?adminDivision
+LIMIT 10
+# ------------------------------------------------------------------------------
+
+# Query 27
+# QID: 1000019
+# Interpretation ID: Q1000019_I0
+# Interpretation Type: original source query
+# Template ID: T001
+# Template Family: outage_ranking_by_jurisdiction
+# Question: On what date and time did each jurisdiction reach its maximum recorded number of customer outages?
+# Question Template: On what date and time did each {JURISDICTION_TYPE} reach its maximum recorded number of {OUTAGE_METRIC}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?maxOutages ?dateOfMax
+WHERE {
+  {
+    SELECT ?county (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?rec a goo:CustomerOutageRecord ;
+           goo:representsCounty ?county ;
+           goo:numberOfOutages ?num .
+    }
+    GROUP BY ?county
+  }
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?maxOutages ;
+       goo:recordDateTime ?dateOfMax .
+}
+ORDER BY DESC(?maxOutages)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 28
+# QID: 1000020
+# Interpretation ID: Q1000020_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: Which remote sensing machine and instrument captured any random nighttime-light image in the GeoOutage dataset?
+# Question Template: Which {PLATFORM_TYPE} and {SENSOR_TYPE} captured any {IMAGE_TYPE} image in {DATASET}?
+# Label: Primary interpretation: platform and sensor for one arbitrary NTL image
+# Ambiguity Dimensions: semantic
+# Rationale: Matches the edited question by selecting a single nighttime-light image and returning the remote-sensing platform and instrument attached to it.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?satellite ?sensor
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSatellite ?satellite ;
+       goo:fromSensor ?sensor .
+}
+LIMIT 1
+# ------------------------------------------------------------------------------
+
+# Query 29
+# QID: 1000021
+# Interpretation ID: Q1000021_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which U.S. county is depicted in the power outage severity map corresponding to a specific customer outage record?
+# Question Template: Which {JURISDICTION_TYPE} is depicted in the {MAP_TYPE} corresponding to {OUTAGE_RECORD}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county
+WHERE {
+  VALUES ?record { gokg:customeroutagerecord.12086.2018-06-11T19-00-00Z }
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 30
+# QID: 1000022
+# Interpretation ID: Q1000022_I0
+# Interpretation Type: original source query
+# Template ID: T003
+# Template Family: single_entity_property_lookup
+# Question: What is the maximum number of power outages recorded for the county in the third most populous state named after Andrew Jackson in the Eagle-I dataset?
+# Question Template: What is the maximum number of {OUTAGE_METRIC} recorded for {JURISDICTION_INSTANCE} in {DATASET}?
+# Label: Primary interpretation: maximum Eagle-I power outages for Jackson County, Florida
+# Ambiguity Dimensions: spatial, semantic
+# Rationale: Aligns the edited clue-based question to Jackson County, Florida and returns the maximum Eagle-I outage count for that county.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT (MAX(?num) AS ?maxOutages)
+WHERE {
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty gokg:JacksonCountyFL ;
+          goo:numberOfOutages ?num .
+}
+
+# ------------------------------------------------------------------------------
+
+# Query 31
+# QID: 1000023
+# Interpretation ID: Q1000023_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Is there an EAGLE-I snapshot for the Tampa, Florida county that also has a matching NTL scene?
+# Question Template: Is there an {OUTAGE_RECORD_SOURCE} snapshot for {JURISDICTION_INSTANCE} that also has a matching {IMAGE_TYPE} scene?
+# Label: Primary interpretation: same-day EAGLE-I outage snapshot and NTL scene for Hillsborough County
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Aligns the interpretation text with the edited Tampa/Hillsborough County yes-no matching question; the ASK pattern already encodes that match.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+ASK
+WHERE {
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty gokg:HillsboroughCountyFL ;
+          goo:recordDateTime ?recordDate .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty gokg:HillsboroughCountyFL ;
+       goo:acquisitionDateTime ?imageDate .
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+}
+# ------------------------------------------------------------------------------
+
+# Query 32
+# QID: 1000024
+# Interpretation ID: Q1000024_I0
+# Interpretation Type: optimized source-derived query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: For the central-Florida county where the largest city is named Clermont, what derived severity maps are associated with the VIIRS-captured scene for the month of March in 2024?
+# Question Template: For {PLACE_DESCRIPTOR}, what derived {MAP_TYPE} are associated with the {SENSOR_TYPE}-captured {IMAGE_TYPE} scene for {TEMPORAL_WINDOW}?
+# Label: Optimized KG interpretation with March 2024 image-date filter
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Resolves the Clermont largest-city descriptor to Lake County, filters VIIRS NTL scenes to March 2024 by acquisition date, and returns only derived outage maps.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?map
+WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSensor gokg:sensor.VIIRS ;
+       goo:representsCounty gokg:LakeCountyFL ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map .
+  ?map a goo:OutageMap .
+  FILTER (?imageDate >= "2024-03-01T00:00:00Z"^^xsd:dateTime && ?imageDate < "2024-04-01T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?map
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 33
+# QID: 1000025
+# Interpretation ID: Q1000025_I0
+# Interpretation Type: original source query
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: How many tropical cyclones were active on the date 6 October 2024 in the Atlantic basin, and what were their names and maximum sustained wind speeds?
+# Question Template: How many {CYCLONE_TYPE} were active on {DATE} in {BASIN}, and what were their names and maximum sustained wind speeds?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: temporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?activeCycloneCount ?cyclone ?name ?maxSustainedWindSpeed
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?cyclone) AS ?activeCycloneCount)
+    WHERE {
+      ?cyclone a goo:HurricaneEventRecord  ;
+               goo:basin "ATL"^^xsd:string ;
+               goo:eventStartTime ?start ;
+               goo:eventEndTime ?end .
+      FILTER (
+        ?start < "2024-10-07T00:00:00+00:00"^^xsd:dateTime &&
+        ?end >= "2024-10-06T00:00:00+00:00"^^xsd:dateTime
+      )
+    }
+  }
+  ?cyclone a goo:HurricaneEventRecord ;
+           schema:name ?name ;
+           goo:maxSustainedWindSpeed ?maxSustainedWindSpeed ;
+           goo:basin "ATL"^^xsd:string ;
+           goo:eventStartTime ?start ;
+           goo:eventEndTime ?end .
+  FILTER (
+    ?start < "2024-10-07T00:00:00+00:00"^^xsd:dateTime &&
+    ?end >= "2024-10-06T00:00:00+00:00"^^xsd:dateTime
+  )
+}
+ORDER BY ?name
+
+# ------------------------------------------------------------------------------
+
+# Query 34
+# QID: 1000026
+# Interpretation ID: Q1000026_I0
+# Interpretation Type: original source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On Ian's Florida landfall day, what was the peak outage count in the southwest Florida county centered on Fort Myers, and were any hurricanes active within the general area of the county that day, and if so what were their names?
+# Question Template: On {CYCLONE_EVENT}'s {REFERENCE_DATE}, what was the peak outage count in {PLACE_DESCRIPTOR}, and were any hurricanes active within {SPATIAL_WINDOW} that day?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?maxOutages ?hasNearbyHurricane (GROUP_CONCAT(DISTINCT STR(?nearbyHurricaneName); separator=", ") AS ?hurricaneNames)
+WHERE {
+  {
+    SELECT (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty gokg:LeeCountyFL ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?num .
+      FILTER (SUBSTR(STR(?recordDate), 1, 10) = "2022-09-28")
+    }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?nearbyCyclone) > 0 AS ?hasNearbyHurricane)
+    WHERE {
+      gokg:LeeCountyFL goo:lat ?countyLat ;
+                       goo:lon ?countyLon .
+      ?nearbyCyclone a goo:HurricaneEventRecord ;
+                     schema:name ?nearbyHurricaneName ;
+                     goo:eventStartTime ?start ;
+                     goo:eventEndTime ?end ;
+                     goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      FILTER (?start < "2022-09-29T00:00:00+00:00"^^xsd:dateTime && ?end >= "2022-09-28T00:00:00+00:00"^^xsd:dateTime)
+      FILTER (SUBSTR(STR(?trackDate), 1, 10) = "2022-09-28")
+      FILTER (
+        ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+        ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+      )
+    }
+  }
+  OPTIONAL {
+    gokg:LeeCountyFL goo:lat ?countyLat ;
+                     goo:lon ?countyLon .
+    ?nearbyCyclone a goo:HurricaneEventRecord ;
+                   schema:name ?nearbyHurricaneName ;
+                   goo:eventStartTime ?start ;
+                   goo:eventEndTime ?end ;
+                   goo:hasTrackRecord ?track .
+    ?track a goo:HurricaneTrackRecord ;
+           goo:recordDateTime ?trackDate ;
+           goo:lat ?trackLat ;
+           goo:lon ?trackLon .
+    FILTER (?start < "2022-09-29T00:00:00+00:00"^^xsd:dateTime && ?end >= "2022-09-28T00:00:00+00:00"^^xsd:dateTime)
+    FILTER (SUBSTR(STR(?trackDate), 1, 10) = "2022-09-28")
+    FILTER (
+      ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+      ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+    )
+  }
+}
+GROUP BY ?maxOutages ?hasNearbyHurricane
+
+# ------------------------------------------------------------------------------
+
+# Query 35
+# QID: 1000026
+# Interpretation ID: Q1000026_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On Ian's Florida landfall day, what was the peak outage count in the southwest Florida county centered on Fort Myers, and were any hurricanes active within the general area of the county that day, and if so what were their names?
+# Question Template: On {CYCLONE_EVENT}'s {REFERENCE_DATE}, what was the peak outage count in {PLACE_DESCRIPTOR}, and were any hurricanes active within {SPATIAL_WINDOW} that day?
+# Label: Spatial interpretation: tighter general-area window around Lee County
+# Ambiguity Dimensions: spatial
+# Rationale: The phrase "within the general area" can be operationalized with a smaller latitude/longitude window.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?maxOutages ?hasNearbyHurricane (GROUP_CONCAT(DISTINCT STR(?nearbyHurricaneName); separator=", ") AS ?hurricaneNames)
+WHERE {
+  {
+    SELECT (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty gokg:LeeCountyFL ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?num .
+      FILTER (SUBSTR(STR(?recordDate), 1, 10) = "2022-09-28")
+    }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?nearbyCyclone) > 0 AS ?hasNearbyHurricane)
+    WHERE {
+      gokg:LeeCountyFL goo:lat ?countyLat ;
+                       goo:lon ?countyLon .
+      ?nearbyCyclone a goo:HurricaneEventRecord ;
+                     schema:name ?nearbyHurricaneName ;
+                     goo:eventStartTime ?start ;
+                     goo:eventEndTime ?end ;
+                     goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      FILTER (?start < "2022-09-29T00:00:00+00:00"^^xsd:dateTime && ?end >= "2022-09-28T00:00:00+00:00"^^xsd:dateTime)
+      FILTER (SUBSTR(STR(?trackDate), 1, 10) = "2022-09-28")
+      FILTER (
+        ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 2 &&
+        ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 2
+      )
+    }
+  }
+  OPTIONAL {
+    gokg:LeeCountyFL goo:lat ?countyLat ;
+                     goo:lon ?countyLon .
+    ?nearbyCyclone a goo:HurricaneEventRecord ;
+                   schema:name ?nearbyHurricaneName ;
+                   goo:eventStartTime ?start ;
+                   goo:eventEndTime ?end ;
+                   goo:hasTrackRecord ?track .
+    ?track a goo:HurricaneTrackRecord ;
+           goo:recordDateTime ?trackDate ;
+           goo:lat ?trackLat ;
+           goo:lon ?trackLon .
+    FILTER (?start < "2022-09-29T00:00:00+00:00"^^xsd:dateTime && ?end >= "2022-09-28T00:00:00+00:00"^^xsd:dateTime)
+    FILTER (SUBSTR(STR(?trackDate), 1, 10) = "2022-09-28")
+    FILTER (
+      ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 2 &&
+      ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+    )
+  }
+}
+GROUP BY ?maxOutages ?hasNearbyHurricane
+
+# ------------------------------------------------------------------------------
+
+# Query 36
+# QID: 1000026
+# Interpretation ID: Q1000026_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On Ian's Florida landfall day, what was the peak outage count in the southwest Florida county centered on Fort Myers, and were any hurricanes active within the general area of the county that day, and if so what were their names?
+# Question Template: On {CYCLONE_EVENT}'s {REFERENCE_DATE}, what was the peak outage count in {PLACE_DESCRIPTOR}, and were any hurricanes active within {SPATIAL_WINDOW} that day?
+# Label: Temporal interpretation: landfall day plus adjacent days
+# Ambiguity Dimensions: temporal
+# Rationale: The landfall-day phrase can be broadened to a short operational event window around landfall.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?maxOutages ?hasNearbyHurricane (GROUP_CONCAT(DISTINCT STR(?nearbyHurricaneName); separator=", ") AS ?hurricaneNames)
+WHERE {
+  {
+    SELECT (MAX(?num) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty gokg:LeeCountyFL ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?num .
+      FILTER (SUBSTR(STR(?recordDate), 1, 10) = "2022-09-28")
+    }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?nearbyCyclone) > 0 AS ?hasNearbyHurricane)
+    WHERE {
+      gokg:LeeCountyFL goo:lat ?countyLat ;
+                       goo:lon ?countyLon .
+      ?nearbyCyclone a goo:HurricaneEventRecord ;
+                     schema:name ?nearbyHurricaneName ;
+                     goo:eventStartTime ?start ;
+                     goo:eventEndTime ?end ;
+                     goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      FILTER (?start < "2022-09-30T00:00:00+00:00"^^xsd:dateTime && ?end >= "2022-09-27T00:00:00+00:00"^^xsd:dateTime)
+      FILTER (?trackDate >= "2022-09-27T00:00:00+00:00"^^xsd:dateTime && ?trackDate < "2022-09-30T00:00:00+00:00"^^xsd:dateTime)
+      FILTER (
+        ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+        ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+      )
+    }
+  }
+  OPTIONAL {
+    gokg:LeeCountyFL goo:lat ?countyLat ;
+                     goo:lon ?countyLon .
+    ?nearbyCyclone a goo:HurricaneEventRecord ;
+                   schema:name ?nearbyHurricaneName ;
+                   goo:eventStartTime ?start ;
+                   goo:eventEndTime ?end ;
+                   goo:hasTrackRecord ?track .
+    ?track a goo:HurricaneTrackRecord ;
+           goo:recordDateTime ?trackDate ;
+           goo:lat ?trackLat ;
+           goo:lon ?trackLon .
+    FILTER (?start < "2022-09-30T00:00:00+00:00"^^xsd:dateTime && ?end >= "2022-09-27T00:00:00+00:00"^^xsd:dateTime)
+    FILTER (?trackDate >= "2022-09-27T00:00:00+00:00"^^xsd:dateTime && ?trackDate < "2022-09-30T00:00:00+00:00"^^xsd:dateTime)
+    FILTER (
+      ABS(xsd:decimal(?trackLat) - xsd:decimal(?countyLat)) <= 5 &&
+      ABS(xsd:decimal(?trackLon) - xsd:decimal(?countyLon)) <= 5
+    )
+  }
+}
+GROUP BY ?maxOutages ?hasNearbyHurricane
+
+# ------------------------------------------------------------------------------
+
+# Query 37
+# QID: 1000027
+# Interpretation ID: Q1000027_I0
+# Interpretation Type: original source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On the day of the Moore tornado, how many tornado records occurred in or within the general area of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?
+# Question Template: On {EVENT_DAY}, how many {EVENT_TYPE} records occurred in or within {SPATIAL_WINDOW} of {JURISDICTION_INSTANCE}, and what were their ratings and injury counts?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < "2013-05-21T00:00:00"^^xsd:dateTime && ?end >= "2013-05-20T00:00:00"^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < "2013-05-21T00:00:00"^^xsd:dateTime && ?end >= "2013-05-20T00:00:00"^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event
+
+# ------------------------------------------------------------------------------
+
+# Query 38
+# QID: 1000027
+# Interpretation ID: Q1000027_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On the day of the Moore tornado, how many tornado records occurred in or within the general area of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?
+# Question Template: On {EVENT_DAY}, how many {EVENT_TYPE} records occurred in or within {SPATIAL_WINDOW} of {JURISDICTION_INSTANCE}, and what were their ratings and injury counts?
+# Label: Spatial interpretation: broader county-area tornado search radius
+# Ambiguity Dimensions: spatial
+# Rationale: The phrase "within the general area" can reasonably map to a broader 50 km spatial radius.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < "2013-05-21T00:00:00"^^xsd:dateTime && ?end >= "2013-05-20T00:00:00"^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < "2013-05-21T00:00:00"^^xsd:dateTime && ?end >= "2013-05-20T00:00:00"^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+}
+ORDER BY ?event
+
+# ------------------------------------------------------------------------------
+
+# Query 39
+# QID: 1000027
+# Interpretation ID: Q1000027_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On the day of the Moore tornado, how many tornado records occurred in or within the general area of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?
+# Question Template: On {EVENT_DAY}, how many {EVENT_TYPE} records occurred in or within {SPATIAL_WINDOW} of {JURISDICTION_INSTANCE}, and what were their ratings and injury counts?
+# Label: Temporal interpretation: Moore tornado event period plus adjacent day
+# Ambiguity Dimensions: temporal
+# Rationale: The phrase "day of the Moore tornado" can be broadened when reports cross UTC/local-day boundaries.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < "2013-05-22T00:00:00"^^xsd:dateTime && ?end >= "2013-05-19T00:00:00"^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < "2013-05-22T00:00:00"^^xsd:dateTime && ?end >= "2013-05-19T00:00:00"^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event
+
+# ------------------------------------------------------------------------------
+
+# Query 40
+# QID: 1000028
+# Interpretation ID: Q1000028_I0
+# Interpretation Type: original source query
+# Template ID: T006
+# Template Family: comparative_event_count
+# Question: What is the difference between how many storm events were recorded in each state between the year the COVID pandemic started and one decade earlier?
+# Question Template: What is the difference between how many {EVENT_TYPE} were recorded in each state between {YEAR_A} and {YEAR_B}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?count2020 ?count2010 (?count2020 - ?count2010 AS ?difference)
+WHERE {
+  ?state a goo:State .
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?event2020) AS ?count2020Raw)
+    WHERE {
+      ?event2020 a goo:StormEventRecord ;
+                 goo:occurredInState ?state ;
+                 goo:eventStartTime ?start2020 .
+      FILTER (YEAR(?start2020) = 2020)
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?event2010) AS ?count2010Raw)
+    WHERE {
+      ?event2010 a goo:StormEventRecord ;
+                 goo:occurredInState ?state ;
+                 goo:eventStartTime ?start2010 .
+      FILTER (YEAR(?start2010) = 2010)
+    }
+    GROUP BY ?state
+  }
+  BIND(COALESCE(?count2020Raw, 0) AS ?count2020)
+  BIND(COALESCE(?count2010Raw, 0) AS ?count2010)
+  FILTER (?count2020 > 0 || ?count2010 > 0)
+}
+ORDER BY DESC(ABS(?difference)) ?state
+
+# ------------------------------------------------------------------------------
+
+# Query 41
+# QID: 1000029
+# Interpretation ID: Q1000029_I0
+# Interpretation Type: original source query
+# Template ID: T006
+# Template Family: comparative_event_count
+# Question: How many and which hurricanes made landfall in Louisiana in the month of August across all years, and when did they make landfall?
+# Question Template: How many and which {CYCLONE_TYPE} made landfall in {JURISDICTION_INSTANCE} in {MONTH} across all years, and when did they make landfall?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX schema:     <http://schema.org/>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?hurricaneCount ?cyclone ?name ?landfallDate
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?cyclone) AS ?hurricaneCount)
+    WHERE {
+      gokg:LouisianaState geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:status "HU"^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?trackLon), " ", STR(?trackLat), ")"), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (MONTH(?trackDate) = 8)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+  }
+  {
+    SELECT ?cyclone ?name (MIN(?trackDate) AS ?landfallDate)
+    WHERE {
+      gokg:LouisianaState geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               schema:name ?name ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:recordDateTime ?trackDate ;
+             goo:status "HU"^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?trackLon), " ", STR(?trackLat), ")"), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (MONTH(?trackDate) = 8)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?cyclone ?name
+  }
+}
+ORDER BY ?landfallDate ?name
+
+# ------------------------------------------------------------------------------
+
+# Query 42
+# QID: 1000030
+# Interpretation ID: Q1000030_I0
+# Interpretation Type: original source query
+# Template ID: T006
+# Template Family: comparative_event_count
+# Question: What is the ratio of tornadoes to hurricanes to thunderstorms to wildfires in Florida and California?
+# Question Template: What is the ratio of {EVENT_TYPE_SET} in {STATE_SET}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?tornadoCount ?hurricaneCount ?thunderstormCount ?wildfireCount (CONCAT(STR(?tornadoCount), ":", STR(?hurricaneCount), ":", STR(?thunderstormCount), ":", STR(?wildfireCount)) AS ?eventRatio)
+WHERE {
+  VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?tornado) AS ?tornadoCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?tornado a goo:TornadoEventRecord ;
+               goo:occurredInState ?state .
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?hurricane) AS ?hurricaneCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?state geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?hurricane a goo:HurricaneEventRecord ;
+                 goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?trackLon), " ", STR(?trackLat), ")"), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?thunderstorm) AS ?thunderstormCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?thunderstorm a goo:StormEventRecord ;
+                    goo:occurredInState ?state ;
+                    goo:stormEventType ?thunderstormType .
+      FILTER (CONTAINS(LCASE(STR(?thunderstormType)), "thunderstorm"))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (COUNT(DISTINCT ?wildfire) AS ?wildfireCountRaw)
+    WHERE {
+      VALUES ?state { gokg:FloridaState gokg:CaliforniaState }
+      ?wildfire a goo:StormEventRecord ;
+                goo:occurredInState ?state ;
+                goo:stormEventType ?wildfireType .
+      FILTER (LCASE(STR(?wildfireType)) = "wildfire")
+    }
+    GROUP BY ?state
+  }
+  BIND(COALESCE(?tornadoCountRaw, 0) AS ?tornadoCount)
+  BIND(COALESCE(?hurricaneCountRaw, 0) AS ?hurricaneCount)
+  BIND(COALESCE(?thunderstormCountRaw, 0) AS ?thunderstormCount)
+  BIND(COALESCE(?wildfireCountRaw, 0) AS ?wildfireCount)
+}
+ORDER BY ?state
+
+# ------------------------------------------------------------------------------
+
+# Query 43
+# QID: 1000031
+# Interpretation ID: Q1000031_I0
+# Interpretation Type: original source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: Which storm events in Florida started before same-county EAGLE-I records that later exceeded 50,000 outages on the same day?
+# Question Template: Which {EVENT_TYPE} in {STATE} started before same-county {OUTAGE_RECORD_SOURCE} records that later exceeded {OUTAGE_THRESHOLD} on {TEMPORAL_ALIGNMENT}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event ?county ?eventType ?eventStart ?record ?recordDate ?numOutages
+WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState gokg:FloridaState ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?eventType ;
+         goo:eventStartTime ?eventStart .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?numOutages > 50000)
+  FILTER (?eventStart <= ?recordDate)
+  FILTER (SUBSTR(STR(?eventStart), 1, 10) = SUBSTR(STR(?recordDate), 1, 10))
+}
+ORDER BY ?county ?eventStart DESC(?numOutages)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 44
+# QID: 1000031
+# Interpretation ID: Q1000031_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: Which storm events in Florida started before same-county EAGLE-I records that later exceeded 50,000 outages on the same day?
+# Question Template: Which {EVENT_TYPE} in {STATE} started before same-county {OUTAGE_RECORD_SOURCE} records that later exceeded {OUTAGE_THRESHOLD} on {TEMPORAL_ALIGNMENT}?
+# Label: Temporal interpretation: prior same-county event, not necessarily same day
+# Ambiguity Dimensions: temporal
+# Rationale: The word "before" can mean any earlier event in the same county, while the source query chooses same-day precedence.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event ?county ?eventType ?eventStart ?record ?recordDate ?numOutages
+WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState gokg:FloridaState ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?eventType ;
+         goo:eventStartTime ?eventStart .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?numOutages > 50000)
+  FILTER (?eventStart <= ?recordDate)
+  # Same-day constraint removed: event may start before a later outage record in the same county.
+  FILTER (?eventStart <= ?recordDate)
+}
+ORDER BY ?county ?eventStart DESC(?numOutages)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 45
+# QID: 1000031
+# Interpretation ID: Q1000031_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: Which storm events in Florida started before same-county EAGLE-I records that later exceeded 50,000 outages on the same day?
+# Question Template: Which {EVENT_TYPE} in {STATE} started before same-county {OUTAGE_RECORD_SOURCE} records that later exceeded {OUTAGE_THRESHOLD} on {TEMPORAL_ALIGNMENT}?
+# Label: Semantic interpretation: stricter major-outage threshold
+# Ambiguity Dimensions: semantic
+# Rationale: The phrase "exceeded 50,000" is exact in the current NL, but this variant supports a stricter major-outage template slot.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event ?county ?eventType ?eventStart ?record ?recordDate ?numOutages
+WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState gokg:FloridaState ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?eventType ;
+         goo:eventStartTime ?eventStart .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?numOutages > 100000)
+  FILTER (?eventStart <= ?recordDate)
+  FILTER (SUBSTR(STR(?eventStart), 1, 10) = SUBSTR(STR(?recordDate), 1, 10))
+}
+ORDER BY ?county ?eventStart DESC(?numOutages)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 46
+# QID: 1000032
+# Interpretation ID: Q1000032_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which NTL images and severity maps provide multimodal evidence for Florida county outage records above 100,000 during the Irma response window?
+# Question Template: Which {IMAGE_TYPE} images and {MAP_TYPE} provide multimodal evidence for {STATE} county outage records above {OUTAGE_THRESHOLD} during {EVENT_WINDOW}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 100000)
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER (?recordDate >= "2017-09-06T00:00:00Z"^^xsd:dateTime && ?recordDate < "2017-09-16T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 47
+# QID: 1000032
+# Interpretation ID: Q1000032_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which NTL images and severity maps provide multimodal evidence for Florida county outage records above 100,000 during the Irma response window?
+# Question Template: Which {IMAGE_TYPE} images and {MAP_TYPE} provide multimodal evidence for {STATE} county outage records above {OUTAGE_THRESHOLD} during {EVENT_WINDOW}?
+# Label: Temporal interpretation: Irma landfall-centered response window
+# Ambiguity Dimensions: temporal
+# Rationale: The phrase "Irma response window" can be narrowed to the immediate Florida impact/response period.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 100000)
+  FILTER (SUBSTR(STR(?recordDate), 1, 10) = SUBSTR(STR(?imageDate), 1, 10))
+  FILTER (?recordDate >= "2017-09-10T00:00:00Z"^^xsd:dateTime && ?recordDate < "2017-09-14T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 48
+# QID: 1000032
+# Interpretation ID: Q1000032_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which NTL images and severity maps provide multimodal evidence for Florida county outage records above 100,000 during the Irma response window?
+# Question Template: Which {IMAGE_TYPE} images and {MAP_TYPE} provide multimodal evidence for {STATE} county outage records above {OUTAGE_THRESHOLD} during {EVENT_WINDOW}?
+# Label: Spatiotemporal interpretation: same county and same response window, not exact image/record day
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Multimodal evidence can be interpreted as evidence within the same response window, not necessarily same-day imagery.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 100000)
+  FILTER (?imageDate >= "2017-09-06T00:00:00Z"^^xsd:dateTime && ?imageDate < "2017-09-16T00:00:00Z"^^xsd:dateTime)
+  FILTER (?recordDate >= "2017-09-06T00:00:00Z"^^xsd:dateTime && ?recordDate < "2017-09-16T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 49
+# QID: 1000033
+# Interpretation ID: Q1000033_I0
+# Interpretation Type: original source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: If Fort Myers's County's outage impact extended to neighboring counties during Hurricane Ian, which neighboring counties had high social vulnerability and high recorded outages?
+# Question Template: If {FOCAL_PLACE}'s outage impact extended to {SPATIAL_RELATION} during {EVENT_WINDOW}, which counties had {VULNERABILITY_CONDITION} and {OUTAGE_CONDITION}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?neighborCounty ?sviRecord ?sviScore ?maxOutages
+WHERE {
+  gokg:LeeCountyFL goo:neighboringCounties ?neighborCounty .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?neighborCounty ;
+             goo:sviYear 2022 ;
+             goo:sviOverallScore ?sviScore .
+  {
+    SELECT ?neighborCounty (MAX(?numOutages) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty ?neighborCounty ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?numOutages .
+      FILTER (?recordDate >= "2022-09-23T00:00:00Z"^^xsd:dateTime && ?recordDate < "2022-10-08T00:00:00Z"^^xsd:dateTime)
+    }
+    GROUP BY ?neighborCounty
+  }
+  FILTER (?sviScore >= 0.5 && ?maxOutages > 100000)
+}
+ORDER BY DESC(?sviScore) DESC(?maxOutages)
+
+# ------------------------------------------------------------------------------
+
+# Query 50
+# QID: 1000033
+# Interpretation ID: Q1000033_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: If Fort Myers's County's outage impact extended to neighboring counties during Hurricane Ian, which neighboring counties had high social vulnerability and high recorded outages?
+# Question Template: If {FOCAL_PLACE}'s outage impact extended to {SPATIAL_RELATION} during {EVENT_WINDOW}, which counties had {VULNERABILITY_CONDITION} and {OUTAGE_CONDITION}?
+# Label: Semantic interpretation: relaxed high-vulnerability/high-outage thresholds
+# Ambiguity Dimensions: semantic
+# Rationale: The words "high social vulnerability" and "high recorded outages" require threshold choices; this variant uses relaxed thresholds.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?neighborCounty ?sviRecord ?sviScore ?maxOutages
+WHERE {
+  gokg:LeeCountyFL goo:neighboringCounties ?neighborCounty .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?neighborCounty ;
+             goo:sviYear 2022 ;
+             goo:sviOverallScore ?sviScore .
+  {
+    SELECT ?neighborCounty (MAX(?numOutages) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty ?neighborCounty ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?numOutages .
+      FILTER (?recordDate >= "2022-09-23T00:00:00Z"^^xsd:dateTime && ?recordDate < "2022-10-08T00:00:00Z"^^xsd:dateTime)
+    }
+    GROUP BY ?neighborCounty
+  }
+  FILTER (?sviScore >= 0.75 && ?maxOutages > 50000)
+}
+ORDER BY DESC(?sviScore) DESC(?maxOutages)
+
+# ------------------------------------------------------------------------------
+
+# Query 51
+# QID: 1000033
+# Interpretation ID: Q1000033_I2
+# Interpretation Type: template-based interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: If Fort Myers's County's outage impact extended to neighboring counties during Hurricane Ian, which neighboring counties had high social vulnerability and high recorded outages?
+# Question Template: If {FOCAL_PLACE}'s outage impact extended to {SPATIAL_RELATION} during {EVENT_WINDOW}, which counties had {VULNERABILITY_CONDITION} and {OUTAGE_CONDITION}?
+# Label: Temporal interpretation: immediate Ian landfall impact window
+# Ambiguity Dimensions: temporal
+# Rationale: The phrase "during Hurricane Ian" can be interpreted as the immediate landfall impact period rather than the broader response window.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?neighborCounty ?sviRecord ?sviScore ?maxOutages
+WHERE {
+  gokg:LeeCountyFL goo:neighboringCounties ?neighborCounty .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?neighborCounty ;
+             goo:sviYear 2022 ;
+             goo:sviOverallScore ?sviScore .
+  {
+    SELECT ?neighborCounty (MAX(?numOutages) AS ?maxOutages)
+    WHERE {
+      ?record a goo:CustomerOutageRecord ;
+              goo:representsCounty ?neighborCounty ;
+              goo:recordDateTime ?recordDate ;
+              goo:numberOfOutages ?numOutages .
+      FILTER (?recordDate >= "2022-09-28T00:00:00Z"^^xsd:dateTime && ?recordDate < "2022-10-03T00:00:00Z"^^xsd:dateTime)
+    }
+    GROUP BY ?neighborCounty
+  }
+  FILTER (?sviScore >= 0.8 && ?maxOutages > 100000)
+}
+ORDER BY DESC(?sviScore) DESC(?maxOutages)
+
+# ------------------------------------------------------------------------------
+
+# Query 52
+# QID: 1000034
+# Interpretation ID: Q1000034_I0
+# Interpretation Type: original source query
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: Which Atlantic and Pacific hurricanes lasted more than three days and reached maximum sustained winds of an extremely powerful cyclone?
+# Question Template: Which {BASIN_SET} hurricanes lasted more than {DURATION_THRESHOLD} and reached maximum sustained winds of {INTENSITY_DESCRIPTOR}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied in the source GeoOutageBench JSON.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?cyclone ?name ?start ?end ?maxSustainedWindSpeed
+WHERE {
+  VALUES ?basin { "ATL"^^xsd:string "EPAC"^^xsd:string "CPAC"^^xsd:string }
+  BIND(160 AS ?extremelyPowerfulWindThreshold)
+  ?cyclone a goo:HurricaneEventRecord ;
+           schema:name ?name ;
+           goo:basin ?basin ;
+           goo:eventStartTime ?start ;
+           goo:eventEndTime ?end ;
+           goo:maxSustainedWindSpeed ?maxSustainedWindSpeed .
+  FILTER (?maxSustainedWindSpeed >= ?extremelyPowerfulWindThreshold)
+  FILTER ((?end - ?start) > "P3D"^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?maxSustainedWindSpeed) ?start
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 53
+# QID: 1000034
+# Interpretation ID: Q1000034_I1
+# Interpretation Type: template-based interpretation
+# Template ID: T002
+# Template Family: temporal_interval_filter
+# Question: Which Atlantic and Pacific hurricanes lasted more than three days and reached maximum sustained winds of an extremely powerful cyclone?
+# Question Template: Which {BASIN_SET} hurricanes lasted more than {DURATION_THRESHOLD} and reached maximum sustained winds of {INTENSITY_DESCRIPTOR}?
+# Label: Semantic interpretation: extremely powerful as Category-5-style threshold in alternate wind units
+# Ambiguity Dimensions: semantic
+# Rationale: The phrase "extremely powerful cyclone" is semantic; this variant makes the intensity threshold less strict.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?cyclone ?name ?start ?end ?maxSustainedWindSpeed
+WHERE {
+  VALUES ?basin { "ATL"^^xsd:string "EPAC"^^xsd:string "CPAC"^^xsd:string }
+  BIND(137 AS ?extremelyPowerfulWindThreshold)
+  ?cyclone a goo:HurricaneEventRecord ;
+           schema:name ?name ;
+           goo:basin ?basin ;
+           goo:eventStartTime ?start ;
+           goo:eventEndTime ?end ;
+           goo:maxSustainedWindSpeed ?maxSustainedWindSpeed .
+  FILTER (?maxSustainedWindSpeed >= ?extremelyPowerfulWindThreshold)
+  FILTER ((?end - ?start) > "P3D"^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?maxSustainedWindSpeed) ?start
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 54
+# QID: 1000035
+# Interpretation ID: Q1000035_I0
+# Interpretation Type: thresholded interpretation
+# Template ID: T007
+# Template Family: storm_event_svi_county_threshold
+# Question: Which counties in the state bordering Alabama and Georgia had an SVI overall score of at least 0.8 in the year before 2023 and a number of storm events recorded that same year?
+# Question Template: Which counties in {STATE_DESCRIPTOR} had {SVI_DESCRIPTOR} in {RELATIVE_YEAR_DESCRIPTOR} and a number of {EVENT_TYPE} recorded that same year?
+# Label: KG interpretation with storm-event count threshold
+# Ambiguity Dimensions: spatial, temporal, semantic, spatiotemporal
+# Rationale: Preserves the question text while operationalizing 'a number of storm events' as COUNT(DISTINCT ?event) >= 8.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?sviScore ?stormEventCount
+WHERE {
+  ?state a goo:State ;
+         goo:neighboringStates gokg:AlabamaState ;
+         goo:neighboringStates gokg:GeorgiaState .
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  BIND((2023 - 1) AS ?targetYear)
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?targetYear ;
+             goo:sviOverallScore ?sviScore .
+  FILTER (?sviScore >= 0.8)
+  {
+    SELECT ?county ?state (COUNT(DISTINCT ?event) AS ?stormEventCount)
+    WHERE {
+      BIND((2023 - 1) AS ?eventYear)
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState ?state ;
+             goo:occurredInCounty ?county ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = ?eventYear)
+    }
+    GROUP BY ?county ?state
+  }
+  FILTER (?stormEventCount >= 8)
+}
+ORDER BY DESC(?sviScore) DESC(?stormEventCount)
+
+# ------------------------------------------------------------------------------
+
+# Query 55
+# QID: 1000036
+# Interpretation ID: Q1000036_I0
+# Interpretation Type: original source query
+# Template ID: T008
+# Template Family: longitudinal_svi_population_change
+# Question: For the administrative divisions in the U.S. with the highest Social Vulnerability Indexes, what was their SVI at the start of the new millennium, then one decade later, then one decade after that, and what was their population increase in those two decades, and their poverty levels?
+# Question Template: For the {ADMIN_DIVISION_SCOPE} with {RANKING_DESCRIPTOR}, what was their {SVI_METRIC} at {YEAR_A_DESCRIPTOR}, then {YEAR_B_DESCRIPTOR}, then {YEAR_C_DESCRIPTOR}, and what was their {POPULATION_CHANGE_METRIC} in {POPULATION_CHANGE_WINDOW}, and their {POVERTY_METRIC}?
+# Label: Primary KG interpretation: counties ranked by 2020 SVI with poverty rates
+# Ambiguity Dimensions: spatial, temporal, semantic
+# Rationale: Operationalizes the natural-language longitudinal SVI question using county-level CDC SVI records available in the KG, including poverty rates for each requested SVI year.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?adminDivision ?sviRecord2000 ?svi2000 ?povertyRate2000 ?sviRecord2010 ?svi2010 ?povertyRate2010 ?sviRecord2020 ?svi2020 ?povertyRate2020 ?populationIncrease2000To2020
+WHERE {
+  ?adminDivision a goo:County .
+  ?sviRecord2000 a goo:SVIRecord ;
+                 goo:representsCounty ?adminDivision ;
+                 goo:sviYear 2000 ;
+                 goo:sviOverallScore ?svi2000 ;
+                 goo:povertyRate ?povertyRate2000 ;
+                 goo:totalPopulation ?population2000 .
+  ?sviRecord2010 a goo:SVIRecord ;
+                 goo:representsCounty ?adminDivision ;
+                 goo:sviYear 2010 ;
+                 goo:sviOverallScore ?svi2010 ;
+                 goo:povertyRate ?povertyRate2010 .
+  ?sviRecord2020 a goo:SVIRecord ;
+                 goo:representsCounty ?adminDivision ;
+                 goo:sviYear 2020 ;
+                 goo:sviOverallScore ?svi2020 ;
+                 goo:povertyRate ?povertyRate2020 ;
+                 goo:totalPopulation ?population2020 .
+  BIND((xsd:integer(?population2020) - xsd:integer(?population2000)) AS ?populationIncrease2000To2020)
+}
+ORDER BY DESC(?svi2020) ?adminDivision
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 56
+# QID: 1000037
+# Interpretation ID: Q1000037_I0
+# Interpretation Type: original source query
+# Template ID: T009
+# Template Family: hurricane_landfall_ranking_with_state_svi
+# Question: Which states have the highest number of hurricane landfalls across all years, and what is each stateâ€™s average county-level SVI overall score?
+# Question Template: Which {JURISDICTION_TYPE} have the highest number of {CYCLONE_EVENT_TYPE} landfalls across {TEMPORAL_SCOPE}, and what is each {JURISDICTION_TYPE}'s average {SVI_METRIC}?
+# Label: Primary KG interpretation: state hurricane landfall ranking with average county-level SVI
+# Ambiguity Dimensions: spatial, temporal, semantic
+# Rationale: Operationalizes the state-level hurricane landfall ranking using GeoSPARQL containment of hurricane track points and joins the ranked states to county-level SVI records aggregated by state.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?hurricaneLandfallCount ?averageCountySviOverallScore
+WHERE {
+  {
+    SELECT ?state (COUNT(DISTINCT ?cyclone) AS ?hurricaneLandfallCount)
+    WHERE {
+      ?state a goo:State ;
+             geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:status "HU"^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?trackLon), " ", STR(?trackLat), ")"), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (AVG(?sviScore) AS ?averageCountySviOverallScore)
+    WHERE {
+      ?county a goo:County ;
+              goo:locatedInState ?state .
+      ?sviRecord a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviOverallScore ?sviScore .
+    }
+    GROUP BY ?state
+  }
+}
+ORDER BY DESC(?hurricaneLandfallCount) DESC(?averageCountySviOverallScore)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 57
+# QID: 1000038
+# Interpretation ID: Q1000038_I0
+# Interpretation Type: original source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On the day of the Moore tornado, how many tornado records occurred within 50 km of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?
+# Question Template: On {EVENT_DAY}, how many {EVENT_TYPE} records occurred in or within {SPATIAL_WINDOW} of {JURISDICTION_INSTANCE}, and what were their ratings and injury counts?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied for this GeoOutageBench entry.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?injuriesDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:injuriesDirect ?injuriesDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < "2013-05-21T00:00:00"^^xsd:dateTime && ?end >= "2013-05-20T00:00:00"^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+    }
+  }
+  gokg:ClevelandCountyOK geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:injuriesDirect ?injuriesDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < "2013-05-21T00:00:00"^^xsd:dateTime && ?end >= "2013-05-20T00:00:00"^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 50000)
+}
+ORDER BY ?event
+
+# ------------------------------------------------------------------------------
+
+# Query 58
+# QID: 1000039
+# Interpretation ID: Q1000039_I0
+# Interpretation Type: original source query
+# Template ID: T004
+# Template Family: multimodal_correspondence
+# Question: Which NTL images and outage-severity maps provide multimodal evidence for Florida county outage records above 250,000 during Hurricane Ian's immediate landfall impact window?
+# Question Template: Which {IMAGE_TYPE} images and {MAP_TYPE} provide multimodal evidence for {STATE} county outage records above {OUTAGE_THRESHOLD} during {EVENT_WINDOW}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied for this GeoOutageBench entry.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?record ?recordDate ?numOutages ?ntl ?map ?locator
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?imageDate ;
+       goo:hasOutageMap ?map ;
+       goo:sourceDownloadUrl ?locator .
+  ?map a goo:OutageMap .
+  FILTER (?numOutages > 250000)
+  FILTER (?imageDate >= "2022-09-28T00:00:00Z"^^xsd:dateTime && ?imageDate < "2022-10-03T00:00:00Z"^^xsd:dateTime)
+  FILTER (?recordDate >= "2022-09-28T00:00:00Z"^^xsd:dateTime && ?recordDate < "2022-10-03T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?county ?recordDate
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 59
+# QID: 1000040
+# Interpretation ID: Q1000040_I0
+# Interpretation Type: rephrased source query
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: If the county where Hurricane Helene made landfall's outage impact propagated to neighboring counties, which neighboring counties' latest SVI overall scores were substantial and had outage records above 10,000 during the immediate landfall window?
+# Question Template: If {FOCAL_PLACE}'s outage impact extended to {SPATIAL_RELATION} during {EVENT_WINDOW}, which counties had {VULNERABILITY_CONDITION} and {OUTAGE_CONDITION}?
+# Label: Rephrased KG interpretation for Hurricane Helene landfall county neighbors
+# Ambiguity Dimensions: spatial, temporal, semantic, spatiotemporal
+# Rationale: Rephrases the scenario to Hurricane Helene's Taylor County, Florida landfall, returns distinct county names only, interprets substantial SVI as >= 0.5 on the latest available SVI record, and filters outage records above 10,000 in the immediate landfall window.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county (STR(?countyLabel) AS ?countyName)
+WHERE {
+  gokg:TaylorCountyFL goo:neighboringCounties ?county .
+  ?county a goo:County ;
+          rdfs:label ?countyLabel ;
+          goo:locatedInState gokg:FloridaState .
+  FILTER (LANGMATCHES(LANG(?countyLabel), "en"))
+  {
+    SELECT ?county (MAX(?sviYear) AS ?latestSviYear)
+    WHERE {
+      ?candidateSvi a goo:SVIRecord ;
+                    goo:representsCounty ?county ;
+                    goo:sviYear ?sviYear .
+    }
+    GROUP BY ?county
+  }
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?latestSviYear ;
+             goo:sviOverallScore ?sviScore .
+  ?record a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:recordDateTime ?recordDate ;
+          goo:numberOfOutages ?numOutages .
+  FILTER (?sviScore >= 0.5)
+  FILTER (?numOutages > 10000)
+  FILTER (?recordDate >= "2024-09-26T00:00:00Z"^^xsd:dateTime && ?recordDate < "2024-10-01T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY ?countyName
+
+# ------------------------------------------------------------------------------
+
+# Query 60
+# QID: 1000041
+# Interpretation ID: Q1000041_I0
+# Interpretation Type: original source query
+# Template ID: T007
+# Template Family: storm_event_svi_county_threshold
+# Question: Which counties in states neighboring Florida had 2022 SVI housing-and-transportation scores of at least 0.85 and at least five flood-related storm events that same year?
+# Question Template: Which counties in {STATE_DESCRIPTOR} had {SVI_DESCRIPTOR} in {RELATIVE_YEAR_DESCRIPTOR} and a number of {EVENT_TYPE} recorded that same year?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial, temporal, semantic, spatiotemporal
+# Rationale: Preserves the original SPARQL query exactly as supplied for this GeoOutageBench entry.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?state ?sviRecord ?housingTransportationScore ?floodEventCount
+WHERE {
+  ?state a goo:State ;
+         goo:neighboringStates gokg:FloridaState .
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2022 ;
+             goo:sviHousingTransportationTheme ?housingTransportationScore .
+  FILTER (?housingTransportationScore >= 0.85)
+  {
+    SELECT ?county ?state (COUNT(DISTINCT ?event) AS ?floodEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState ?state ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2022)
+      FILTER (REGEX(STR(?eventType), "flood", "i"))
+    }
+    GROUP BY ?county ?state
+  }
+  FILTER (?floodEventCount >= 5)
+}
+ORDER BY DESC(?housingTransportationScore) DESC(?floodEventCount) ?county
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 61
+# QID: 1000042
+# Interpretation ID: Q1000042_I0
+# Interpretation Type: original source query
+# Template ID: T008
+# Template Family: longitudinal_svi_population_change
+# Question: For Florida counties with the highest 2022 SVI housing-and-transportation scores, what were their SVI overall scores in 2000, 2010, and 2022, their population change from 2000 to 2022, and their 2022 poverty rates?
+# Question Template: For the {ADMIN_DIVISION_SCOPE} with {RANKING_DESCRIPTOR}, what was their {SVI_METRIC} at {YEAR_A_DESCRIPTOR}, then {YEAR_B_DESCRIPTOR}, then {YEAR_C_DESCRIPTOR}, and what was their {POPULATION_CHANGE_METRIC} in {POPULATION_CHANGE_WINDOW}, and their {POVERTY_METRIC}?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial, temporal, semantic
+# Rationale: Preserves the original SPARQL query exactly as supplied for this GeoOutageBench entry.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord2000 ?svi2000 ?sviRecord2010 ?svi2010 ?sviRecord2022 ?svi2022 ?housingTransportationScore2022 ?populationChange2000To2022 ?povertyRate2022
+WHERE {
+  {
+    SELECT ?county ?sviRecord2022 ?svi2022 ?housingTransportationScore2022 ?population2022 ?povertyRate2022
+    WHERE {
+      ?county a goo:County ;
+              goo:locatedInState gokg:FloridaState .
+      ?sviRecord2022 a goo:SVIRecord ;
+                     goo:representsCounty ?county ;
+                     goo:sviYear 2022 ;
+                     goo:sviOverallScore ?svi2022 ;
+                     goo:sviHousingTransportationTheme ?housingTransportationScore2022 ;
+                     goo:totalPopulation ?population2022 ;
+                     goo:povertyRate ?povertyRate2022 .
+    }
+    ORDER BY DESC(?housingTransportationScore2022)
+    LIMIT 10
+  }
+  ?sviRecord2000 a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviYear 2000 ;
+                 goo:sviOverallScore ?svi2000 ;
+                 goo:totalPopulation ?population2000 .
+  ?sviRecord2010 a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviYear 2010 ;
+                 goo:sviOverallScore ?svi2010 .
+  BIND((xsd:integer(?population2022) - xsd:integer(?population2000)) AS ?populationChange2000To2022)
+}
+ORDER BY DESC(?housingTransportationScore2022) ?county
+
+# ------------------------------------------------------------------------------
+
+# Query 62
+# QID: 1000043
+# Interpretation ID: Q1000043_I0
+# Interpretation Type: primary interpretation
+# Template ID: T009
+# Template Family: hurricane_landfall_ranking_with_state_svi
+# Question: Which Gulf Coast states have the highest number of hurricane landfalls in this century, and what is each state's average county-level SVI overall score?
+# Question Template: Which {JURISDICTION_TYPE} have the highest number of {CYCLONE_EVENT_TYPE} landfalls across {TEMPORAL_SCOPE}, and what is each {JURISDICTION_TYPE}'s average {SVI_METRIC}?
+# Label: Primary interpretation: Gulf Coast states with 2022 county-level SVI
+# Ambiguity Dimensions: spatial, temporal, semantic
+# Rationale: Operationalizes Gulf Coast states as a fixed five-state VALUES set, resolves this century as starting on 2001-01-01, and resolves the unspecified SVI year to 2022.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?hurricaneLandfallCount ?averageCountySviOverallScore
+WHERE {
+  VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+  {
+    SELECT ?state (COUNT(DISTINCT ?cyclone) AS ?hurricaneLandfallCount)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?state a goo:State ;
+             geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:eventStartTime ?stormStart ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:status "HU"^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?trackLon), " ", STR(?trackLat), ")"), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (?stormStart >= "2001-01-01T00:00:00Z"^^xsd:dateTime)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (AVG(?sviScore) AS ?averageCountySviOverallScore)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?county a goo:County ;
+              goo:locatedInState ?state .
+      ?sviRecord a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviYear 2022 ;
+                 goo:sviOverallScore ?sviScore .
+    }
+    GROUP BY ?state
+  }
+}
+ORDER BY DESC(?hurricaneLandfallCount) DESC(?averageCountySviOverallScore)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 63
+# QID: 1000043
+# Interpretation ID: Q1000043_I1
+# Interpretation Type: semantic interpretation
+# Template ID: T009
+# Template Family: hurricane_landfall_ranking_with_state_svi
+# Question: Which Gulf Coast states have the highest number of hurricane landfalls in this century, and what is each state's average county-level SVI overall score?
+# Question Template: Which {JURISDICTION_TYPE} have the highest number of {CYCLONE_EVENT_TYPE} landfalls across {TEMPORAL_SCOPE}, and what is each {JURISDICTION_TYPE}'s average {SVI_METRIC}?
+# Label: Semantic interpretation: average across all available county-level SVI records
+# Ambiguity Dimensions: semantic, temporal
+# Rationale: The question does not name an SVI year, so this interpretation averages all available county-level SVI records instead of only 2022 records, while using 2001-01-01 as the start of this century.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?state ?hurricaneLandfallCount ?averageCountySviOverallScore
+WHERE {
+  VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+  {
+    SELECT ?state (COUNT(DISTINCT ?cyclone) AS ?hurricaneLandfallCount)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?state a goo:State ;
+             geosparql:hasGeometry ?stateGeom .
+      ?stateGeom geosparql:asWKT ?stateWKT .
+      ?cyclone a goo:HurricaneEventRecord ;
+               goo:eventStartTime ?stormStart ;
+               goo:hasTrackRecord ?track .
+      ?track a goo:HurricaneTrackRecord ;
+             goo:status "HU"^^xsd:string ;
+             goo:lat ?trackLat ;
+             goo:lon ?trackLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?trackLon), " ", STR(?trackLat), ")"), geosparql:wktLiteral) AS ?trackPoint)
+      FILTER (?stormStart >= "2001-01-01T00:00:00Z"^^xsd:dateTime)
+      FILTER (geof:sfWithin(?trackPoint, ?stateWKT))
+    }
+    GROUP BY ?state
+  }
+  OPTIONAL {
+    SELECT ?state (AVG(?sviScore) AS ?averageCountySviOverallScore)
+    WHERE {
+      VALUES ?state { gokg:TexasState gokg:LouisianaState gokg:MississippiState gokg:AlabamaState gokg:FloridaState }
+      ?county a goo:County ;
+              goo:locatedInState ?state .
+      ?sviRecord a goo:SVIRecord ;
+                 goo:representsCounty ?county ;
+                 goo:sviOverallScore ?sviScore .
+    }
+    GROUP BY ?state
+  }
+}
+ORDER BY DESC(?hurricaneLandfallCount) DESC(?averageCountySviOverallScore)
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 64
+# QID: 1000044
+# Interpretation ID: Q1000044_I0
+# Interpretation Type: primary interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On the day of the Joplin tornado, how many tornado records occurred in or within the general area of the Joplin county, and what were their EF ratings and death counts?
+# Question Template: On {EVENT_DAY}, how many {EVENT_TYPE} records occurred in or within {SPATIAL_WINDOW} of {JURISDICTION_INSTANCE}, and what were their ratings and death counts?
+# Label: Primary interpretation: Jasper County general-area tornado records on the Joplin tornado day
+# Ambiguity Dimensions: spatiotemporal, semantic
+# Rationale: Uses the Moore tornado template while resolving the Joplin county wording to the county most directly associated with Joplin, Missouri.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?eventCount ?event ?efScale ?deathsDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      gokg:JasperCountyMO geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:deathsDirect ?deathsDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < "2011-05-23T00:00:00"^^xsd:dateTime && ?end >= "2011-05-22T00:00:00"^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  gokg:JasperCountyMO geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:deathsDirect ?deathsDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < "2011-05-23T00:00:00"^^xsd:dateTime && ?end >= "2011-05-22T00:00:00"^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event
+
+# ------------------------------------------------------------------------------
+
+# Query 65
+# QID: 1000044
+# Interpretation ID: Q1000044_I1
+# Interpretation Type: spatial-semantic interpretation
+# Template ID: T005
+# Template Family: event_window_outage_threshold
+# Question: On the day of the Joplin tornado, how many tornado records occurred in or within the general area of the Joplin county, and what were their EF ratings and death counts?
+# Question Template: On {EVENT_DAY}, how many {EVENT_TYPE} records occurred in or within {SPATIAL_WINDOW} of {JURISDICTION_INSTANCE}, and what were their ratings and death counts?
+# Label: Spatial-semantic interpretation: broader Joplin area using Jasper and Newton counties
+# Ambiguity Dimensions: spatial, semantic
+# Rationale: Joplin spans the Jasper-Newton county area, so this interpretation broadens the county scope while preserving the same tornado-day and 10 km general-area rule.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX geosparql:  <http://www.opengis.net/ont/geosparql#>
+PREFIX geof:       <http://www.opengis.net/def/function/geosparql/>
+PREFIX units:      <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?eventCount ?event ?efScale ?deathsDirect
+WHERE {
+  {
+    SELECT (COUNT(DISTINCT ?event) AS ?eventCount)
+    WHERE {
+      VALUES ?county { gokg:JasperCountyMO gokg:NewtonCountyMO }
+      ?county geosparql:hasGeometry ?countyGeom .
+      ?countyGeom geosparql:asWKT ?countyWKT .
+      ?event a goo:TornadoEventRecord ;
+             goo:eventStartTime ?start ;
+             goo:eventEndTime ?end ;
+             goo:torFScale ?efScale ;
+             goo:deathsDirect ?deathsDirect ;
+             goo:lat ?eventLat ;
+             goo:lon ?eventLon .
+      BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+      FILTER (?start < "2011-05-23T00:00:00"^^xsd:dateTime && ?end >= "2011-05-22T00:00:00"^^xsd:dateTime)
+      FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+    }
+  }
+  VALUES ?county { gokg:JasperCountyMO gokg:NewtonCountyMO }
+  ?county geosparql:hasGeometry ?countyGeom .
+  ?countyGeom geosparql:asWKT ?countyWKT .
+  ?event a goo:TornadoEventRecord ;
+         goo:eventStartTime ?start ;
+         goo:eventEndTime ?end ;
+         goo:torFScale ?efScale ;
+         goo:deathsDirect ?deathsDirect ;
+         goo:lat ?eventLat ;
+         goo:lon ?eventLon .
+  BIND(STRDT(CONCAT("POINT(", STR(?eventLon), " ", STR(?eventLat), ")"), geosparql:wktLiteral) AS ?eventPoint)
+  FILTER (?start < "2011-05-23T00:00:00"^^xsd:dateTime && ?end >= "2011-05-22T00:00:00"^^xsd:dateTime)
+  FILTER (geof:distance(?eventPoint, ?countyWKT, units:metre) <= 10000)
+}
+ORDER BY ?event
+
+# ------------------------------------------------------------------------------
+
+# Query 66
+# QID: 1000045
+# Interpretation ID: Q1000045_I0
+# Interpretation Type: primary interpretation
+# Template ID: T010
+# Template Family: event_sequence_svi_threshold
+# Question: Which counties with high overall SVI scores had a Flood event occur after a Thunderstorm Wind event started within a few days in the same county, and what were the paired event times and SVI scores?
+# Question Template: Which {JURISDICTION_TYPE} with {SVI_RELATIVE_LEVEL} {SVI_METRIC} had {SECOND_EVENT_TYPE} occur after {FIRST_EVENT_TYPE} started within {RELATIVE_SEQUENCE_WINDOW} in the same {SPATIAL_UNIT}, and what were the paired event times and {SVI_METRIC}?
+# Label: Primary interpretation: 2022 SVI >= 0.8 with Flood after Thunderstorm Wind start within 3 days
+# Ambiguity Dimensions: temporal, semantic, spatiotemporal
+# Rationale: Reflects the concrete Storm Events categories Thunderstorm Wind and Flood, with LIMIT 10, while keeping the 2022 high-SVI and 3-day interpretation.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?sviScore ?thunderstormWindEvent ?thunderstormWindType ?thunderstormWindStart ?thunderstormWindEnd ?floodEvent ?floodType ?floodStart ?floodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviOverallScore ?sviScore .
+  FILTER (?sviYear = 2022)
+  FILTER (?sviScore >= 0.8)
+
+  ?thunderstormWindEvent a goo:StormEventRecord ;
+                         goo:occurredInCounty ?county ;
+                         goo:stormEventType ?thunderstormWindType ;
+                         goo:eventStartTime ?thunderstormWindStart ;
+                         goo:eventEndTime ?thunderstormWindEnd .
+  FILTER (REGEX(STR(?thunderstormWindType), "Thunderstorm Wind", "i"))
+
+  ?floodEvent a goo:StormEventRecord ;
+              goo:occurredInCounty ?county ;
+              goo:stormEventType ?floodType ;
+              goo:eventStartTime ?floodStart ;
+              goo:eventEndTime ?floodEnd .
+  FILTER (REGEX(STR(?floodType), "Flood", "i"))
+
+  FILTER (?thunderstormWindStart <= ?floodStart)
+  FILTER ((?floodStart - ?thunderstormWindStart) <= "P3D"^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?sviScore) ?county ?thunderstormWindStart ?floodStart
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 67
+# QID: 1000045
+# Interpretation ID: Q1000045_I1
+# Interpretation Type: temporal-semantic interpretation
+# Template ID: T010
+# Template Family: event_sequence_svi_threshold
+# Question: Which counties with high overall SVI scores had a Flood event occur after a Thunderstorm Wind event started within a few days in the same county, and what were the paired event times and SVI scores?
+# Question Template: Which {JURISDICTION_TYPE} with {SVI_RELATIVE_LEVEL} {SVI_METRIC} had {SECOND_EVENT_TYPE} occur after {FIRST_EVENT_TYPE} started within {RELATIVE_SEQUENCE_WINDOW} in the same {SPATIAL_UNIT}, and what were the paired event times and {SVI_METRIC}?
+# Label: Temporal-semantic interpretation: 2010 SVI >= 0.75 with Flood after Thunderstorm Wind start within 5 days
+# Ambiguity Dimensions: temporal, semantic
+# Rationale: Reflects the concrete Storm Events categories Thunderstorm Wind and Flood, with LIMIT 10, while using the alternate 2010 high-SVI and 5-day interpretation.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?sviScore ?thunderstormWindEvent ?thunderstormWindType ?thunderstormWindStart ?thunderstormWindEnd ?floodEvent ?floodType ?floodStart ?floodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviOverallScore ?sviScore .
+  FILTER (?sviYear = 2010)
+  FILTER (?sviScore >= 0.75)
+
+  ?thunderstormWindEvent a goo:StormEventRecord ;
+                         goo:occurredInCounty ?county ;
+                         goo:stormEventType ?thunderstormWindType ;
+                         goo:eventStartTime ?thunderstormWindStart ;
+                         goo:eventEndTime ?thunderstormWindEnd .
+  FILTER (REGEX(STR(?thunderstormWindType), "Thunderstorm Wind", "i"))
+
+  ?floodEvent a goo:StormEventRecord ;
+              goo:occurredInCounty ?county ;
+              goo:stormEventType ?floodType ;
+              goo:eventStartTime ?floodStart ;
+              goo:eventEndTime ?floodEnd .
+  FILTER (REGEX(STR(?floodType), "Flood", "i"))
+
+  FILTER (?thunderstormWindStart <= ?floodStart)
+  FILTER ((?floodStart - ?thunderstormWindStart) <= "P5D"^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?sviScore) ?county ?thunderstormWindStart ?floodStart
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 68
+# QID: 1000046
+# Interpretation ID: Q1000046_I0
+# Interpretation Type: primary interpretation
+# Template ID: T010
+# Template Family: event_sequence_svi_threshold
+# Question: Which counties with high housing and transportation SVI theme scores had a Flash Flood event occur after a Hail event started within about half a day in the same county, and what were the paired event times and SVI theme scores?
+# Question Template: Which {JURISDICTION_TYPE} with {SVI_RELATIVE_LEVEL} {SVI_METRIC} had {SECOND_EVENT_TYPE} occur after {FIRST_EVENT_TYPE} started within {RELATIVE_SEQUENCE_WINDOW} in the same {SPATIAL_UNIT}, and what were the paired event times and {SVI_METRIC}?
+# Label: Primary interpretation: 2020 housing and transportation SVI theme >= 0.85 with Flash Flood after Hail start within 12 hours
+# Ambiguity Dimensions: temporal, semantic, spatiotemporal
+# Rationale: Uses a distinct T010 event pair and SVI theme from the preceding T010 entry while keeping the same-county sequence structure.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?housingTransportationScore ?hailEvent ?hailType ?hailStart ?hailEnd ?flashFloodEvent ?flashFloodType ?flashFloodStart ?flashFloodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviHousingTransportationTheme ?housingTransportationScore .
+  FILTER (?sviYear = 2020)
+  FILTER (?housingTransportationScore >= 0.85)
+
+  ?hailEvent a goo:StormEventRecord ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?hailType ;
+             goo:eventStartTime ?hailStart ;
+             goo:eventEndTime ?hailEnd .
+  FILTER (REGEX(STR(?hailType), "Hail", "i"))
+
+  ?flashFloodEvent a goo:StormEventRecord ;
+                   goo:occurredInCounty ?county ;
+                   goo:stormEventType ?flashFloodType ;
+                   goo:eventStartTime ?flashFloodStart ;
+                   goo:eventEndTime ?flashFloodEnd .
+  FILTER (REGEX(STR(?flashFloodType), "Flash Flood", "i"))
+
+  FILTER (?hailStart <= ?flashFloodStart)
+  FILTER ((?flashFloodStart - ?hailStart) <= "PT12H"^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?housingTransportationScore) ?county ?hailStart ?flashFloodStart
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 69
+# QID: 1000046
+# Interpretation ID: Q1000046_I1
+# Interpretation Type: temporal-semantic interpretation
+# Template ID: T010
+# Template Family: event_sequence_svi_threshold
+# Question: Which counties with high housing and transportation SVI theme scores had a Flash Flood event occur after a Hail event started within about half a day in the same county, and what were the paired event times and SVI theme scores?
+# Question Template: Which {JURISDICTION_TYPE} with {SVI_RELATIVE_LEVEL} {SVI_METRIC} had {SECOND_EVENT_TYPE} occur after {FIRST_EVENT_TYPE} started within {RELATIVE_SEQUENCE_WINDOW} in the same {SPATIAL_UNIT}, and what were the paired event times and {SVI_METRIC}?
+# Label: Temporal-semantic interpretation: 2022 housing and transportation SVI theme >= 0.8 with Flash Flood after Hail start within 1 day
+# Ambiguity Dimensions: temporal, semantic
+# Rationale: Keeps the Hail-to-Flash-Flood sequence but broadens the ambiguous half-day window and uses the newer SVI year with a slightly lower high-SVI threshold.
+PREFIX goo:        <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:       <http://example.org/resource#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?county ?sviRecord ?sviYear ?housingTransportationScore ?hailEvent ?hailType ?hailStart ?hailEnd ?flashFloodEvent ?flashFloodType ?flashFloodStart ?flashFloodEnd
+WHERE {
+  ?county a goo:County .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear ?sviYear ;
+             goo:sviHousingTransportationTheme ?housingTransportationScore .
+  FILTER (?sviYear = 2022)
+  FILTER (?housingTransportationScore >= 0.8)
+
+  ?hailEvent a goo:StormEventRecord ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?hailType ;
+             goo:eventStartTime ?hailStart ;
+             goo:eventEndTime ?hailEnd .
+  FILTER (REGEX(STR(?hailType), "Hail", "i"))
+
+  ?flashFloodEvent a goo:StormEventRecord ;
+                   goo:occurredInCounty ?county ;
+                   goo:stormEventType ?flashFloodType ;
+                   goo:eventStartTime ?flashFloodStart ;
+                   goo:eventEndTime ?flashFloodEnd .
+  FILTER (REGEX(STR(?flashFloodType), "Flash Flood", "i"))
+
+  FILTER (?hailStart <= ?flashFloodStart)
+  FILTER ((?flashFloodStart - ?hailStart) <= "P1D"^^xsd:dayTimeDuration)
+}
+ORDER BY DESC(?housingTransportationScore) ?county ?hailStart ?flashFloodStart
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 70
+# QID: 1000047
+# Interpretation ID: Q1000047_I0
+# Interpretation Type: original source query
+# Template ID: T007
+# Template Family: storm_event_svi_county_threshold
+# Question: Which counties in the hurricane-prone state had high socioeconomic vulnerability in a recent year and a dozen or so wind-related storm events recorded that same year?
+# Question Template: Which counties in {STATE_DESCRIPTOR} had {SVI_DESCRIPTOR} in {RELATIVE_YEAR_DESCRIPTOR} and a number of {EVENT_TYPE} recorded that same year?
+# Label: Original exact KG interpretation from source JSON
+# Ambiguity Dimensions: spatial, temporal, semantic, spatiotemporal
+# Rationale: Resolves the ambiguous state, year, vulnerability level, and wind-related event count to one T007 interpretation where same-county and same-year storm event counts co-occur with a county-level SVI threshold.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?socioeconomicScore ?thunderstormWindEventCount
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:FloridaState .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2022 ;
+             goo:sviSocioeconomicTheme ?socioeconomicScore .
+  FILTER (?socioeconomicScore >= 0.75)
+  {
+    SELECT ?county (COUNT(DISTINCT ?event) AS ?thunderstormWindEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState gokg:FloridaState ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2022)
+      FILTER (REGEX(STR(?eventType), "Thunderstorm Wind", "i"))
+    }
+    GROUP BY ?county
+  }
+  FILTER (?thunderstormWindEventCount >= 12)
+}
+ORDER BY DESC(?socioeconomicScore) DESC(?thunderstormWindEventCount) ?county
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 71
+# QID: 1000047
+# Interpretation ID: Q1000047_I1
+# Interpretation Type: spatiotemporal-semantic interpretation
+# Template ID: T007
+# Template Family: storm_event_svi_county_threshold
+# Question: Which counties in the hurricane-prone state had high socioeconomic vulnerability in a recent year and a dozen or so wind-related storm events recorded that same year?
+# Question Template: Which counties in {STATE_DESCRIPTOR} had {SVI_DESCRIPTOR} in {RELATIVE_YEAR_DESCRIPTOR} and a number of {EVENT_TYPE} recorded that same year?
+# Label: Alternate spatiotemporal-semantic interpretation: Texas, 2020, socioeconomic SVI >= 0.8, any Wind event type
+# Ambiguity Dimensions: spatial, temporal, semantic, spatiotemporal
+# Rationale: Uses only the ambiguous wording in the question to choose a different hurricane-prone state, recent year, high-vulnerability threshold, and wind-related event interpretation while preserving the same county-year co-occurrence structure.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?socioeconomicScore ?windEventCount
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:TexasState .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2020 ;
+             goo:sviSocioeconomicTheme ?socioeconomicScore .
+  FILTER (?socioeconomicScore >= 0.8)
+  {
+    SELECT ?county (COUNT(DISTINCT ?event) AS ?windEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState gokg:TexasState ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2020)
+      FILTER (REGEX(STR(?eventType), "Wind", "i"))
+    }
+    GROUP BY ?county
+  }
+  FILTER (?windEventCount >= 12)
+}
+ORDER BY DESC(?socioeconomicScore) DESC(?windEventCount) ?county
+LIMIT 10
+
+# ------------------------------------------------------------------------------
+
+# Query 72
+# QID: 1000047
+# Interpretation ID: Q1000047_I2
+# Interpretation Type: spatiotemporal-semantic interpretation
+# Template ID: T007
+# Template Family: storm_event_svi_county_threshold
+# Question: Which counties in the hurricane-prone state had high socioeconomic vulnerability in a recent year and a dozen or so wind-related storm events recorded that same year?
+# Question Template: Which counties in {STATE_DESCRIPTOR} had {SVI_DESCRIPTOR} in {RELATIVE_YEAR_DESCRIPTOR} and a number of {EVENT_TYPE} recorded that same year?
+# Label: Alternate spatiotemporal-semantic interpretation: Louisiana, 2018, socioeconomic SVI >= 0.85, High Wind or Strong Wind count between 10 and 14
+# Ambiguity Dimensions: spatial, temporal, semantic, spatiotemporal
+# Rationale: Uses only the ambiguous wording in the question to choose a third hurricane-prone state, recent year, high-vulnerability threshold, and wind-related event interpretation while preserving the same county-year co-occurrence structure.
+PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg:   <http://example.org/resource#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviRecord ?socioeconomicScore ?coastalWindEventCount
+WHERE {
+  ?county a goo:County ;
+          goo:locatedInState gokg:LouisianaState .
+  ?sviRecord a goo:SVIRecord ;
+             goo:representsCounty ?county ;
+             goo:sviYear 2018 ;
+             goo:sviSocioeconomicTheme ?socioeconomicScore .
+  FILTER (?socioeconomicScore >= 0.85)
+  {
+    SELECT ?county (COUNT(DISTINCT ?event) AS ?coastalWindEventCount)
+    WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInState gokg:LouisianaState ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?eventType ;
+             goo:eventStartTime ?eventStart .
+      FILTER (YEAR(?eventStart) = 2018)
+      FILTER (REGEX(STR(?eventType), "Wind", "i"))
+    }
+    GROUP BY ?county
+  }
+  FILTER (?coastalWindEventCount >= 10 && ?coastalWindEventCount <= 14)
+}
+ORDER BY DESC(?socioeconomicScore) DESC(?coastalWindEventCount) ?county
+LIMIT 10

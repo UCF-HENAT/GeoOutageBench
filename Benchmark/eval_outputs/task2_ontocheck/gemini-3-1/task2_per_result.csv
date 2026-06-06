@@ -1,0 +1,636 @@
+accuracy,prediction_index,prediction_label,prediction_subindex,primary_category,qid,query_complexity,query_file,query_path,question_index,relevance,result_index,source,sparql_query,spatiotemporal_axis,status,template_family,template_id
+0.0294,0,Group by county and find max,,Spatial containment,1000000,1-hop,qid_1000000_prediction_01.json,,1,1.0,1,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county (MAX(?num) AS ?maxOutages) WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num .
+} GROUP BY ?county ORDER BY DESC(?maxOutages) LIMIT 10",spatial,scored,outage_ranking_by_jurisdiction,T001
+0.0392,1,Direct record ranking,,Spatial containment,1000000,1-hop,qid_1000000_prediction_02.json,,1,1.0,2,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?time ?num WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?time ;
+       goo:numberOfOutages ?num .
+} ORDER BY DESC(?num) LIMIT 10",spatial,scored,outage_ranking_by_jurisdiction,T001
+0.0196,0,,,Spatial containment,1000001,1-hop,qid_1000001_prediction_01.json,,2,1.0,3,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?rec ?num WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:numberOfOutages ?num .
+} ORDER BY DESC(?num) LIMIT 10",spatial,scored,outage_ranking_by_jurisdiction,T001
+0.0196,0,,,Temporal interval,1000002,1-hop,qid_1000002_prediction_01.json,,3,1.0,4,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?rec ?time WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:recordDateTime ?time .
+  FILTER(?time >= ""2022-01-01T00:00:00Z""^^xsd:dateTime && ?time < ""2023-01-01T00:00:00Z""^^xsd:dateTime)
+}",temporal,scored,temporal_interval_filter,T002
+0.0294,0,,,Multimodal evidence,1000003,1-hop,qid_1000003_prediction_01.json,,4,1.0,5,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?image ?time WHERE {
+  ?image a goo:NTLImage ;
+         goo:representsCounty ?county ;
+         goo:acquisitionDateTime ?time .
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""orange""))
+  FILTER(?time >= ""2025-01-01T00:00:00Z""^^xsd:dateTime && ?time < ""2026-01-01T00:00:00Z""^^xsd:dateTime)
+}",spatiotemporal,scored,temporal_interval_filter,T002
+0.0392,0,,,Spatial containment,1000004,1-hop,qid_1000004_prediction_01.json,,5,1.0,6,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?county WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ""2017-08-15T20:15:00Z""^^xsd:dateTime .
+  ?county goo:fipsCode ""12075"" .
+} LIMIT 1",spatial,scored,single_entity_property_lookup,T003
+0.0392,0,,,Multimodal evidence,1000005,1-hop,qid_1000005_prediction_01.json,,6,1.0,7,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?county WHERE {
+  ?img a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?time .
+  ?county goo:fipsCode ""12031"" .
+  FILTER(?time >= ""2020-09-21T00:00:00Z""^^xsd:dateTime && ?time < ""2020-09-22T00:00:00Z""^^xsd:dateTime)
+} LIMIT 1",spatial,scored,single_entity_property_lookup,T003
+0.0588,0,Jurisdiction having a record on that date,,Multimodal evidence,1000006,1-hop,qid_1000006_prediction_01.json,,7,1.0,8,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?countyName WHERE {
+  ?county a goo:County ;
+          goo:locatedInState ?state ;
+          rdfs:label ?countyName .
+  ?state goo:statePostalCode ""FL"" .
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?time .
+  FILTER(?time >= ""2019-03-10T00:00:00Z""^^xsd:dateTime && ?time < ""2019-03-11T00:00:00Z""^^xsd:dateTime)
+} ORDER BY ASC(?countyName) LIMIT 1",spatial,scored,single_entity_property_lookup,T003
+0.0588,1,Jurisdiction having an NTL image on that date,,Multimodal evidence,1000006,1-hop,qid_1000006_prediction_02.json,,7,1.0,9,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?countyName WHERE {
+  ?county a goo:County ;
+          goo:locatedInState ?state ;
+          rdfs:label ?countyName .
+  ?state goo:statePostalCode ""FL"" .
+  ?img a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?time .
+  FILTER(?time >= ""2019-03-10T00:00:00Z""^^xsd:dateTime && ?time < ""2019-03-11T00:00:00Z""^^xsd:dateTime)
+} ORDER BY ASC(?countyName) LIMIT 1",spatial,scored,single_entity_property_lookup,T003
+0.0196,0,,,Temporal interval,1000007,1-hop,qid_1000007_prediction_01.json,,8,1.0,10,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg: <http://example.org/resource#>
+SELECT ?time WHERE {
+  ?record a goo:CustomerOutageRecord ;
+          goo:recordDateTime ?time .
+} LIMIT 1",temporal,scored,single_entity_property_lookup,T003
+0.0588,0,,,Temporal interval,1000008,1-hop,qid_1000008_prediction_01.json,,9,1.0,11,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?num WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ""2017-08-15T20:15:00Z""^^xsd:dateTime ;
+       goo:numberOfOutages ?num .
+  ?county rdfs:label ?countyName .
+  ?county goo:locatedInState ?state .
+  ?state goo:statePostalCode ""FL"" .
+  FILTER(CONTAINS(LCASE(?countyName), ""levy""))
+} LIMIT 1",temporal,scored,single_entity_property_lookup,T003
+0.0686,0,,,Multimodal evidence,1000009,2-hop,qid_1000009_prediction_01.json,,10,1.0,12,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ""2017-08-15T20:15:00Z""^^xsd:dateTime .
+  ?county rdfs:label ?countyName .
+  ?county goo:locatedInState ?state .
+  ?state goo:statePostalCode ""FL"" .
+  FILTER(CONTAINS(LCASE(?countyName), ""levy""))
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?ntlTime .
+  FILTER(SUBSTR(STR(?ntlTime), 1, 10) = ""2017-08-15"")
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0784,0,,,Multimodal evidence,1000010,2-hop,qid_1000010_prediction_01.json,,11,1.0,13,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ""2017-08-15T20:15:00Z""^^xsd:dateTime .
+  ?county rdfs:label ?countyName .
+  ?county goo:locatedInState ?state .
+  ?state goo:statePostalCode ""FL"" .
+  FILTER(CONTAINS(LCASE(?countyName), ""levy""))
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:hasOutageMap ?map ;
+       goo:acquisitionDateTime ?ntlTime .
+  FILTER(SUBSTR(STR(?ntlTime), 1, 10) = ""2017-08-15"")
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0392,0,,,Multimodal evidence,1000011,1-hop,qid_1000011_prediction_01.json,,12,1.0,14,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:hasOutageMap ?map ;
+       goo:acquisitionDateTime ?time .
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""duval""))
+  FILTER(?time >= ""2020-09-21T00:00:00Z""^^xsd:dateTime && ?time < ""2020-09-22T00:00:00Z""^^xsd:dateTime)
+}",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0196,0,,,Multimodal evidence,1000012,1-hop,qid_1000012_prediction_01.json,,13,1.0,15,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?satellite WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSatellite ?satellite .
+} LIMIT 1",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0196,0,,,Multimodal evidence,1000013,1-hop,qid_1000013_prediction_01.json,,14,1.0,16,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?sensor WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSensor ?sensor .
+} LIMIT 1",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0392,0,,,Temporal interval,1000014,1-hop,qid_1000014_prediction_01.json,,15,1.0,17,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?rec ?num ?time WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?time .
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""lee""))
+  FILTER(?num > 100)
+  FILTER(?time >= ""2022-09-23T00:00:00Z""^^xsd:dateTime && ?time < ""2022-10-10T00:00:00Z""^^xsd:dateTime)
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.049,0,,,Spatiotemporal co-occurrence,1000015,2-hop,qid_1000015_prediction_01.json,,16,1.0,18,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?rec WHERE {
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""lee""))
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?ntlTime .
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recTime .
+  FILTER(?ntlTime >= ""2022-09-28T00:00:00Z""^^xsd:dateTime && ?ntlTime < ""2022-09-29T00:00:00Z""^^xsd:dateTime)
+  FILTER(SUBSTR(STR(?ntlTime), 1, 10) = SUBSTR(STR(?recTime), 1, 10))
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0392,0,,,Multimodal evidence,1000016,2-hop,qid_1000016_prediction_01.json,,17,1.0,19,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map WHERE {
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""lee""))
+  ?map a goo:OutageMap ;
+       goo:representsCounty ?county ;
+       goo:generatedFromNTLImage ?ntl .
+  ?ntl goo:acquisitionDateTime ?time .
+  FILTER(?time >= ""2022-09-23T00:00:00Z""^^xsd:dateTime && ?time < ""2022-10-10T00:00:00Z""^^xsd:dateTime)
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0392,0,,,Temporal interval,1000017,1-hop,qid_1000017_prediction_01.json,,18,1.0,20,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?county (MAX(?num) AS ?maxOutages) WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?time .
+  FILTER(?time >= ""2017-01-01T00:00:00Z""^^xsd:dateTime && ?time < ""2018-01-01T00:00:00Z""^^xsd:dateTime)
+} GROUP BY ?county",spatiotemporal,scored,outage_ranking_by_jurisdiction,T001
+0.0392,0,,,Spatial containment,1000018,1-hop,qid_1000018_prediction_01.json,,19,1.0,21,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?county (AVG(?svi) AS ?avgSvi) WHERE {
+  ?county a goo:County .
+  ?sviRec a goo:SVIRecord ;
+          goo:representsCounty ?county ;
+          goo:sviOverallScore ?svi .
+} GROUP BY ?county",spatial,scored,svi_aggregation_by_jurisdiction,T011
+0.0392,0,,,Temporal interval,1000019,1-hop,qid_1000019_prediction_01.json,,20,1.0,22,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?county ?time ?maxNum WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?time ;
+       goo:numberOfOutages ?maxNum .
+  NOT EXISTS {
+    ?rec2 a goo:CustomerOutageRecord ;
+          goo:representsCounty ?county ;
+          goo:numberOfOutages ?num2 .
+    FILTER(?num2 > ?maxNum)
+  }
+}",spatiotemporal,scored,outage_ranking_by_jurisdiction,T001
+0.0294,0,,,Multimodal evidence,1000020,1-hop,qid_1000020_prediction_01.json,,21,1.0,23,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?satellite ?sensor WHERE {
+  ?ntl a goo:NTLImage ;
+       goo:fromSatellite ?satellite ;
+       goo:fromSensor ?sensor .
+} LIMIT 1",non_spatiotemporal,scored,single_entity_property_lookup,T003
+0.0294,0,General mapping via shared county,,Spatial containment,1000021,multi-hop,qid_1000021_prediction_01.json,,22,1.0,24,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg: <http://example.org/resource#>
+SELECT ?county WHERE {
+  ?map a goo:OutageMap ;
+       goo:representsCounty ?county .
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county .
+} LIMIT 1",spatiotemporal,scored,multimodal_correspondence,T004
+0.0588,1,Strict mapping via calendar day,,Spatial containment,1000021,multi-hop,qid_1000021_prediction_02.json,,22,1.0,25,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX gokg: <http://example.org/resource#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?county WHERE {
+  ?map a goo:OutageMap ;
+       goo:representsCounty ?county ;
+       goo:generatedFromNTLImage ?ntl .
+  ?ntl goo:acquisitionDateTime ?ntlTime .
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recTime .
+  FILTER(SUBSTR(STR(?ntlTime), 1, 10) = SUBSTR(STR(?recTime), 1, 10))
+} LIMIT 1",spatiotemporal,scored,multimodal_correspondence,T004
+0.0392,0,,,Spatial containment,1000022,1-hop,qid_1000022_prediction_01.json,,23,1.0,26,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT (MAX(?num) AS ?maxOutages) WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num .
+  ?county rdfs:label ?countyName ;
+          goo:locatedInState ?state .
+  ?state rdfs:label ?stateName .
+  FILTER(CONTAINS(LCASE(?stateName), ""florida""))
+  FILTER(CONTAINS(LCASE(?countyName), ""jackson""))
+}",spatial,scored,single_entity_property_lookup,T003
+0.049,0,,,Spatiotemporal co-occurrence,1000023,multi-hop,qid_1000023_prediction_01.json,,24,1.0,27,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ASK WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recTime .
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:acquisitionDateTime ?ntlTime .
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""hillsborough""))
+  FILTER(SUBSTR(STR(?recTime), 1, 10) = SUBSTR(STR(?ntlTime), 1, 10))
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.049,0,,,Multimodal evidence,1000024,2-hop,qid_1000024_prediction_01.json,,25,1.0,28,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?map WHERE {
+  ?map a goo:OutageMap ;
+       goo:generatedFromNTLImage ?ntl ;
+       goo:representsCounty ?county .
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""lake""))
+  ?ntl goo:acquisitionDateTime ?time ;
+       goo:fromSensor ?sensor .
+  ?sensor rdfs:label ?sensorName .
+  FILTER(CONTAINS(LCASE(?sensorName), ""viirs""))
+  FILTER(?time >= ""2024-03-01T00:00:00Z""^^xsd:dateTime && ?time < ""2024-04-01T00:00:00Z""^^xsd:dateTime)
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0588,0,,,Temporal interval,1000025,1-hop,qid_1000025_prediction_01.json,,26,1.0,29,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?stormId ?stormName (MAX(?windSpeed) AS ?maxWind) WHERE {
+  ?event a goo:HurricaneEventRecord ;
+         goo:hurricaneId ?stormId ;
+         goo:basin ""ATL"" ;
+         rdfs:label ?stormName ;
+         goo:hasTrackRecord ?track .
+  ?track goo:recordDateTime ?time ;
+         goo:maxSustainedWindSpeed ?windSpeed .
+  FILTER(SUBSTR(STR(?time), 1, 10) = ""2024-10-06"")
+} GROUP BY ?stormId ?stormName",temporal,scored,temporal_interval_filter,T002
+0.0588,0,,,Spatial proximity,1000026,multi-hop,qid_1000026_prediction_01.json,,27,1.0,30,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT (MAX(?num) AS ?peakOutage) (GROUP_CONCAT(DISTINCT ?stormName; separator="", "") AS ?activeHurricanes) WHERE {
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""lee""))
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?recTime .
+  FILTER(SUBSTR(STR(?recTime), 1, 10) = ""2022-09-28"")
+  OPTIONAL {
+    ?event a goo:HurricaneEventRecord ;
+           rdfs:label ?stormName ;
+           goo:hasTrackRecord ?track .
+    ?track goo:recordDateTime ?trackTime .
+    FILTER(SUBSTR(STR(?trackTime), 1, 10) = ""2022-09-28"")
+  }
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0588,0,,,Spatial proximity,1000027,multi-hop,qid_1000027_prediction_01.json,,28,1.0,31,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?event ?efRating ?injuries WHERE {
+  ?event a goo:TornadoEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:eventStartTime ?time ;
+         goo:torFScale ?efRating ;
+         goo:injuriesDirect ?injuries .
+  ?county rdfs:label ?countyName ;
+          goo:locatedInState ?state .
+  ?state rdfs:label ?stateName .
+  FILTER(CONTAINS(LCASE(?countyName), ""cleveland""))
+  FILTER(CONTAINS(LCASE(?stateName), ""oklahoma""))
+  FILTER(SUBSTR(STR(?time), 1, 10) = ""2013-05-20"")
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0294,0,,,Temporal interval,1000028,2-hop,qid_1000028_prediction_01.json,,29,1.0,32,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?state (SUM(IF(SUBSTR(STR(?time), 1, 4) = ""2020"", 1, 0)) - SUM(IF(SUBSTR(STR(?time), 1, 4) = ""2010"", 1, 0)) AS ?diff) WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState ?state ;
+         goo:eventStartTime ?time .
+  FILTER(SUBSTR(STR(?time), 1, 4) IN (""2020"", ""2010""))
+} GROUP BY ?state",spatiotemporal,scored,comparative_event_count,T006
+0.0294,0,,,Temporal interval,1000029,multi-hop,qid_1000029_prediction_01.json,,30,1.0,33,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT (COUNT(DISTINCT ?event) AS ?numHurricanes) (GROUP_CONCAT(DISTINCT ?stormName; separator="", "") AS ?hurricaneNames) WHERE {
+  ?event a goo:HurricaneEventRecord ;
+         rdfs:label ?stormName ;
+         goo:hasTrackRecord ?track .
+  ?track goo:recordDateTime ?time .
+  FILTER(SUBSTR(STR(?time), 6, 2) = ""08"")
+}",spatiotemporal,scored,comparative_event_count,T006
+0.0294,0,,,Spatial containment,1000030,multi-hop,qid_1000030_prediction_01.json,,31,1.0,34,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?stateName ?type (COUNT(?event) AS ?count) WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInState ?state ;
+         goo:stormEventType ?type .
+  ?state rdfs:label ?stateName .
+  FILTER(LCASE(?stateName) IN (""florida"", ""california""))
+} GROUP BY ?stateName ?type",spatial,scored,comparative_event_count,T006
+0.0784,0,,,Event sequence,1000031,multi-hop,qid_1000031_prediction_01.json,,32,1.0,35,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?event WHERE {
+  ?event a goo:StormEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:eventStartTime ?eventStart .
+  ?county goo:locatedInState ?state .
+  ?state rdfs:label ?stateName .
+  FILTER(CONTAINS(LCASE(?stateName), ""florida""))
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:recordDateTime ?recTime ;
+       goo:numberOfOutages ?num .
+  FILTER(?num > 50000)
+  FILTER(SUBSTR(STR(?eventStart), 1, 10) = SUBSTR(STR(?recTime), 1, 10))
+  FILTER(?eventStart < ?recTime)
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,0,,,Multimodal evidence,1000032,multi-hop,qid_1000032_prediction_01.json,,33,1.0,36,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?map WHERE {
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?time .
+  FILTER(?num > 100000)
+  FILTER(?time >= ""2017-09-06T00:00:00Z""^^xsd:dateTime && ?time < ""2017-09-20T00:00:00Z""^^xsd:dateTime)
+  ?county goo:locatedInState ?state .
+  ?state rdfs:label ?stateName .
+  FILTER(CONTAINS(LCASE(?stateName), ""florida""))
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:hasOutageMap ?map .
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0686,0,,,Scenario / what-if,1000033,multi-hop,qid_1000033_prediction_01.json,,34,1.0,37,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT ?neighbor WHERE {
+  ?county rdfs:label ?countyName .
+  FILTER(CONTAINS(LCASE(?countyName), ""lee""))
+  ?county goo:neighboringCounties ?neighbor .
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?neighbor ;
+       goo:sviOverallScore ?sviScore .
+  FILTER(?sviScore > 0.75)
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?neighbor ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?time .
+  FILTER(?num > 50000)
+  FILTER(?time >= ""2022-09-23T00:00:00Z""^^xsd:dateTime && ?time < ""2022-10-10T00:00:00Z""^^xsd:dateTime)
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0392,0,Filter by storm strength only (date duration abstracted),,Temporal interval,1000034,1-hop,qid_1000034_prediction_01.json,,35,1.0,38,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?event (MAX(?wind) AS ?maxWind) WHERE {
+  ?event a goo:HurricaneEventRecord ;
+         goo:basin ?basin ;
+         goo:hasTrackRecord ?track .
+  FILTER(?basin IN (""ATL"", ""EPAC"", ""CPAC""))
+  ?track goo:maxSustainedWindSpeed ?wind .
+} GROUP BY ?event HAVING (MAX(?wind) > 113) LIMIT 10",spatiotemporal,scored,temporal_interval_filter,T002
+0.0882,0,,,Spatial containment,1000035,multi-hop,qid_1000035_prediction_01.json,,36,1.0,39,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county (COUNT(?event) AS ?eventCount) WHERE {
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  ?state rdfs:label ""Florida"" .
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?county ;
+       goo:sviYear 2022 ;
+       goo:sviOverallScore ?score .
+  FILTER(?score >= 0.8)
+  ?event a goo:StormEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:eventStartTime ?time .
+  FILTER(SUBSTR(STR(?time), 1, 4) = ""2022"")
+} GROUP BY ?county",spatiotemporal,scored,storm_event_svi_county_threshold,T007
+0.0588,0,,,Temporal interval,1000036,multi-hop,qid_1000036_prediction_01.json,,37,1.0,40,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?county ?svi2000 ?svi2010 ?svi2020 ?pop2000 ?pop2020 ?poverty2020 WHERE {
+  ?sviRec1 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2000 ; goo:sviOverallScore ?svi2000 ; goo:totalPopulation ?pop2000 .
+  ?sviRec2 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2010 ; goo:sviOverallScore ?svi2010 .
+  ?sviRec3 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2020 ; goo:sviOverallScore ?svi2020 ; goo:totalPopulation ?pop2020 ; goo:povertyRate ?poverty2020 .
+} ORDER BY DESC(?svi2020) LIMIT 10",spatiotemporal,scored,longitudinal_svi_population_change,T008
+0.0784,0,,,Spatial containment,1000037,multi-hop,qid_1000037_prediction_01.json,,38,1.0,41,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+SELECT ?state (COUNT(DISTINCT ?event) AS ?numHurricanes) (AVG(?svi) AS ?avgStateSVI) WHERE {
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  ?sviRec a goo:SVIRecord ;
+          goo:representsCounty ?county ;
+          goo:sviOverallScore ?svi .
+  OPTIONAL {
+    ?event a goo:StormEventRecord ;
+           goo:occurredInState ?state ;
+           goo:stormEventType ""Hurricane"" .
+  }
+} GROUP BY ?state ORDER BY DESC(?numHurricanes) LIMIT 10",spatiotemporal,scored,hurricane_landfall_ranking_with_state_svi,T009
+0.0588,0,,,Spatial proximity,1000038,multi-hop,qid_1000038_prediction_01.json,,39,1.0,42,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+PREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>
+SELECT ?event ?efRating ?injuries WHERE {
+  ?baseCounty rdfs:label ?countyName ;
+              goo:locatedInState ?state ;
+              geosparql:hasGeometry ?geom1 .
+  ?geom1 geosparql:asWKT ?wkt1 .
+  ?state rdfs:label ?stateName .
+  FILTER(CONTAINS(LCASE(?countyName), ""cleveland""))
+  FILTER(CONTAINS(LCASE(?stateName), ""oklahoma""))
+  ?event a goo:TornadoEventRecord ;
+         goo:occurredInCounty ?eventCounty ;
+         goo:eventStartTime ?time ;
+         goo:torFScale ?efRating ;
+         goo:injuriesDirect ?injuries .
+  ?eventCounty geosparql:hasGeometry ?geom2 .
+  ?geom2 geosparql:asWKT ?wkt2 .
+  FILTER(geof:distance(?wkt1, ?wkt2, units:kilometer) <= 50)
+  FILTER(SUBSTR(STR(?time), 1, 10) = ""2013-05-20"")
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,0,,,Multimodal evidence,1000039,multi-hop,qid_1000039_prediction_01.json,,40,1.0,43,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ntl ?map WHERE {
+  ?county goo:locatedInState ?state .
+  ?state rdfs:label ""Florida"" .
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?county ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?time .
+  FILTER(?num > 250000)
+  FILTER(?time >= ""2022-09-28T00:00:00Z""^^xsd:dateTime && ?time < ""2022-10-02T00:00:00Z""^^xsd:dateTime)
+  ?ntl a goo:NTLImage ;
+       goo:representsCounty ?county ;
+       goo:hasOutageMap ?map .
+}",spatiotemporal,scored,multimodal_correspondence,T004
+0.0784,0,,,Scenario / what-if,1000040,multi-hop,qid_1000040_prediction_01.json,,41,1.0,44,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT ?neighbor WHERE {
+  ?county rdfs:label ""Taylor County"" ;
+          goo:locatedInState ?state .
+  ?state rdfs:label ""Florida"" .
+  ?county goo:neighboringCounties ?neighbor .
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?neighbor ;
+       goo:sviOverallScore ?score .
+  FILTER(?score > 0.7)
+  ?rec a goo:CustomerOutageRecord ;
+       goo:representsCounty ?neighbor ;
+       goo:numberOfOutages ?num ;
+       goo:recordDateTime ?time .
+  FILTER(?num > 10000)
+  FILTER(?time >= ""2024-09-26T00:00:00Z""^^xsd:dateTime && ?time < ""2024-09-30T00:00:00Z""^^xsd:dateTime)
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.1078,0,,,Spatial containment,1000041,multi-hop,qid_1000041_prediction_01.json,,42,1.0,45,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county WHERE {
+  ?fl a goo:State ; rdfs:label ""Florida"" .
+  ?fl goo:neighboringStates ?state .
+  ?county goo:locatedInState ?state .
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?county ;
+       goo:sviYear 2022 ;
+       goo:sviHousingTransportationTheme ?htScore .
+  FILTER(?htScore >= 0.85)
+  {
+    SELECT ?county (COUNT(?event) AS ?floodCount) WHERE {
+      ?event a goo:StormEventRecord ;
+             goo:occurredInCounty ?county ;
+             goo:stormEventType ?type ;
+             goo:eventStartTime ?time .
+      FILTER(CONTAINS(LCASE(?type), ""flood""))
+      FILTER(SUBSTR(STR(?time), 1, 4) = ""2022"")
+    } GROUP BY ?county
+  }
+  FILTER(?floodCount >= 5)
+}",spatiotemporal,scored,storm_event_svi_county_threshold,T007
+0.0784,0,,,Spatial containment,1000042,multi-hop,qid_1000042_prediction_01.json,,43,1.0,46,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?svi2000 ?svi2010 ?svi2022 (?pop2022 - ?pop2000 AS ?popChange) ?poverty2022 WHERE {
+  ?county goo:locatedInState ?state .
+  ?state rdfs:label ""Florida"" .
+  ?svi22 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2022 ; goo:sviHousingTransportationTheme ?ht2022 ; goo:sviOverallScore ?svi2022 ; goo:totalPopulation ?pop2022 ; goo:povertyRate ?poverty2022 .
+  ?svi10 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2010 ; goo:sviOverallScore ?svi2010 .
+  ?svi00 a goo:SVIRecord ; goo:representsCounty ?county ; goo:sviYear 2000 ; goo:sviOverallScore ?svi2000 ; goo:totalPopulation ?pop2000 .
+} ORDER BY DESC(?ht2022) LIMIT 10",spatiotemporal,scored,longitudinal_svi_population_change,T008
+0.0882,0,,,Spatial containment,1000043,multi-hop,qid_1000043_prediction_01.json,,44,1.0,47,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?stateName (COUNT(DISTINCT ?event) AS ?numHurricanes) (AVG(?svi) AS ?avgStateSVI) WHERE {
+  ?county a goo:County ;
+          goo:locatedInState ?state .
+  ?state rdfs:label ?stateName .
+  FILTER(?stateName IN (""Florida"", ""Alabama"", ""Mississippi"", ""Louisiana"", ""Texas""))
+  ?sviRec a goo:SVIRecord ;
+          goo:representsCounty ?county ;
+          goo:sviOverallScore ?svi .
+  OPTIONAL {
+    ?event a goo:StormEventRecord ;
+           goo:occurredInState ?state ;
+           goo:stormEventType ""Hurricane"" ;
+           goo:eventStartTime ?time .
+    FILTER(SUBSTR(STR(?time), 1, 4) >= ""2000"")
+  }
+} GROUP BY ?stateName ORDER BY DESC(?numHurricanes) LIMIT 10",spatiotemporal,scored,hurricane_landfall_ranking_with_state_svi,T009
+0.0588,0,,,Spatial proximity,1000044,multi-hop,qid_1000044_prediction_01.json,,45,1.0,48,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?event ?efRating ?deaths WHERE {
+  ?event a goo:TornadoEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:eventStartTime ?time ;
+         goo:torFScale ?efRating ;
+         goo:deathsDirect ?deaths .
+  ?county rdfs:label ?countyName ;
+          goo:locatedInState ?state .
+  ?state rdfs:label ?stateName .
+  FILTER(CONTAINS(LCASE(?countyName), ""jasper""))
+  FILTER(CONTAINS(LCASE(?stateName), ""missouri""))
+  FILTER(SUBSTR(STR(?time), 1, 10) = ""2011-05-22"")
+}",spatiotemporal,scored,event_window_outage_threshold,T005
+0.0686,0,,,Event sequence,1000045,multi-hop,qid_1000045_prediction_01.json,,46,1.0,49,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?sviScore ?tsTime ?floodTime WHERE {
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?county ;
+       goo:sviOverallScore ?sviScore .
+  FILTER(?sviScore > 0.8)
+  ?ts a goo:StormEventRecord ;
+      goo:occurredInCounty ?county ;
+      goo:stormEventType ?tsType ;
+      goo:eventStartTime ?tsTime .
+  FILTER(CONTAINS(LCASE(?tsType), ""thunderstorm wind""))
+  ?flood a goo:StormEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?floodType ;
+         goo:eventStartTime ?floodTime .
+  FILTER(CONTAINS(LCASE(?floodType), ""flood""))
+  FILTER(?floodTime > ?tsTime)
+} LIMIT 50",spatiotemporal,scored,event_sequence_svi_threshold,T010
+0.0686,0,,,Event sequence,1000046,multi-hop,qid_1000046_prediction_01.json,,47,1.0,50,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county ?htScore ?hailTime ?floodTime WHERE {
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?county ;
+       goo:sviHousingTransportationTheme ?htScore .
+  FILTER(?htScore > 0.8)
+  ?hail a goo:StormEventRecord ;
+        goo:occurredInCounty ?county ;
+        goo:stormEventType ?hailType ;
+        goo:eventStartTime ?hailTime .
+  FILTER(CONTAINS(LCASE(?hailType), ""hail""))
+  ?flood a goo:StormEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?floodType ;
+         goo:eventStartTime ?floodTime .
+  FILTER(CONTAINS(LCASE(?floodType), ""flash flood""))
+  FILTER(?floodTime > ?hailTime)
+} LIMIT 50",spatiotemporal,scored,event_sequence_svi_threshold,T010
+0.0882,0,,,Spatiotemporal co-occurrence,1000047,multi-hop,qid_1000047_prediction_01.json,,48,1.0,51,predictions,"PREFIX goo: <https://ucf-henat.github.io/GeoOutageOnto/#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?county (COUNT(?event) AS ?windCount) WHERE {
+  ?county goo:locatedInState ?state .
+  ?state rdfs:label ""Florida"" .
+  ?svi a goo:SVIRecord ;
+       goo:representsCounty ?county ;
+       goo:sviYear 2022 ;
+       goo:sviSocioeconomicTheme ?socioScore .
+  FILTER(?socioScore >= 0.8)
+  ?event a goo:StormEventRecord ;
+         goo:occurredInCounty ?county ;
+         goo:stormEventType ?type ;
+         goo:eventStartTime ?time .
+  FILTER(CONTAINS(LCASE(?type), ""wind""))
+  FILTER(SUBSTR(STR(?time), 1, 4) = ""2022"")
+} GROUP BY ?county HAVING(COUNT(?event) >= 12)",spatiotemporal,scored,storm_event_svi_county_threshold,T007

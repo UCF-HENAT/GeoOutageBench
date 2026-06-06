@@ -1,0 +1,486 @@
+{
+  "benchmark": "/mnt/c/users/edfra/code/work/GeoResilienceKG/GeoResilience/Benchmark/geooutagebench_questions.json",
+  "mode": "blank",
+  "predictions": [
+    {
+      "qid": 1000000,
+      "question": "Which counties have the highest number of customer outages reported at one time?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000001,
+      "question": "Which ten customer outage records were the highest?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000002,
+      "question": "Which customer outage records were recorded in the calendar year after 2021?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000003,
+      "question": "Which nighttime-light images cover the Orlando-area county in 2025?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000004,
+      "question": "Which jurisdiction is represented by the customer record with FIPS code 12075 and on the 15th of August 2017 at 8:15 PM?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000005,
+      "question": "Which county is represented by the nighttime-light image recorded for FIPS code 12031 on the 21st of September 2020?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000006,
+      "question": "Which jurisdiction is represented by the first alphabetical order county in Florida on the 10th of the 3rd month in the last year of the 2010s?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000007,
+      "question": "When was this outage record recorded?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000008,
+      "question": "How many outages were recorded in the customer outage record for the Florida county with the seat in Bronson, on August 15, 2017 at 20:15?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000009,
+      "question": "Which nighttime-light scene corresponds to the customer outage record for the Florida county with the seat in Bronson, on August 15, 2017 at 20:15?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000010,
+      "question": "Which outage map corresponds to the customer outage record for the Florida county with the largest city being Williston, on August 15, 2017 at 20:15?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000011,
+      "question": "Which severity prediction map was derived from the nighttime-light scene for Jacksonville's county in 2020, the 21st night of September?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000012,
+      "question": "Which satellite captured any random NTL image?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000013,
+      "question": "Which sensor captured any random NTL image?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000014,
+      "question": "During the Hurricane Ian disruption period, which outage records for the southwest Florida county centered on Fort Myers were above 100?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000015,
+      "question": "During the Hurricane Ian landfall date, which nighttime-light scenes line up with outage snapshots for the southwest Florida county centered on Fort Myers?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Spatiotemporal co-occurrence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000016,
+      "question": "Which severity maps correspond to the southwest Florida county centered on Fort Myers around Hurricane Ian?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000017,
+      "question": "For each county, what is the maximum number of customer outages recorded in the year Hurricane Irma occurred in?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000018,
+      "question": "For each second-level administrative division in the U.S., what is their average social vulnerability index?",
+      "template_id": "T011",
+      "template_family": "svi_aggregation_by_jurisdiction",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000019,
+      "question": "On what date and time did each jurisdiction reach its maximum recorded number of customer outages?",
+      "template_id": "T001",
+      "template_family": "outage_ranking_by_jurisdiction",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000020,
+      "question": "Which remote sensing machine and instrument captured any random nighttime-light image in the GeoOutage dataset?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "non_spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000021,
+      "question": "Which U.S. county is depicted in the power outage severity map corresponding to a specific customer outage record?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000022,
+      "question": "What is the maximum number of power outages recorded for the county in the third most populous state named after Andrew Jackson in the Eagle-I dataset?",
+      "template_id": "T003",
+      "template_family": "single_entity_property_lookup",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000023,
+      "question": "Is there an EAGLE-I snapshot for the Tampa, Florida county that also has a matching NTL scene?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Spatiotemporal co-occurrence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000024,
+      "question": "For the central-Florida county where the largest city is named Clermont, what derived severity maps are associated with the VIIRS-captured scene for the month of March in 2024?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000025,
+      "question": "How many tropical cyclones were active on the date 6 October 2024 in the Atlantic basin, and what were their names and maximum sustained wind speeds?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "temporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000026,
+      "question": "On Ian's Florida landfall day, what was the peak outage count in the southwest Florida county centered on Fort Myers, and were any hurricanes active within the general area of the county that day, and if so what were their names?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000027,
+      "question": "On the day of the Moore tornado, how many tornado records occurred in or within the general area of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000028,
+      "question": "What is the difference between how many storm events were recorded in each state between the year the COVID pandemic started and one decade earlier?",
+      "template_id": "T006",
+      "template_family": "comparative_event_count",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000029,
+      "question": "How many and which hurricanes made landfall in Louisiana in the month of August across all years, and when did they make landfall?",
+      "template_id": "T006",
+      "template_family": "comparative_event_count",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000030,
+      "question": "What is the ratio of tornadoes to hurricanes to thunderstorms to wildfires in Florida and California?",
+      "template_id": "T006",
+      "template_family": "comparative_event_count",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatial",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000031,
+      "question": "Which storm events in Florida started before same-county EAGLE-I records that later exceeded 50,000 outages on the same day?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Event sequence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000032,
+      "question": "Which NTL images and severity maps provide multimodal evidence for Florida county outage records above 100,000 during the Irma response window?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000033,
+      "question": "If Fort Myers's County's outage impact extended to neighboring counties during Hurricane Ian, which neighboring counties had high social vulnerability and high recorded outages?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Scenario / what-if",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000034,
+      "question": "Which Atlantic and Pacific hurricanes lasted more than three days and reached maximum sustained winds of an extremely powerful cyclone?",
+      "template_id": "T002",
+      "template_family": "temporal_interval_filter",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000035,
+      "question": "Which counties in the state bordering Alabama and Georgia had an SVI overall score of at least 0.8 in the year before 2023 and a number of storm events recorded that same year?",
+      "template_id": "T007",
+      "template_family": "storm_event_svi_county_threshold",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000036,
+      "question": "For the administrative divisions in the U.S. with the highest Social Vulnerability Indexes, what was their SVI at the start of the new millennium, then one decade later, then one decade after that, and what was their population increase in those two decades, and their poverty levels?",
+      "template_id": "T008",
+      "template_family": "longitudinal_svi_population_change",
+      "primary_category": "Temporal interval",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000037,
+      "question": "Which states have the highest number of hurricane landfalls across all years, and what is each state’s average county-level SVI overall score?",
+      "template_id": "T009",
+      "template_family": "hurricane_landfall_ranking_with_state_svi",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000038,
+      "question": "On the day of the Moore tornado, how many tornado records occurred within 50 km of Cleveland County, Oklahoma, and what were their EF ratings and injury counts?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000039,
+      "question": "Which NTL images and outage-severity maps provide multimodal evidence for Florida county outage records above 250,000 during Hurricane Ian's immediate landfall impact window?",
+      "template_id": "T004",
+      "template_family": "multimodal_correspondence",
+      "primary_category": "Multimodal evidence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000040,
+      "question": "If the county where Hurricane Helene made landfall's outage impact propagated to neighboring counties, which neighboring counties' latest SVI overall scores were substantial and had outage records above 10,000 during the immediate landfall window?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Scenario / what-if",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000041,
+      "question": "Which counties in states neighboring Florida had 2022 SVI housing-and-transportation scores of at least 0.85 and at least five flood-related storm events that same year?",
+      "template_id": "T007",
+      "template_family": "storm_event_svi_county_threshold",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000042,
+      "question": "For the southeastern most state's administrative divisions with the highest 2022 SVI housing-and-transportation scores, what were their SVI overall scores in 2000, 2010, and 2022, their population change from 2000 to 2022, and their 2022 poverty rates?",
+      "template_id": "T008",
+      "template_family": "longitudinal_svi_population_change",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000043,
+      "question": "Which Gulf Coast states have the highest number of hurricane landfalls in this century, and what is each state's average county-level SVI overall score?",
+      "template_id": "T009",
+      "template_family": "hurricane_landfall_ranking_with_state_svi",
+      "primary_category": "Spatial containment",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000044,
+      "question": "On the day of the Joplin tornado, how many tornado records occurred in or within the general area of the Joplin county, and what were their EF ratings and death counts?",
+      "template_id": "T005",
+      "template_family": "event_window_outage_threshold",
+      "primary_category": "Spatial proximity",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000045,
+      "question": "Which counties with high overall SVI scores had a Flood event occur after a Thunderstorm Wind event started within a few days in the same county, and what were the paired event times and SVI scores?",
+      "template_id": "T010",
+      "template_family": "event_sequence_svi_threshold",
+      "primary_category": "Event sequence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000046,
+      "question": "Which counties with high housing and transportation SVI theme scores had a Flash Flood event occur after a Hail event started within about half a day in the same county, and what were the paired event times and SVI theme scores?",
+      "template_id": "T010",
+      "template_family": "event_sequence_svi_threshold",
+      "primary_category": "Event sequence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    },
+    {
+      "qid": 1000047,
+      "question": "Which counties in the hurricane-prone state had high socioeconomic vulnerability in a recent year and a dozen or so wind-related storm events recorded that same year?",
+      "template_id": "T007",
+      "template_family": "storm_event_svi_county_threshold",
+      "primary_category": "Spatiotemporal co-occurrence",
+      "spatiotemporal_axis": "spatiotemporal",
+      "sparql_query": "",
+      "sparql_interpretations": []
+    }
+  ]
+}
