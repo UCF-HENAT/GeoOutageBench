@@ -65,6 +65,9 @@ GeoOutageBench/
     visualize_outage_maps.py
     generate_outagemap_ttl.py
 
+  satellites/
+    satellites.ttl
+
   utils/
     geooutage_common.py
     polygon_to_hash.py
@@ -125,11 +128,31 @@ The repository includes several ready-to-use TTL files:
   `CDC/svi_2016.ttl`, `CDC/svi_2018.ttl`, `CDC/svi_2020.ttl`,
   `CDC/svi_2022.ttl`
 - `HURDAT/hurdat.ttl`
+- `satellites/satellites.ttl`
 
 Large raw source datasets are not all committed. The EAGLE-I CSVs, NOAA Storm
 Events CSVs, NASA Black Marble HDF5/pickle/image products, generated outage-map
 images, and complete experiment-specific KG bundles must be supplied or
 generated locally.
+
+Larger generated Turtle files for the EAGLE-I customer outage records, Black
+Marble nighttime-light images, outage prediction maps, and NOAA Storm Events
+datasets are available from the OSF repository at
+https://doi.org/10.17605/OSF.IO/QVD8B. In OSF, the GeoOutageBench Turtle files
+are located in the `GeoOutageKG 1.1 - GeoOutageBench` folder, which is organized
+as:
+
+```text
+GeoOutageKG 1.1 - GeoOutageBench/
+  doe_eaglei_outagerecord/
+  noaa_stormevents/
+  ntlimage.ttl
+  outagemap.ttl
+```
+
+The OSF repository also includes a `GeoOutageKG 1.0` folder containing legacy
+Turtle files from the first version of GeoOutageKG, originally published in
+2025.
 
 If a `.ttl` file appears as a short text pointer instead of RDF content, run:
 
@@ -166,6 +189,7 @@ into a SPARQL engine such as GraphDB. A complete endpoint should include:
 - EAGLE-I customer outage record TTLs.
 - Black Marble nighttime-light image TTLs.
 - Outage map TTLs.
+- Satellite metadata TTL from `satellites/satellites.ttl`.
 
 GraphDB endpoints usually have this shape:
 
@@ -756,13 +780,31 @@ Relative path surprises:
 - If running a script from inside a subdirectory, adjust output paths
   accordingly.
 
-## Public Release Checklist
+## License
 
-Before publishing a release, confirm that:
+GeoOutageBench is licensed under the MIT License. See [LICENSE](LICENSE) for
+details.
 
-- Git LFS is enabled for `.ttl` files.
-- Raw data subject to external licenses or access controls is not committed.
-- The repository includes the intended ontology/profile TTL files.
-- Example outputs in `Benchmark/eval_outputs/` correspond to the current
-  benchmark JSON.
-- A license file and citation information are added when available.
+## Citation
+
+If you use the GeoOutageKG data products, as we have, please cite
+GeoOutageKG:
+
+```bibtex
+@InProceedings{geooutagekg,
+  author={Frakes, Ethan and Wu, Yinghui and French, Roger H. and Li, Mengjie},
+  editor={Garijo, Daniel and Kirrane, Sabrina and Salatino, Angelo and Shimizu, Cogan and Acosta, Maribel and Nuzzolese, Andrea Giovanni and Ferrada, Sebasti{\'a}n and Soulard, Thibaut and Kozaki, Kouji and Takeda, Hideaki and Gentile, Anna Lisa},
+  title={{GeoOutageKG}: A Multimodal Geospatiotemporal Knowledge Graph for Multiresolution Power Outage Analysis},
+  booktitle={The Semantic Web -- ISWC 2025},
+  year={2025},
+  month={10},
+  publisher={Springer Nature Switzerland},
+  address={Cham},
+  pages={221--239},
+  isbn={978-3-032-09530-5},
+  doi={10.1007/978-3-032-09530-5_13},
+  eprint={2507.22878},
+  eprinttype={arxiv},
+  eprintclass={cs.IR}
+}
+```
