@@ -71,6 +71,8 @@ GeoOutageBench/
   utils/
     geooutage_common.py
     polygon_to_hash.py
+
+  requirements.txt                      # Python package dependencies
 ```
 
 ## Quick Start
@@ -99,24 +101,17 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 ```
 
-Install the core packages used by the benchmark and most TTL generators:
+Install the Python packages used by the benchmark, evaluators, Turtle
+generators, and documented image/Black Marble workflows:
 
 ```bash
-python -m pip install rdflib pyparsing pandas requests pillow geopandas shapely polygon-geohasher
+python -m pip install -r requirements.txt
 ```
 
 Command examples below use Bash-style `\` line continuations. In Windows
 PowerShell, replace each trailing `\` with a backtick or put the command on one
 line.
 
-Optional packages are needed for specialized workflows:
-
-- Task 2 requires the `ontocheck` package.
-- Black Marble preparation uses packages that provide `gadm.GADMDownloader`
-  and `blackmarble.download.BlackMarbleDownloader`, plus `xarray`, `h5netcdf`,
-  `numpy`, and `matplotlib`.
-- `OutageMap/visualize_outage_maps.py` additionally uses PyTorch,
-  TorchVision, SciPy, xarray, pandas, and matplotlib.
 
 ## Data and Git LFS Notes
 
@@ -132,22 +127,25 @@ The repository includes several ready-to-use TTL files:
 
 Large raw source datasets are not all committed. The EAGLE-I CSVs, NOAA Storm
 Events CSVs, NASA Black Marble HDF5/pickle/image products, generated outage-map
-images, and complete experiment-specific KG bundles must be supplied or
+images, and complete experiment-specific KG bundles must be supplied from their respective sources or
 generated locally.
 
-Larger generated Turtle files for the EAGLE-I customer outage records, Black
-Marble nighttime-light images, outage prediction maps, and NOAA Storm Events
-datasets are available from the OSF repository at
+GeoOutageKG 1.1 Turtle files are also available from the OSF repository at
 https://doi.org/10.17605/OSF.IO/QVD8B. In OSF, the GeoOutageBench Turtle files
 are located in the `GeoOutageKG 1.1 - GeoOutageBench` folder, which is organized
 as:
 
 ```text
 GeoOutageKG 1.1 - GeoOutageBench/
-  doe_eaglei_outagerecord/
-  noaa_stormevents/
-  ntlimage.ttl
-  outagemap.ttl
+  CDC/                             # CDC SVI Turtle files
+  counties.ttl                     # County resources and geometries
+  doe_eaglei_outagerecord/         # EAGLE-I customer outage record Turtle files
+  hurdat.ttl                       # HURDAT hurricane track Turtle file
+  noaa_stormevents/                # NOAA Storm Events Turtle files
+  ntlimage.ttl                     # NASA Black Marble nighttime-light image Turtle file
+  outagemap.ttl                    # Outage prediction map Turtle file
+  satellites.ttl                   # Satellite metadata Turtle file
+  states.ttl                       # State resources and geometries
 ```
 
 The OSF repository also includes a `GeoOutageKG 1.0` folder containing legacy

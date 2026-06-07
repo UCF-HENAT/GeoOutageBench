@@ -1,0 +1,23 @@
+# Core benchmark, RDF, and ontology-evaluation tooling
+rdflib
+pyparsing
+OntoCheck
+requests
+
+# Dataframe and geospatial Turtle-generation workflows
+pandas
+geopandas
+shapely
+polygon-geohasher
+
+# Image, NASA Black Marble, and outage-map workflows
+Pillow
+matplotlib
+numpy
+xarray
+h5netcdf
+gadm
+blackmarblepy  # provides the blackmarble import package
+scipy
+torch
+torchvision
