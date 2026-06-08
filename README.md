@@ -161,6 +161,9 @@ git lfs pull
 ## Knowledge Graph Initialization
 
 GeoOutageBench evaluations can use either a SPARQL endpoint or local RDF files.
+The GeoOutageOnto documentation page at
+https://purl.archive.org/geooutageonto provides the ontology vocabulary
+reference for classes and properties used by the benchmark and GeoOutageKG.
 
 For small smoke tests, pass local RDF files directly to the evaluators:
 
