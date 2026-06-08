@@ -11,7 +11,7 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 
 
 BENCHMARK_DIR = Path(__file__).resolve().parent
-DEFAULT_SOURCE = BENCHMARK_DIR.parent / "GeoOutageOnto.ttl"
+DEFAULT_SOURCE = BENCHMARK_DIR.parent / "GeoOutageOnto_1.1.ttl"
 DEFAULT_ALLOWED = BENCHMARK_DIR / "task1_allowed.txt"
 DEFAULT_BENCHMARK = BENCHMARK_DIR / "geooutagebench_questions.json"
 DEFAULT_OUTPUT = BENCHMARK_DIR.parent / "GeoOutageOnto_GeoOutageBench.ttl"
