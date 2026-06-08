@@ -87,7 +87,10 @@ cd GeoOutageBench
 git lfs pull
 ```
 
-Create a Python environment. Python 3.10 or newer is recommended.
+Create a Python environment with either `venv` or Anaconda/Miniconda. Python
+3.10 or newer is recommended.
+
+Using Python `venv`:
 
 ```bash
 python -m venv .venv
@@ -98,6 +101,14 @@ source .venv/bin/activate
 # Windows PowerShell
 .\.venv\Scripts\Activate.ps1
 
+python -m pip install --upgrade pip
+```
+
+Using Anaconda or Miniconda:
+
+```bash
+conda create -n geooutagebench python=3.10 pip
+conda activate geooutagebench
 python -m pip install --upgrade pip
 ```
 
