@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import tempfile
 from pathlib import Path
@@ -24,6 +25,33 @@ DEFAULT_OUTPUT_DIR = Path(__file__).with_name("eval_outputs") / "task2_ontocheck
 DEFAULT_DOMAIN_PREFIXES = ["goo"]
 
 
+def get_ontocheck_questions_arg(query_file: str | Path) -> str | list[str]:
+    """Return a questions argument compatible with OntoCheck."""
+    query_path = Path(query_file)
+    if query_path.suffix.lower() != ".json":
+        return str(query_path)
+
+    with query_path.open("r", encoding="utf-8") as file:
+        data = json.load(file)
+
+    if isinstance(data, list):
+        if all(isinstance(item, dict) for item in data):
+            return str(query_path)
+        return [
+            item if isinstance(item, str) else item.get("sparql_query", "")
+            for item in data
+            if isinstance(item, str) or isinstance(item, dict)
+        ]
+
+    if isinstance(data, dict):
+        if isinstance(data.get("sparql_query"), str):
+            return [data["sparql_query"]]
+        if isinstance(data.get("sparql_queries"), list):
+            return [query for query in data["sparql_queries"] if isinstance(query, str)]
+
+    return str(query_path)
+
+
 def run_ontocheck_query_file(
     query_file: str | Path,
     ttl_file: str,
@@ -36,7 +64,7 @@ def run_ontocheck_query_file(
 
     result = run_task_based_assessment(
         ttl_files=ttl_file,
-        questions=str(query_file),
+        questions=get_ontocheck_questions_arg(query_file),
         domain_prefixes=domain_prefixes or DEFAULT_DOMAIN_PREFIXES,
     )
     return {
@@ -87,7 +115,7 @@ def run_ontocheck_gold_interpretations(
             query_records = get_gold_interpretations(question)
             for interpretation_index, record in enumerate(query_records):
                 query_file = temp_dir_path / f"qid_{qid}_gold_{interpretation_index + 1:02d}.json"
-                write_json(query_file, {"sparql_query": record["sparql_query"]})
+                write_json(query_file, [{"sparql_query": record["sparql_query"]}])
                 result = run_ontocheck_query_file(query_file, ttl_file, domain_prefixes=domain_prefixes)
                 results.append(
                     {
@@ -169,7 +197,7 @@ def run_ontocheck_prediction_interpretations(
 
             for interpretation_index, record in enumerate(query_records):
                 query_file = temp_dir_path / f"qid_{qid}_prediction_{interpretation_index + 1:02d}.json"
-                write_json(query_file, {"sparql_query": record["sparql_query"]})
+                write_json(query_file, [{"sparql_query": record["sparql_query"]}])
                 result = run_ontocheck_query_file(query_file, ttl_file, domain_prefixes=domain_prefixes)
                 results.append(
                     {

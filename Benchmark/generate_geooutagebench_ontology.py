@@ -11,10 +11,10 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 
 
 BENCHMARK_DIR = Path(__file__).resolve().parent
-DEFAULT_SOURCE = BENCHMARK_DIR.parent / "GeoResilienceOnto_Beta.ttl"
+DEFAULT_SOURCE = BENCHMARK_DIR.parent / "GeoOutageOnto.ttl"
 DEFAULT_ALLOWED = BENCHMARK_DIR / "task1_allowed.txt"
 DEFAULT_BENCHMARK = BENCHMARK_DIR / "geooutagebench_questions.json"
-DEFAULT_OUTPUT = BENCHMARK_DIR.parent / "GeoResilienceOnto_GeoOutageBench.ttl"
+DEFAULT_OUTPUT = BENCHMARK_DIR.parent / "GeoOutageOnto_GeoOutageBench.ttl"
 
 GOO = Namespace("https://ucf-henat.github.io/GeoOutageOnto/#")
 MDS = Namespace("https://cwrusdle.bitbucket.io/mds/")

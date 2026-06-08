@@ -443,11 +443,11 @@ county-name subdirectories containing files named `YYYY_MM_DD.png`, `.jpg`,
 Task 1 is designed to evaluate models under a constrained ontology profile.
 `Benchmark/generate_geooutagebench_ontology.py` creates that profile by reading:
 
-- `GeoResilienceOnto_Beta.ttl` at the repository root.
+- `GeoOutageOnto.ttl` at the repository root.
 - `Benchmark/task1_allowed.txt`.
 - `Benchmark/geooutagebench_questions.json`.
 
-Place the full ontology at `GeoResilienceOnto_Beta.ttl`, then run:
+Place the full ontology at `GeoOutageOnto.ttl`, then run:
 
 ```bash
 python Benchmark/generate_geooutagebench_ontology.py
@@ -456,7 +456,7 @@ python Benchmark/generate_geooutagebench_ontology.py
 The script writes:
 
 ```text
-GeoResilienceOnto_GeoOutageBench.ttl
+GeoOutageOnto_GeoOutageBench.ttl
 ```
 
 Use this profile as the schema context for NL2SPARQL prompting and as the
@@ -554,7 +554,7 @@ Run with local RDF files for executability checks:
 ```bash
 python Benchmark/evaluate_task1_nl2temporalsparql.py \
   --predictions Benchmark/eval_outputs/my_model_predictions.json \
-  --rdf-file GeoResilienceOnto_GeoOutageBench.ttl \
+  --rdf-file GeoOutageOnto.ttl \
   --rdf-file Counties/counties.ttl \
   --rdf-file States/states.ttl \
   --rdf-file CDC/svi_2022.ttl \
@@ -591,7 +591,7 @@ Score the benchmark gold interpretations:
 ```bash
 python Benchmark/evaluate_task2_ontocheck.py \
   --benchmark Benchmark/geooutagebench_questions.json \
-  --ttl_file GeoResilienceOnto_GeoOutageBench.ttl \
+  --ttl_file GeoOutageOnto.ttl \
   --model-output-dir gold
 ```
 
@@ -601,7 +601,7 @@ Score model-predicted SPARQL interpretations:
 python Benchmark/evaluate_task2_ontocheck.py \
   --benchmark Benchmark/geooutagebench_questions.json \
   --predictions Benchmark/eval_outputs/my_model_predictions.json \
-  --ttl_file GeoResilienceOnto_GeoOutageBench.ttl \
+  --ttl_file GeoOutageOnto.ttl \
   --count-missing-as-zero \
   --model-output-dir my_model
 ```
@@ -612,7 +612,7 @@ Score the legacy per-query directory:
 python Benchmark/evaluate_task2_ontocheck.py \
   --gold-source directory \
   --directory Benchmark/sparql_queries \
-  --ttl_file GeoResilienceOnto_GeoOutageBench.ttl \
+  --ttl_file GeoOutageOnto.ttl \
   --model-output-dir legacy_directory
 ```
 
@@ -666,7 +666,7 @@ python Benchmark/evaluate_task3_spatiotemporal_kgqa.py \
   --predictions Benchmark/eval_outputs/my_model_predictions.json \
   --prediction-kind queries \
   --gold-from-execution \
-  --rdf-file GeoResilienceOnto_GeoOutageBench.ttl \
+  --rdf-file GeoOutageOnto.ttl \
   --rdf-file Counties/counties.ttl \
   --rdf-file States/states.ttl \
   --rdf-file CDC/svi_2022.ttl \
@@ -705,7 +705,7 @@ A typical model-evaluation workflow is:
 2. Provide the model with:
    - `Benchmark/nl2sparql_prompt.txt`
    - `Benchmark/task1_allowed.txt`
-   - `GeoResilienceOnto_GeoOutageBench.ttl` or the full ontology context
+   - `GeoOutageOnto.ttl` or the full ontology context
    - The blank prediction JSON
 3. Save the model-completed JSON under `Benchmark/eval_outputs/`.
 4. Run Task 1 for structural SPARQL quality.

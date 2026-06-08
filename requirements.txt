@@ -3,6 +3,7 @@ rdflib
 pyparsing
 OntoCheck
 requests
+pyspellchecker
 
 # Dataframe and geospatial Turtle-generation workflows
 pandas
