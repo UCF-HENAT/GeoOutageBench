@@ -18,7 +18,7 @@ Schema = Namespace("http://schema.org/")
 
 class StormEventsKG:
     """
-    Serialize NOAA StormEvents detail CSV rows into GeoResilienceOnto-compatible RDF.
+    Serialize NOAA StormEvents detail CSV rows into GeoOutageOnto-compatible RDF.
 
     The writer uses StormEventRecord, TornadoEventRecord, and StormEpisodeRecord,
     plus optional county and state links resolved from TTL graphs by goo:fipsCode.
@@ -232,7 +232,7 @@ def default_output_path(csv_path: str, fmt: str) -> str:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Serialize NOAA StormEvents detail CSV rows to GeoResilienceOnto RDF."
+        description="Serialize NOAA StormEvents detail CSV rows to GeoOutageOnto RDF."
     )
     parser.add_argument("csv_path", help="Path to a StormEvents_details CSV file.")
     parser.add_argument(

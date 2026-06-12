@@ -103,14 +103,14 @@ def generate_subset(source_path: Path, allowed_path: Path, benchmark_path: Path)
         subset.bind(prefix, namespace, replace=True)
 
     subset.add((PROFILE, RDF.type, OWL.Ontology))
-    subset.add((PROFILE, RDFS.label, Literal("GeoResilienceOnto GeoOutageBench Profile", lang="en")))
+    subset.add((PROFILE, RDFS.label, Literal("GeoOutageOnto GeoOutageBench Profile", lang="en")))
     subset.add((PROFILE, DCTERMS.creator, Literal("UCF HENAT & CWRU SDLE Research Center")))
     subset.add(
         (
             PROFILE,
             DCTERMS.description,
             Literal(
-                "A workload-specific subset of GeoResilienceOnto containing the "
+                "A workload-specific subset of GeoOutageOnto containing the "
                 "GeoOutageOnto terms allowed for use by GeoOutageBench.",
                 lang="en",
             ),

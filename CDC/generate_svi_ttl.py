@@ -279,7 +279,7 @@ def download_svi_csv(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Generate GeoResilienceOnto Turtle records from a CDC/ATSDR SVI county CSV for a selected year."
+        description="Generate GeoOutageOnto Turtle records from a CDC/ATSDR SVI county CSV for a selected year."
     )
     parser.add_argument("--year", type=int, required=True, help="SVI release year, e.g. 2022.")
     parser.add_argument(

@@ -290,7 +290,7 @@ def main() -> None:
         help="Source for gold scoring when --predictions is not supplied.",
     )
     parser.add_argument("--directory", type=str, default="./sparql_queries", help="Legacy directory containing SPARQL queries")
-    parser.add_argument("--ttl_file", type=str, default="../GeoResilienceOnto_Beta.ttl", help="Path to the ontology file")
+    parser.add_argument("--ttl_file", type=str, default="../GeoOutageOnto_Beta.ttl", help="Path to the ontology file")
     parser.add_argument("--round", type=int, default=4, help="Number of decimal places to round to")
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR), help="Directory for CSV/JSON outputs.")
     parser.add_argument("--model-output-dir", type=str, default="", help="Name of model to use as output directory.")
